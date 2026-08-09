@@ -20,34 +20,34 @@
 
 @layer base {
   :root {
-    /* Premium Light Mode — Steel Blue Accent */
-    --color-bg-base: #f0f4f8;
+    /* Premium Light Mode — Refined Palette */
+    --color-bg-base: #f0f2f8;
     --color-bg-surface: #ffffff;
-    --color-text-main: #0d1b2a;
-    --color-text-muted: #4a6080;
-    --color-primary: #0d1b2a;
-    --color-secondary: #e8eef5;
-    --color-accent: #2a6dd9;       /* Steel Blue */
-    --color-accent-2: #7c3aed;     /* Violet accent */
-    --color-accent-hover: #1a5cc8;
-    --color-border: #d6e1ed;
+    --color-text-main: #0a0e1a;
+    --color-text-muted: #4a5578;
+    --color-primary: #0a0e1a;
+    --color-secondary: #e8ecf5;
+    --color-accent: #6366f1;        /* Indigo */
+    --color-accent-2: #8b5cf6;      /* Violet */
+    --color-accent-hover: #4f46e5;
+    --color-border: #d4d8e8;
     --color-glass: rgba(255, 255, 255, 0.72);
     --color-glass-border: rgba(255, 255, 255, 0.5);
   }
   
   .dark {
-    /* Premium Dark Mode — Deep Navy */
-    --color-bg-base: #050d1a;
-    --color-bg-surface: #0a1628;
-    --color-text-main: #e8f0fe;
-    --color-text-muted: #7a9bbf;
-    --color-primary: #e8f0fe;
-    --color-secondary: #0f2040;
-    --color-accent: #60a5fa;
+    /* Premium Dark Mode — Deep Space */
+    --color-bg-base: #030712;
+    --color-bg-surface: #0a101f;
+    --color-text-main: #f0f2f8;
+    --color-text-muted: #7a89b0;
+    --color-primary: #f0f2f8;
+    --color-secondary: #111827;
+    --color-accent: #818cf8;
     --color-accent-2: #a78bfa;
-    --color-accent-hover: #93c5fd;
-    --color-border: #1a3050;
-    --color-glass: rgba(5, 13, 26, 0.75);
+    --color-accent-hover: #a5b4fc;
+    --color-border: #1e293b;
+    --color-glass: rgba(3, 7, 18, 0.78);
     --color-glass-border: rgba(255, 255, 255, 0.06);
   }
 }
@@ -61,14 +61,34 @@
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
   }
 
+  .glass-premium {
+    background: var(--color-glass);
+    backdrop-filter: blur(40px) saturate(200%);
+    -webkit-backdrop-filter: blur(40px) saturate(200%);
+    border: 1px solid var(--color-glass-border);
+    box-shadow: 
+      0 0 0 1px rgba(255, 255, 255, 0.05),
+      0 8px 40px rgba(0, 0, 0, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
   .glass-dark {
-    background: rgba(10, 22, 40, 0.8);
+    background: rgba(10, 16, 31, 0.85);
     backdrop-filter: blur(24px) saturate(180%);
     -webkit-backdrop-filter: blur(24px) saturate(180%);
     border: 1px solid rgba(255, 255, 255, 0.05);
   }
 
   .text-gradient {
+    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-2) 50%, var(--color-accent) 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradient-shift 4s ease infinite;
+  }
+
+  .text-gradient-static {
     background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-2) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -88,11 +108,30 @@
     background: linear-gradient(
       90deg,
       transparent 0%,
-      rgba(255,255,255,0.15) 50%,
+      rgba(255,255,255,0.12) 50%,
       transparent 100%
     );
     background-size: 200% 100%;
-    animation: shimmer 2s infinite;
+    animation: shimmer 2.5s infinite;
+  }
+
+  .glow-accent {
+    box-shadow: 
+      0 0 20px rgba(99, 102, 241, 0.15),
+      0 0 60px rgba(99, 102, 241, 0.08);
+  }
+
+  .glow-accent-strong {
+    box-shadow: 
+      0 0 30px rgba(99, 102, 241, 0.25),
+      0 0 80px rgba(139, 92, 246, 0.15);
+  }
+
+  /* Section divider */
+  .section-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-accent), var(--color-accent-2), transparent);
+    opacity: 0.2;
   }
 }
 
@@ -116,20 +155,19 @@ body {
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 6px;
 }
 ::-webkit-scrollbar-track {
   background: var(--color-bg-base);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-accent);
+  background: linear-gradient(180deg, var(--color-accent), var(--color-accent-2));
   border-radius: 10px;
-  opacity: 0.5;
 }
 
 /* Selection */
 ::selection {
-  background: rgba(42, 109, 217, 0.25);
+  background: rgba(99, 102, 241, 0.25);
   color: var(--color-text-main);
 }
 
@@ -176,6 +214,41 @@ body {
   to { transform: rotate(360deg); }
 }
 
+@keyframes aurora {
+  0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+  25% { transform: translate(30px, -50px) rotate(45deg) scale(1.1); }
+  50% { transform: translate(-20px, 20px) rotate(90deg) scale(0.95); }
+  75% { transform: translate(40px, 10px) rotate(135deg) scale(1.05); }
+}
+
+@keyframes particle-float {
+  0%, 100% { 
+    transform: translateY(0) translateX(0) scale(1);
+    opacity: 0;
+  }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { 
+    transform: translateY(-100vh) translateX(20px) scale(0);
+    opacity: 0;
+  }
+}
+
+@keyframes text-shimmer {
+  0% { background-position: -100% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes border-glow {
+  0%, 100% { border-color: rgba(99, 102, 241, 0.2); }
+  50% { border-color: rgba(139, 92, 246, 0.4); }
+}
+
+@keyframes progress-ring {
+  from { stroke-dashoffset: var(--dash-offset, 283); }
+  to { stroke-dashoffset: var(--dash-final, 0); }
+}
+
 .animate-marquee {
   animation: marquee 30s linear infinite;
 }
@@ -205,6 +278,19 @@ body {
   animation: spin-slow 20s linear infinite;
 }
 
+.animate-aurora {
+  animation: aurora 15s ease-in-out infinite;
+}
+
+.animate-text-shimmer {
+  background-size: 300% 100%;
+  animation: text-shimmer 4s linear infinite;
+}
+
+.animate-border-glow {
+  animation: border-glow 3s ease-in-out infinite;
+}
+
 /* No scrollbar utility */
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -229,4 +315,11 @@ input:focus, textarea:focus {
   width: 1px;
   background: linear-gradient(to bottom, transparent, var(--color-accent), transparent);
   transform: translateX(-50%);
+}
+
+/* Circular progress ring */
+.progress-ring-circle {
+  transition: stroke-dashoffset 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
 }
