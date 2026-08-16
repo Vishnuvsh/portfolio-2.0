@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
 import { Menu, X, Moon, Sun } from 'lucide-react';
 import { useTheme } from '../lib/theme';
@@ -49,7 +49,7 @@ export default function Navbar() {
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-500',
         isScrolled
-          ? 'py-3 glass shadow-lg shadow-black/5 dark:shadow-black/30'
+          ? 'py-3 glass-premium shadow-lg shadow-black/5 dark:shadow-black/30'
           : 'py-6 bg-transparent'
       )}
     >
@@ -57,17 +57,17 @@ export default function Navbar() {
         {/* Logo */}
         <motion.a
           href="#"
-          className="relative text-xl font-bold tracking-tight text-[var(--color-text-main)] font-[Plus_Jakarta_Sans]"
+          className="relative text-xl font-bold tracking-tight text-[var(--color-text-main)] font-[Plus_Jakarta_Sans] group"
           whileHover={{ scale: 1.04 }}
           whileTap={{ scale: 0.97 }}
         >
           <span className="text-gradient">Vishnu</span>
-          <span className="text-[var(--color-text-muted)]">.</span>
+          <span className="text-[var(--color-accent-2)]">.</span>
           <motion.div
-            className="absolute -bottom-0.5 left-0 h-[2px] bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-2)] rounded-full"
+            className="absolute -bottom-1 left-0 h-[2px] bg-gradient-to-r from-[var(--color-accent)] via-[var(--color-accent-2)] to-[var(--color-accent)] rounded-full"
             initial={{ width: 0 }}
             animate={{ width: '100%' }}
-            transition={{ delay: 1, duration: 0.6, ease: 'easeOut' }}
+            transition={{ delay: 1, duration: 0.8, ease: 'easeOut' }}
           />
         </motion.a>
 
@@ -80,16 +80,20 @@ export default function Navbar() {
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 + i * 0.07, duration: 0.4 }}
-              className="relative px-4 py-2 text-sm font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text-main)] transition-colors duration-200 rounded-lg group"
+              className="relative px-4 py-2 text-sm font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text-main)] transition-colors duration-200 rounded-xl group"
             >
               {link.name}
               {/* Hover background */}
-              <span className="absolute inset-0 rounded-lg bg-[var(--color-accent)]/0 group-hover:bg-[var(--color-accent)]/8 transition-all duration-300" />
-              {/* Active underline */}
+              <span className="absolute inset-0 rounded-xl bg-[var(--color-accent)]/0 group-hover:bg-[var(--color-accent)]/8 transition-all duration-300" />
+              {/* Active indicator */}
               {activeLink === link.href.slice(1) && (
                 <motion.span
                   layoutId="nav-underline"
-                  className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-[var(--color-accent)] rounded-full"
+                  className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-5 h-[3px] rounded-full"
+                  style={{
+                    background: 'linear-gradient(90deg, var(--color-accent), var(--color-accent-2))',
+                    boxShadow: '0 0 10px rgba(99, 102, 241, 0.5)',
+                  }}
                   transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                 />
               )}
@@ -102,18 +106,18 @@ export default function Navbar() {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.6 }}
-            whileHover={{ scale: 1.1 }}
+            whileHover={{ scale: 1.1, rotate: 15 }}
             whileTap={{ scale: 0.9 }}
-            className="ml-2 p-2.5 rounded-xl bg-[var(--color-secondary)] text-[var(--color-text-muted)] hover:text-[var(--color-accent)] hover:bg-[var(--color-accent)]/10 transition-all"
+            className="ml-2 p-2.5 rounded-xl bg-[var(--color-secondary)] text-[var(--color-text-muted)] hover:text-[var(--color-accent)] hover:bg-[var(--color-accent)]/10 transition-all relative overflow-hidden"
             aria-label="Toggle theme"
           >
             <AnimatePresence mode="wait">
               {theme === 'dark' ? (
-                <motion.span key="sun" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
+                <motion.span key="sun" initial={{ rotate: -90, opacity: 0, scale: 0 }} animate={{ rotate: 0, opacity: 1, scale: 1 }} exit={{ rotate: 90, opacity: 0, scale: 0 }} transition={{ duration: 0.3 }}>
                   <Sun size={17} />
                 </motion.span>
               ) : (
-                <motion.span key="moon" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.2 }}>
+                <motion.span key="moon" initial={{ rotate: 90, opacity: 0, scale: 0 }} animate={{ rotate: 0, opacity: 1, scale: 1 }} exit={{ rotate: -90, opacity: 0, scale: 0 }} transition={{ duration: 0.3 }}>
                   <Moon size={17} />
                 </motion.span>
               )}
@@ -126,11 +130,12 @@ export default function Navbar() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.7 }}
-            whileHover={{ scale: 1.05, y: -1 }}
+            whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.96 }}
-            className="ml-3 px-5 py-2.5 rounded-full bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-2)] text-white text-sm font-semibold shadow-lg shadow-[var(--color-accent)]/25 hover:shadow-[var(--color-accent)]/40 transition-all"
+            className="ml-3 px-6 py-2.5 rounded-full bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-2)] text-white text-sm font-semibold shadow-lg shadow-[var(--color-accent)]/25 hover:shadow-[var(--color-accent)]/50 transition-all relative overflow-hidden group"
           >
-            Let's Talk
+            <span className="relative z-10">Let's Talk</span>
+            <div className="absolute inset-0 shimmer opacity-0 group-hover:opacity-100 transition-opacity" />
           </motion.a>
         </nav>
 
@@ -173,7 +178,7 @@ export default function Navbar() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="md:hidden glass border-t border-[var(--color-glass-border)] overflow-hidden"
+            className="md:hidden glass-premium border-t border-[var(--color-glass-border)] overflow-hidden"
           >
             <div className="px-6 py-4 flex flex-col gap-1">
               {navLinks.map((link, i) => (
