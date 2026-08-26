@@ -20,8 +20,8 @@ const projects = [
     image: 'https://images.unsplash.com/photo-1557821552-17105176677c?q=80&w=800&auto=format&fit=crop',
     featured: true,
     size: 'large',
-    color: 'from-blue-500/20 to-cyan-500/20',
-    accent: '#3b82f6',
+    color: 'from-indigo-500/20 to-cyan-500/20',
+    accent: '#6366f1',
   },
   {
     title: 'Clinical Management System',
@@ -33,7 +33,7 @@ const projects = [
     featured: true,
     size: 'medium',
     color: 'from-violet-500/20 to-purple-500/20',
-    accent: '#7c3aed',
+    accent: '#8b5cf6',
   },
   {
     title: 'CRM System',
@@ -85,15 +85,15 @@ const projects = [
   },
 ];
 
-// 3D tilt card
+// 3D tilt card with glassmorphism
 function ProjectCard({ project, index }) {
   const ref = useRef(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [6, -6]), { stiffness: 300, damping: 30 });
-  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-6, 6]), { stiffness: 300, damping: 30 });
-  const glareX = useTransform(x, [-0.5, 0.5], ['20%', '80%']);
-  const glareY = useTransform(y, [-0.5, 0.5], ['20%', '80%']);
+  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [8, -8]), { stiffness: 300, damping: 30 });
+  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-8, 8]), { stiffness: 300, damping: 30 });
+  const glareX = useTransform(x, [-0.5, 0.5], ['15%', '85%']);
+  const glareY = useTransform(y, [-0.5, 0.5], ['15%', '85%']);
 
   const handleMouseMove = useCallback((e) => {
     const rect = ref.current.getBoundingClientRect();
@@ -107,67 +107,80 @@ function ProjectCard({ project, index }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40 }}
+      initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.65, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.7, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
       className={`${isLarge ? 'md:col-span-2 md:row-span-2' : isMedium ? 'md:col-span-1 md:row-span-2' : ''}`}
     >
       <motion.div
         ref={ref}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        style={{ rotateX, rotateY, transformStyle: 'preserve-3d', perspective: 1000 }}
-        className="group relative h-full rounded-3xl overflow-hidden border border-[var(--color-border)] bg-[var(--color-bg-surface)] shadow-sm hover:shadow-2xl transition-shadow duration-500 cursor-pointer"
-        whileHover={{ scale: 1.01 }}
-        transition={{ duration: 0.3 }}
+        style={{ rotateX, rotateY, transformStyle: 'preserve-3d', perspective: 1200 }}
+        className="group relative h-full rounded-3xl overflow-hidden border border-[var(--color-border)] bg-[var(--color-bg-surface)]/80 backdrop-blur-sm shadow-sm hover:shadow-2xl hover:shadow-[var(--color-accent)]/10 transition-all duration-500 cursor-pointer"
+        whileHover={{ scale: 1.02 }}
+        transition={{ duration: 0.4 }}
       >
+        {/* Glare effect */}
+        <motion.div
+          className="absolute inset-0 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+          style={{
+            background: useTransform([glareX, glareY], ([gx, gy]) =>
+              `radial-gradient(ellipse at ${gx} ${gy}, rgba(255,255,255,0.08), transparent 60%)`
+            ),
+          }}
+        />
+
+        {/* Gradient border glow on hover */}
+        <div
+          className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-0"
+          style={{
+            boxShadow: `inset 0 0 0 1px ${project.accent}30, 0 0 30px ${project.accent}15`,
+          }}
+        />
+
         {/* Image */}
         <div className={`relative overflow-hidden ${isLarge ? 'h-72' : isMedium ? 'h-52' : 'h-44'}`}>
           {/* Color overlay */}
-          <div className={`absolute inset-0 bg-gradient-to-br ${project.color} z-10 opacity-60 group-hover:opacity-30 transition-opacity duration-500`} />
+          <div className={`absolute inset-0 bg-gradient-to-br ${project.color} z-10 opacity-50 group-hover:opacity-20 transition-opacity duration-700`} />
           {/* Dark overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-bg-surface)] via-transparent to-transparent z-10" />
-          {/* Glare */}
-          <motion.div
-            className="absolute inset-0 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-            style={{
-              background: useTransform([glareX, glareY], ([gx, gy]) =>
-                `radial-gradient(circle at ${gx} ${gy}, rgba(255,255,255,0.12), transparent 55%)`
-              ),
-            }}
-          />
           <img
             src={project.image}
             alt={project.title}
-            className="w-full h-full object-cover transform group-hover:scale-108 transition-transform duration-700"
-            style={{ scale: 1 }}
+            className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-out"
           />
 
           {/* Featured badge */}
           {project.featured && (
-            <div className="absolute top-4 left-4 z-20 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-white text-xs font-semibold">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              className="absolute top-4 left-4 z-20 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/40 backdrop-blur-xl border border-white/20 text-white text-xs font-semibold"
+            >
               <span
                 className="w-1.5 h-1.5 rounded-full animate-pulse"
-                style={{ background: project.accent }}
+                style={{ background: project.accent, boxShadow: `0 0 8px ${project.accent}` }}
               />
               Featured
-            </div>
+            </motion.div>
           )}
         </div>
 
         {/* Content */}
-        <div className="p-6 flex flex-col flex-grow" style={{ transform: 'translateZ(10px)' }}>
+        <div className="p-6 flex flex-col flex-grow relative" style={{ transform: 'translateZ(15px)' }}>
           <div className="flex items-start justify-between gap-3 mb-3">
-            <h3 className={`font-bold text-[var(--color-text-main)] leading-tight group-hover:text-[var(--color-accent)] transition-colors ${isLarge ? 'text-2xl' : 'text-xl'}`}>
+            <h3 className={`font-bold text-[var(--color-text-main)] leading-tight group-hover:text-gradient-static transition-all ${isLarge ? 'text-2xl' : 'text-xl'}`}>
               {project.title}
             </h3>
             <motion.div
-              initial={{ opacity: 0 }}
-              whileHover={{ opacity: 1 }}
-              className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
+              className="flex-shrink-0 w-8 h-8 rounded-full bg-[var(--color-accent)]/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300"
+              whileHover={{ scale: 1.2, rotate: 45 }}
             >
-              <ArrowUpRight size={20} className="text-[var(--color-accent)]" />
+              <ArrowUpRight size={16} className="text-[var(--color-accent)]" />
             </motion.div>
           </div>
 
@@ -180,7 +193,7 @@ function ProjectCard({ project, index }) {
             {project.tech.map((t, i) => (
               <span
                 key={i}
-                className="px-3 py-1 text-xs font-semibold rounded-lg border border-[var(--color-border)] bg-[var(--color-secondary)] text-[var(--color-text-muted)] hover:border-[var(--color-accent)]/40 hover:text-[var(--color-accent)] transition-colors"
+                className="px-3 py-1 text-xs font-semibold rounded-lg border border-[var(--color-border)] bg-[var(--color-secondary)]/80 text-[var(--color-text-muted)] hover:border-[var(--color-accent)]/40 hover:text-[var(--color-accent)] hover:bg-[var(--color-accent)]/5 transition-all duration-300"
               >
                 {t}
               </span>
@@ -193,26 +206,33 @@ function ProjectCard({ project, index }) {
               href={project.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-sm font-semibold text-[var(--color-text-muted)] hover:text-[var(--color-text-main)] transition-colors"
+              className="flex items-center gap-2 text-sm font-semibold text-[var(--color-text-muted)] hover:text-[var(--color-text-main)] transition-colors group/link"
             >
-                            <GithubIcon size={16} />
-              Code
+              <GithubIcon size={16} />
+              <span className="relative">
+                Code
+                <span className="absolute -bottom-0.5 left-0 w-0 h-[1px] bg-[var(--color-text-main)] group-hover/link:w-full transition-all duration-300" />
+              </span>
             </a>
             <a
               href={project.live}
               target="_blank"
               rel="noopener noreferrer"
-              className="ml-auto flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-xl transition-all"
+              className="ml-auto flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-xl transition-all duration-300 relative overflow-hidden group/live"
               style={{
-                background: `${project.accent}18`,
+                background: `${project.accent}12`,
                 color: project.accent,
-                border: `1px solid ${project.accent}30`,
+                border: `1px solid ${project.accent}25`,
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = `${project.accent}30`;
+                e.currentTarget.style.background = `${project.accent}25`;
+                e.currentTarget.style.borderColor = `${project.accent}50`;
+                e.currentTarget.style.boxShadow = `0 0 20px ${project.accent}15`;
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = `${project.accent}18`;
+                e.currentTarget.style.background = `${project.accent}12`;
+                e.currentTarget.style.borderColor = `${project.accent}25`;
+                e.currentTarget.style.boxShadow = 'none';
               }}
             >
               <ExternalLink size={14} />
@@ -228,24 +248,32 @@ function ProjectCard({ project, index }) {
 export default function Projects() {
   return (
     <section id="projects" className="py-28 relative overflow-hidden">
-      <div className="absolute inset-0 bg-[var(--color-bg-surface)] dark:bg-[var(--color-bg-surface)]/30" />
+      <div className="absolute inset-0 bg-[var(--color-bg-surface)]/50 dark:bg-[var(--color-bg-surface)]/20" />
       {/* Decorative blobs */}
-      <div className="absolute top-0 right-0 w-80 h-80 bg-[var(--color-accent-2)]/5 rounded-full blur-3xl" />
-      <div className="absolute bottom-0 left-0 w-80 h-80 bg-[var(--color-accent)]/5 rounded-full blur-3xl" />
+      <motion.div
+        animate={{ scale: [1, 1.15, 1], x: [0, 20, 0] }}
+        transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute top-0 right-0 w-96 h-96 bg-[var(--color-accent-2)]/5 rounded-full blur-3xl"
+      />
+      <motion.div
+        animate={{ scale: [1, 1.1, 1], x: [0, -20, 0] }}
+        transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
+        className="absolute bottom-0 left-0 w-96 h-96 bg-[var(--color-accent)]/5 rounded-full blur-3xl"
+      />
 
       <div className="container mx-auto px-6 md:px-12 relative">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           className="text-center max-w-2xl mx-auto mb-16"
         >
           <div className="flex items-center justify-center gap-3 mb-5">
-            <div className="h-px w-10 bg-[var(--color-accent)]" />
+            <div className="h-px w-10 bg-gradient-to-r from-transparent to-[var(--color-accent)]" />
             <span className="text-sm font-semibold tracking-widest uppercase text-[var(--color-accent)]">Portfolio</span>
-            <div className="h-px w-10 bg-[var(--color-accent)]" />
+            <div className="h-px w-10 bg-gradient-to-l from-transparent to-[var(--color-accent)]" />
           </div>
           <h2 className="text-4xl md:text-5xl font-extrabold text-[var(--color-text-main)] mb-4">
             Featured <span className="text-gradient">Projects</span>
@@ -264,22 +292,29 @@ export default function Projects() {
 
         {/* GitHub CTA */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="text-center mt-14"
+          className="text-center mt-16"
         >
-          <a
+          <motion.a
             href="https://github.com/Vishnuvsh"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 px-8 py-4 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-surface)] text-[var(--color-text-main)] font-semibold hover:border-[var(--color-accent)]/50 hover:bg-[var(--color-accent)]/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-[var(--color-accent)]/10"
+            whileHover={{ scale: 1.03, y: -3 }}
+            whileTap={{ scale: 0.97 }}
+            className="inline-flex items-center gap-3 px-8 py-4 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-surface)]/80 backdrop-blur-sm text-[var(--color-text-main)] font-semibold hover:border-[var(--color-accent)]/50 hover:bg-[var(--color-accent)]/5 transition-all duration-300 hover:shadow-lg hover:shadow-[var(--color-accent)]/10 group"
           >
             <GithubIcon size={20} />
             View All on GitHub
-            <ArrowUpRight size={16} className="text-[var(--color-accent)]" />
-          </a>
+            <motion.span
+              animate={{ x: [0, 3, 0], y: [0, -3, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              <ArrowUpRight size={16} className="text-[var(--color-accent)]" />
+            </motion.span>
+          </motion.a>
         </motion.div>
       </div>
     </section>
