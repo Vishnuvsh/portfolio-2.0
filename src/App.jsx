@@ -9,6 +9,7 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import { useEffect, useState, useCallback, useMemo } from 'react';
+import { ReactLenis } from 'lenis/react';
 
 // Floating particles background
 function FloatingParticles() {
@@ -158,26 +159,28 @@ function SectionDivider() {
 function App() {
   return (
     <ThemeProvider>
-      <div className="relative w-full overflow-x-hidden min-h-screen">
-        <ScrollProgress />
-        <AnimatedBackground />
-        <FloatingParticles />
-        <Navbar />
-        <main>
-          <Hero />
-          <SectionDivider />
-          <About />
-          <SectionDivider />
-          <Skills />
-          <SectionDivider />
-          <Projects />
-          <SectionDivider />
-          <Experience />
-          <SectionDivider />
-          <Contact />
-        </main>
-        <Footer />
-      </div>
+      <ReactLenis root>
+        <div className="relative w-full overflow-x-hidden min-h-screen">
+          <ScrollProgress />
+          <AnimatedBackground />
+          <FloatingParticles />
+          <Navbar />
+          <main>
+            <Hero />
+            <SectionDivider />
+            <About />
+            <SectionDivider />
+            <Skills />
+            <SectionDivider />
+            <Projects />
+            <SectionDivider />
+            <Experience />
+            <SectionDivider />
+            <Contact />
+          </main>
+          <Footer />
+        </div>
+      </ReactLenis>
     </ThemeProvider>
   );
 }
