@@ -35,46 +35,63 @@ export default function Footer() {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
   return (
-    <footer className="relative py-12 border-t border-[var(--color-border)] bg-[var(--color-bg-surface)] overflow-hidden">
+    <footer className="relative py-14 border-t border-[var(--color-border)] bg-[var(--color-bg-surface)]/50 overflow-hidden">
       {/* Subtle gradient */}
       <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-accent)]/3 to-transparent pointer-events-none" />
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] bg-[var(--color-accent)]/3 rounded-full blur-3xl pointer-events-none" />
 
       <div className="container mx-auto px-6 md:px-12 relative">
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
           {/* Logo */}
-          <div className="text-center md:text-left">
-            <a href="#" className="text-xl font-extrabold tracking-tight text-gradient block mb-1">
-              Vishnu<span className="text-[var(--color-text-muted)]">.</span>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="text-center md:text-left"
+          >
+            <a href="#" className="text-xl font-extrabold tracking-tight text-gradient block mb-1.5">
+              Vishnu<span className="text-[var(--color-accent-2)]">.</span>
             </a>
             <p className="text-sm text-[var(--color-text-muted)]">
               Crafting digital experiences that matter.
             </p>
-          </div>
+          </motion.div>
 
           {/* Nav links */}
           <nav className="hidden md:flex items-center gap-6">
-            {navLinks.map((link) => (
-              <a
+            {navLinks.map((link, i) => (
+              <motion.a
                 key={link.name}
                 href={link.href}
-                className="text-sm font-medium text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors"
+                initial={{ opacity: 0, y: 8 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.05 }}
+                whileHover={{ y: -2, color: 'var(--color-accent)' }}
+                className="text-sm font-medium text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors relative group"
               >
                 {link.name}
-              </a>
+                <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[var(--color-accent)] rounded-full group-hover:w-full transition-all duration-300" />
+              </motion.a>
             ))}
           </nav>
 
           {/* Socials + scroll-to-top */}
           <div className="flex items-center gap-3">
-            {socialLinks.map((link) => (
+            {socialLinks.map((link, i) => (
               <motion.a
                 key={link.label}
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                whileHover={{ scale: 1.15, y: -2 }}
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08 }}
+                whileHover={{ scale: 1.15, y: -3 }}
                 whileTap={{ scale: 0.9 }}
-                className="w-10 h-10 rounded-xl flex items-center justify-center border border-[var(--color-border)] bg-[var(--color-bg-surface)] text-[var(--color-text-muted)] hover:border-[var(--color-accent)]/40 hover:text-[var(--color-accent)] hover:bg-[var(--color-accent)]/5 transition-all"
+                className="w-10 h-10 rounded-xl flex items-center justify-center border border-[var(--color-border)] bg-[var(--color-bg-surface)]/80 backdrop-blur-sm text-[var(--color-text-muted)] hover:border-[var(--color-accent)]/40 hover:text-[var(--color-accent)] hover:bg-[var(--color-accent)]/5 transition-all hover:shadow-md hover:shadow-[var(--color-accent)]/10"
                 aria-label={link.label}
               >
                 <link.icon size={17} />
@@ -83,25 +100,37 @@ export default function Footer() {
 
             <motion.button
               onClick={scrollToTop}
-              whileHover={{ scale: 1.1, y: -2 }}
+              whileHover={{ scale: 1.1, y: -3 }}
               whileTap={{ scale: 0.9 }}
-              className="ml-2 w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-br from-[var(--color-accent)] to-[var(--color-accent-2)] text-white shadow-md hover:shadow-lg hover:shadow-[var(--color-accent)]/25 transition-all"
+              className="ml-2 w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-br from-[var(--color-accent)] to-[var(--color-accent-2)] text-white shadow-md hover:shadow-lg hover:shadow-[var(--color-accent)]/30 transition-all relative overflow-hidden group"
               aria-label="Scroll to top"
             >
-              <ArrowUp size={17} />
+              <ArrowUp size={17} className="relative z-10" />
+              <div className="absolute inset-0 shimmer opacity-0 group-hover:opacity-100 transition-opacity" />
             </motion.button>
           </div>
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-8 pt-6 border-t border-[var(--color-border)] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[var(--color-text-muted)]">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3 }}
+          className="mt-10 pt-6 border-t border-[var(--color-border)] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[var(--color-text-muted)]"
+        >
           <p>© {new Date().getFullYear()} Vishnu V. All rights reserved.</p>
           <p className="flex items-center gap-1.5">
             Built with
-            <Heart size={12} className="text-rose-500 fill-rose-500" />
+            <motion.span
+              animate={{ scale: [1, 1.2, 1] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            >
+              <Heart size={12} className="text-rose-500 fill-rose-500" />
+            </motion.span>
             using React & Framer Motion
           </p>
-        </div>
+        </motion.div>
       </div>
     </footer>
   );
