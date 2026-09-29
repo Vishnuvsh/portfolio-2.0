@@ -229,6 +229,65 @@ const itemVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } },
 };
 
+// Magic UI inspired Sparkles Text
+const random = (min, max) => Math.floor(Math.random() * (max - min)) + min;
+
+function SparkleStar({ size, color, style }) {
+  return (
+    <motion.svg
+      width={size}
+      height={size}
+      viewBox="0 0 160 160"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      style={style}
+      className="absolute pointer-events-none z-20"
+      initial={{ scale: 0, rotate: -90, opacity: 0 }}
+      animate={{ scale: [0, 1, 0], rotate: [0, 90, 180], opacity: [0, 1, 0] }}
+      transition={{ duration: random(1.5, 3), repeat: Infinity, ease: "easeInOut", delay: random(0, 2) }}
+    >
+      <path
+        d="M80 0C80 0 84.2846 41.2925 101.496 58.504C118.707 75.7154 160 80 160 80C160 80 118.707 84.2846 101.496 101.496C84.2846 118.707 80 160 80 160C80 160 75.7154 118.707 58.504 101.496C41.2925 84.2846 0 80 0 80C0 80 41.2925 75.7154 58.504 58.504C75.7154 41.2925 80 0 80 0Z"
+        fill={color}
+      />
+    </motion.svg>
+  );
+}
+
+function SparklesText({ text }) {
+  const [sparkles, setSparkles] = useState([]);
+  useEffect(() => {
+    const generate = () => Array.from({ length: 7 }).map((_, i) => ({
+      id: `star-${i}-${Date.now()}`,
+      size: random(12, 35),
+      color: ['var(--color-accent)', 'var(--color-accent-2)', '#ffffff'][random(0, 2)],
+      top: `${random(-15, 80)}%`,
+      left: `${random(-10, 100)}%`,
+    }));
+    setSparkles(generate());
+    const interval = setInterval(() => setSparkles(generate()), 2500);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <span className="relative inline-block px-2">
+      {sparkles.map((s) => (
+        <SparkleStar key={s.id} size={s.size} color={s.color} style={{ top: s.top, left: s.left }} />
+      ))}
+      <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-2)] drop-shadow-sm">
+        {text}
+      </span>
+      <motion.span
+        className="absolute -bottom-2 left-0 right-0 h-[3px] rounded-full bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-2)]"
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: 1 }}
+        transition={{ delay: 1.2, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        style={{ transformOrigin: 'left' }}
+      />
+    </span>
+  );
+}
+
 export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-center pt-24 pb-16 overflow-hidden">
@@ -266,16 +325,7 @@ export default function Hero() {
             <motion.div variants={itemVariants}>
               <h1 className="text-5xl md:text-6xl xl:text-7xl font-extrabold tracking-tight leading-[1.08] mb-3 text-[var(--color-text-main)]">
                 Hi, I'm{' '}
-                <span className="text-gradient relative">
-                  Vishnu
-                  <motion.span
-                    className="absolute -bottom-2 left-0 right-0 h-[3px] rounded-full bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-2)]"
-                    initial={{ scaleX: 0 }}
-                    animate={{ scaleX: 1 }}
-                    transition={{ delay: 1.2, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                    style={{ transformOrigin: 'left' }}
-                  />
-                </span>
+                <SparklesText text="Vishnu" />
               </h1>
               <h2 className="text-3xl md:text-4xl xl:text-5xl font-bold tracking-tight leading-snug mb-6 text-[var(--color-text-main)] min-h-[1.4em]">
                 <ScrambleTypewriter words={ROLES} />
