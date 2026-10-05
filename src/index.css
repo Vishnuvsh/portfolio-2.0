@@ -14,7 +14,7 @@
   --color-glass: var(--color-glass);
   --color-glass-border: var(--color-glass-border);
   
-  --font-sans: "Plus Jakarta Sans", "Inter", sans-serif;
+  --font-sans: "Space Grotesk", sans-serif;
   --font-mono: "JetBrains Mono", monospace;
 }
 
@@ -146,7 +146,7 @@ html {
 body {
   background-color: var(--color-bg-base);
   color: var(--color-text-main);
-  font-family: "Plus Jakarta Sans", "Inter", sans-serif;
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transition: background-color 0.5s ease, color 0.3s ease;
