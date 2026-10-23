@@ -1,6 +1,6 @@
-import { useRef, useCallback } from 'react';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { ExternalLink, ArrowUpRight } from 'lucide-react';
+import { useState, useRef, useCallback, useMemo } from 'react';
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { ExternalLink, ArrowUpRight, Sparkles } from 'lucide-react';
 
 // Brand icon not in lucide-react v1
 const GithubIcon = ({ size = 16 }) => (
@@ -107,10 +107,11 @@ function ProjectCard({ project, index }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.7, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+      layout
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
       className={`${isLarge ? 'md:col-span-2 md:row-span-2' : isMedium ? 'md:col-span-1 md:row-span-2' : ''}`}
     >
       <motion.div
@@ -118,7 +119,7 @@ function ProjectCard({ project, index }) {
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
         style={{ rotateX, rotateY, transformStyle: 'preserve-3d', perspective: 1200 }}
-        className="group relative h-full rounded-3xl overflow-hidden border border-[var(--color-border)] bg-[var(--color-bg-surface)]/80 backdrop-blur-sm shadow-sm hover:shadow-2xl hover:shadow-[var(--color-accent)]/10 transition-all duration-500 cursor-pointer"
+        className="group relative h-full rounded-3xl overflow-hidden border border-[var(--color-border)] bg-[var(--color-bg-surface)]/80 backdrop-blur-sm shadow-sm hover:shadow-2xl hover:shadow-[var(--color-accent)]/15 transition-all duration-500 cursor-pointer"
         whileHover={{ scale: 1.02 }}
         transition={{ duration: 0.4 }}
       >
@@ -136,7 +137,7 @@ function ProjectCard({ project, index }) {
         <div
           className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-0"
           style={{
-            boxShadow: `inset 0 0 0 1px ${project.accent}30, 0 0 30px ${project.accent}15`,
+            boxShadow: `inset 0 0 0 1px ${project.accent}40, 0 0 30px ${project.accent}20`,
           }}
         />
 
@@ -159,13 +160,17 @@ function ProjectCard({ project, index }) {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.3 }}
-              className="absolute top-4 left-4 z-20 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/40 backdrop-blur-xl border border-white/20 text-white text-xs font-semibold"
+              className="absolute top-4 left-4 z-20 flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-black/60 backdrop-blur-xl border border-white/20 text-white text-xs font-semibold shadow-lg"
             >
               <span
-                className="w-1.5 h-1.5 rounded-full animate-pulse"
+                className="w-2 h-2 rounded-full animate-ping"
+                style={{ background: project.accent }}
+              />
+              <span
+                className="w-2 h-2 rounded-full absolute"
                 style={{ background: project.accent, boxShadow: `0 0 8px ${project.accent}` }}
               />
-              Featured
+              Featured Project
             </motion.div>
           )}
         </div>
@@ -210,7 +215,7 @@ function ProjectCard({ project, index }) {
             >
               <GithubIcon size={16} />
               <span className="relative">
-                Code
+                Source Code
                 <span className="absolute -bottom-0.5 left-0 w-0 h-[1px] bg-[var(--color-text-main)] group-hover/link:w-full transition-all duration-300" />
               </span>
             </a>
@@ -227,7 +232,7 @@ function ProjectCard({ project, index }) {
               onMouseEnter={(e) => {
                 e.currentTarget.style.background = `${project.accent}25`;
                 e.currentTarget.style.borderColor = `${project.accent}50`;
-                e.currentTarget.style.boxShadow = `0 0 20px ${project.accent}15`;
+                e.currentTarget.style.boxShadow = `0 0 20px ${project.accent}20`;
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.background = `${project.accent}12`;
@@ -245,7 +250,23 @@ function ProjectCard({ project, index }) {
   );
 }
 
+const FILTER_TABS = [
+  { id: 'all', label: 'All Projects', count: 6 },
+  { id: 'featured', label: '⭐ Featured', count: 2 },
+  { id: 'python', label: '🐍 Python & Django' },
+  { id: 'react', label: '⚛️ React / UI' },
+];
+
 export default function Projects() {
+  const [activeFilter, setActiveFilter] = useState('all');
+
+  const filteredProjects = useMemo(() => {
+    if (activeFilter === 'featured') return projects.filter((p) => p.featured);
+    if (activeFilter === 'python') return projects.filter((p) => p.tech.includes('Python'));
+    if (activeFilter === 'react') return projects.filter((p) => p.tech.includes('React'));
+    return projects;
+  }, [activeFilter]);
+
   return (
     <section id="projects" className="py-28 relative overflow-hidden">
       <div className="absolute inset-0 bg-[var(--color-bg-surface)]/50 dark:bg-[var(--color-bg-surface)]/20" />
@@ -268,7 +289,7 @@ export default function Projects() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="text-center max-w-2xl mx-auto mb-16"
+          className="text-center max-w-2xl mx-auto mb-12"
         >
           <div className="flex items-center justify-center gap-3 mb-5">
             <div className="h-px w-10 bg-gradient-to-r from-transparent to-[var(--color-accent)]" />
@@ -279,16 +300,52 @@ export default function Projects() {
             Featured <span className="text-gradient">Projects</span>
           </h2>
           <p className="text-[var(--color-text-muted)] text-lg">
-            A curated selection of my work — built with precision and care.
+            A curated selection of production applications and creative builds — crafted with precision.
           </p>
         </motion.div>
 
-        {/* Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 auto-rows-auto gap-6">
-          {projects.map((project, index) => (
-            <ProjectCard key={index} project={project} index={index} />
-          ))}
+        {/* Filter Tabs */}
+        <div className="flex flex-wrap items-center justify-center gap-2.5 mb-14">
+          {FILTER_TABS.map((tab) => {
+            const isActive = activeFilter === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveFilter(tab.id)}
+                className={`relative px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 cursor-pointer ${
+                  isActive
+                    ? 'text-white shadow-lg shadow-[var(--color-accent)]/25'
+                    : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-main)] hover:bg-[var(--color-secondary)]/60 border border-[var(--color-border)]'
+                }`}
+              >
+                {isActive && (
+                  <motion.div
+                    layoutId="activeTabBadge"
+                    className="absolute inset-0 rounded-full bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-2)] -z-10"
+                    transition={{ type: 'spring', stiffness: 450, damping: 35 }}
+                  />
+                )}
+                <span className="relative z-10 flex items-center gap-2">
+                  {tab.label}
+                  {tab.count !== undefined && (
+                    <span className={`text-xs px-2 py-0.5 rounded-full ${isActive ? 'bg-white/20 text-white' : 'bg-[var(--color-secondary)] text-[var(--color-text-muted)]'}`}>
+                      {tab.count}
+                    </span>
+                  )}
+                </span>
+              </button>
+            );
+          })}
         </div>
+
+        {/* Bento Grid with layout animation */}
+        <motion.div layout className="grid grid-cols-1 md:grid-cols-3 auto-rows-auto gap-6">
+          <AnimatePresence mode="popLayout">
+            {filteredProjects.map((project, index) => (
+              <ProjectCard key={project.title} project={project} index={index} />
+            ))}
+          </AnimatePresence>
+        </motion.div>
 
         {/* GitHub CTA */}
         <motion.div
@@ -307,7 +364,7 @@ export default function Projects() {
             className="inline-flex items-center gap-3 px-8 py-4 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-surface)]/80 backdrop-blur-sm text-[var(--color-text-main)] font-semibold hover:border-[var(--color-accent)]/50 hover:bg-[var(--color-accent)]/5 transition-all duration-300 hover:shadow-lg hover:shadow-[var(--color-accent)]/10 group"
           >
             <GithubIcon size={20} />
-            View All on GitHub
+            Explore More on GitHub
             <motion.span
               animate={{ x: [0, 3, 0], y: [0, -3, 0] }}
               transition={{ duration: 2, repeat: Infinity }}

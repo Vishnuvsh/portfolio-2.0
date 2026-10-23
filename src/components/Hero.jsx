@@ -313,11 +313,18 @@ export default function Hero() {
             animate="visible"
             className="flex-1 text-center lg:text-left max-w-2xl mx-auto lg:mx-0"
           >
-            {/* Availability badge */}
-            <motion.div variants={itemVariants} className="inline-flex items-center gap-2 mb-7">
-              <span className="px-5 py-2 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-surface)]/70 backdrop-blur-sm text-sm font-medium text-[var(--color-text-muted)] animate-border-glow flex items-center gap-2">
-                <Sparkles size={14} className="text-[var(--color-accent)]" />
-                Open to opportunities
+            {/* Badges row */}
+            <motion.div variants={itemVariants} className="flex flex-wrap items-center justify-center lg:justify-start gap-3 mb-7">
+              <span className="px-4 py-1.5 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-surface)]/80 backdrop-blur-md text-xs font-semibold text-[var(--color-text-main)] shadow-sm flex items-center gap-2">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                Available for opportunities
+              </span>
+              <span className="px-4 py-1.5 rounded-full border border-[var(--color-accent)]/30 bg-[var(--color-accent)]/8 backdrop-blur-md text-xs font-semibold text-[var(--color-accent)] shadow-sm flex items-center gap-2">
+                <Sparkles size={13} className="text-[var(--color-accent)] animate-pulse" />
+                MCP & AI Integrated
               </span>
             </motion.div>
 
@@ -335,12 +342,24 @@ export default function Hero() {
             {/* Description */}
             <motion.p
               variants={itemVariants}
-              className="text-lg text-[var(--color-text-muted)] mb-10 max-w-xl mx-auto lg:mx-0 leading-relaxed"
+              className="text-lg text-[var(--color-text-muted)] mb-6 max-w-xl mx-auto lg:mx-0 leading-relaxed"
             >
               I design and build engaging web applications that enhance user experience and drive business growth with{' '}
               <span className="text-[var(--color-text-main)] font-medium">scalable, responsive,</span> and{' '}
               <span className="text-[var(--color-text-main)] font-medium">elegant solutions</span>.
             </motion.p>
+
+            {/* Interactive Tech Pills */}
+            <motion.div variants={itemVariants} className="flex flex-wrap items-center justify-center lg:justify-start gap-2 mb-10">
+              {['React 19', 'Python & Django', 'Tailwind CSS', 'MySQL', 'RESTful APIs', 'Model Context Protocol (MCP)'].map((tech, i) => (
+                <span
+                  key={i}
+                  className="px-3 py-1 text-xs font-medium rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-surface)]/60 text-[var(--color-text-muted)] hover:border-[var(--color-accent)]/40 hover:text-[var(--color-accent)] hover:bg-[var(--color-accent)]/5 hover:scale-105 transition-all duration-300 cursor-default"
+                >
+                  {tech}
+                </span>
+              ))}
+            </motion.div>
 
             {/* CTA Buttons */}
             <motion.div

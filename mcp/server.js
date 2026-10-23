@@ -88,6 +88,18 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
   };
 });
 
+// Visual formatting helpers for Claude chatbot responses
+function createProgressBar(level) {
+  const totalBlocks = 10;
+  const filledBlocks = Math.round((level / 100) * totalBlocks);
+  const emptyBlocks = totalBlocks - filledBlocks;
+  const bar = '█'.repeat(filledBlocks) + '░'.repeat(emptyBlocks);
+  let badge = 'Proficient';
+  if (level >= 90) badge = 'Expert';
+  else if (level >= 80) badge = 'Advanced';
+  return `\`[${bar}]\` **${level}%** (*${badge}*)`;
+}
+
 // Handle tool execution
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const { name, arguments: args = {} } = request.params;
@@ -107,24 +119,49 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         );
       }
 
+      const projectCards = filtered.map((p, idx) => {
+        const featuredBadge = p.featured ? ' ⭐ `FEATURED`' : '';
+        const techTags = p.tech.map((t) => `\`${t}\``).join('  ');
+        return `### ${idx + 1}. 🚀 **${p.title}**${featuredBadge}
+> ${p.description}
+
+- 🛠️ **Tech Stack:** ${techTags}
+- 🔗 **Links:** [📂 GitHub Repository](${p.github}) • [🌐 Live Demo](${p.live})`;
+      }).join('\n\n---\n\n');
+
+      const headerDetails = [
+        `# 💼 Projects Built by Vishnu V (${filtered.length} Projects)`,
+        args.tech ? `> 🔍 *Filtered by Technology:* **${args.tech}**` : '',
+        args.featuredOnly ? `> ⭐ *Showing:* **Featured Projects Only**` : '',
+      ].filter(Boolean).join('\n');
+
+      const markdownOutput = `${headerDetails}
+
+---
+
+${projectCards}
+
+---
+💡 **Tip:** You can ask me for more details on any specific project, such as the system architecture, challenges solved, or live demo!`;
+
       return {
         content: [
           {
             type: 'text',
-            text: JSON.stringify(
-              {
-                total: filtered.length,
-                projects: filtered,
-              },
-              null,
-              2
-            ),
+            text: markdownOutput,
           },
         ],
       };
     }
 
     case 'get_skills': {
+      const categoryIcons = {
+        Frontend: '🎨',
+        Backend: '⚙️',
+        'Database & Tools': '🗄️',
+        'Soft Skills': '🤝',
+      };
+
       if (args.category) {
         const catKey = Object.keys(portfolioData.skills).find(
           (k) => k.toLowerCase() === args.category.toLowerCase().trim()
@@ -135,38 +172,51 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             content: [
               {
                 type: 'text',
-                text: JSON.stringify(
-                  {
-                    error: `Category '${args.category}' not found. Available categories: ${Object.keys(portfolioData.skills).join(', ')}`,
-                  },
-                  null,
-                  2
-                ),
+                text: `❌ **Category '${args.category}' not found.**\n\nAvailable categories: ${Object.keys(portfolioData.skills).map((k) => `\`${k}\``).join(', ')}`,
               },
             ],
             isError: true,
           };
         }
 
+        const icon = categoryIcons[catKey] || '⚡';
+        const skillList = portfolioData.skills[catKey]
+          .map((s) => `- **${s.name.padEnd(14, ' ')}**: ${createProgressBar(s.level)}`)
+          .join('\n');
+
         return {
           content: [
             {
               type: 'text',
-              text: JSON.stringify(
-                { category: catKey, skills: portfolioData.skills[catKey] },
-                null,
-                2
-              ),
+              text: `## ${icon} ${catKey} Skills (${portfolioData.skills[catKey].length} Skills)\n\n${skillList}`,
             },
           ],
         };
       }
 
+      // Format all categories
+      const allCategories = Object.entries(portfolioData.skills)
+        .map(([category, items]) => {
+          const icon = categoryIcons[category] || '⚡';
+          const itemsList = items
+            .map((s) => `  - **${s.name}**: ${createProgressBar(s.level)}`)
+            .join('\n');
+          return `### ${icon} ${category}\n${itemsList}`;
+        })
+        .join('\n\n');
+
+      const output = `# ⚡ Vishnu V — Technical & Professional Skills
+
+${allCategories}
+
+---
+🌟 *High Proficiency Highlights:* React, Python, HTML/CSS, Problem Solving, Team Collaboration.`;
+
       return {
         content: [
           {
             type: 'text',
-            text: JSON.stringify(portfolioData.skills, null, 2),
+            text: output,
           },
         ],
       };
@@ -175,38 +225,54 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     case 'get_resume': {
       const { profile, experiences, skills } = portfolioData;
 
-      const resumeMarkdown = `# ${profile.name} - ${profile.role}
-**Location:** ${profile.location}
-**Email:** ${profile.contact.email} | **Phone:** ${profile.contact.phone}
-**GitHub:** ${profile.contact.github} | **LinkedIn:** ${profile.contact.linkedin}
-**Portfolio:** ${profile.contact.portfolio}
+      const highlightsList = profile.highlights
+        .map((h) => `- ✨ **${h.title}**: ${h.description}`)
+        .join('\n');
+
+      const experienceList = experiences
+        .map((exp) => {
+          const achievements = exp.achievements.map((a) => `  - 🎯 ${a}`).join('\n');
+          const techBadges = exp.skills.map((s) => `\`${s}\``).join(' ');
+          return `### 💼 ${exp.role} — **${exp.company}**
+*📅 ${exp.period} | 📍 ${exp.location} | 🏷️ ${exp.type}*
+
+${exp.description}
+
+**Key Impact & Achievements:**
+${achievements}
+
+**Technologies:** ${techBadges}`;
+        })
+        .join('\n\n---\n\n');
+
+      const resumeMarkdown = `# 📄 Vishnu V — Full-Stack Developer Profile
+> ${profile.tagline}
+
+📍 **Location:** ${profile.location}  
+📧 **Email:** [${profile.contact.email}](mailto:${profile.contact.email}) • 📱 **Phone:** [${profile.contact.phone}](tel:${profile.contact.phone.replace(/[^0-9+]/g, '')})  
+🌐 **Portfolio:** [resilient-genie-df3d71.netlify.app](${profile.contact.portfolio}) • 🐙 **GitHub:** [Vishnuvsh](${profile.contact.github}) • 💼 **LinkedIn:** [Vishnu V](${profile.contact.linkedin})
 
 ---
 
-## Professional Summary
+## 🎯 Executive Summary
 ${profile.bio}
 
-## Core Highlights
-${profile.highlights.map((h) => `- **${h.title}**: ${h.description}`).join('\n')}
+---
 
-## Work Experience
-${experiences
-  .map(
-    (exp) => `### ${exp.role} — ${exp.company} (${exp.period})
-*Location:* ${exp.location} | *Type:* ${exp.type}
-${exp.description}
+## 💎 Core Highlights
+${highlightsList}
 
-**Key Achievements:**
-${exp.achievements.map((a) => `- ${a}`).join('\n')}
+---
 
-**Technologies Used:** ${exp.skills.join(', ')}`
-  )
-  .join('\n\n')}
+## 💼 Work Experience
+${experienceList}
 
-## Technical Skills Overview
-- **Frontend:** ${skills.Frontend.map((s) => `${s.name} (${s.level}%)`).join(', ')}
-- **Backend:** ${skills.Backend.map((s) => `${s.name} (${s.level}%)`).join(', ')}
-- **Database & Tools:** ${skills['Database & Tools'].map((s) => `${s.name} (${s.level}%)`).join(', ')}
+---
+
+## 🛠️ Skills Snapshot
+- 🎨 **Frontend:** ${skills.Frontend.map((s) => `\`${s.name} (${s.level}%)\``).join(' ')}
+- ⚙️ **Backend:** ${skills.Backend.map((s) => `\`${s.name} (${s.level}%)\``).join(' ')}
+- 🗄️ **Database & Tools:** ${skills['Database & Tools'].map((s) => `\`${s.name}\``).join(' ')}
 `;
 
       return {
@@ -220,20 +286,35 @@ ${exp.achievements.map((a) => `- ${a}`).join('\n')}
     }
 
     case 'get_contact_info': {
+      const { profile } = portfolioData;
+      const contactMarkdown = `# 📇 Vishnu V — Digital Business Card
+### **${profile.name}** | *${profile.role}*
+> "${profile.tagline}"
+
+📍 **Location:** ${profile.location}  
+🟢 **Status:** Available for Freelance Projects & Full-Time Opportunities  
+
+---
+
+### 📬 Direct Contact:
+- 📧 **Email:** [${profile.contact.email}](mailto:${profile.contact.email})
+- 📱 **Phone / WhatsApp:** [${profile.contact.phone}](tel:${profile.contact.phone.replace(/[^0-9+]/g, '')})
+
+---
+
+### 🌐 Online Profiles:
+- 💻 **Live Portfolio:** [${profile.contact.portfolio}](${profile.contact.portfolio})
+- 🐙 **GitHub:** [@Vishnuvsh](${profile.contact.github})
+- 💼 **LinkedIn:** [in/vishnu-v-b5256b341](${profile.contact.linkedin})
+
+---
+💬 *Feel free to reach out via Email or LinkedIn for collaboration!*`;
+
       return {
         content: [
           {
             type: 'text',
-            text: JSON.stringify(
-              {
-                name: portfolioData.profile.name,
-                role: portfolioData.profile.role,
-                location: portfolioData.profile.location,
-                contact: portfolioData.profile.contact,
-              },
-              null,
-              2
-            ),
+            text: contactMarkdown,
           },
         ],
       };
