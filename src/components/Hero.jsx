@@ -1,6 +1,27 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { ArrowRight, Download, ChevronDown, Sparkles } from 'lucide-react';
+import { ArrowRight, Download, Sparkles, Mail } from 'lucide-react';
+
+const GithubIcon = ({ size = 19 }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/>
+    <path d="M9 18c-4.51 2-5-2-7-2"/>
+  </svg>
+);
+
+const LinkedinIcon = ({ size = 19 }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+    <rect width="4" height="12" x="2" y="9"/>
+    <circle cx="4" cy="4" r="2"/>
+  </svg>
+);
+
+const HERO_SOCIALS = [
+  { icon: GithubIcon, href: 'https://github.com/Vishnuvsh', label: 'GitHub' },
+  { icon: LinkedinIcon, href: 'http://www.linkedin.com/in/vishnu-v-b5256b341', label: 'LinkedIn' },
+  { icon: Mail, href: 'mailto:vishnuvsh44@gmail.com', label: 'Email' },
+];
 
 const ROLES = [
   'Full-Stack Developer',
@@ -58,7 +79,7 @@ function ScrambleTypewriter({ words }) {
       }, 40);
       return () => clearInterval(interval);
     }
-  }, [phase, currentWordIndex]);
+  }, [phase, currentWordIndex, words]);
 
   return (
     <span className="inline-block min-w-[20px]">
@@ -384,6 +405,37 @@ export default function Hero() {
                 Download CV
                 <Download size={17} />
               </MagneticButton>
+            </motion.div>
+
+            {/* Quick Social Links */}
+            <motion.div
+              variants={itemVariants}
+              className="flex items-center justify-center lg:justify-start gap-3 mt-6"
+            >
+              <span className="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)] flex items-center gap-1.5 mr-1 select-none">
+                <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] animate-pulse" />
+                Connect
+              </span>
+              <div className="flex items-center gap-2.5">
+                {HERO_SOCIALS.map((social) => (
+                  <motion.a
+                    key={social.label}
+                    href={social.href}
+                    target={social.href.startsWith('http') ? '_blank' : undefined}
+                    rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                    aria-label={social.label}
+                    whileHover={{ y: -3, scale: 1.08 }}
+                    whileTap={{ scale: 0.94 }}
+                    className="relative flex items-center justify-center w-10 h-10 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-surface)]/70 backdrop-blur-md text-[var(--color-text-muted)] hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/50 hover:bg-[var(--color-accent)]/10 hover:shadow-lg hover:shadow-[var(--color-accent)]/20 transition-all duration-300 group"
+                  >
+                    <social.icon size={18} />
+                    {/* Tooltip */}
+                    <span className="absolute -top-9 left-1/2 -translate-x-1/2 px-2.5 py-1 text-[11px] font-medium text-white bg-slate-900/90 dark:bg-slate-850/95 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap shadow-xl border border-white/10 z-30">
+                      {social.label}
+                    </span>
+                  </motion.a>
+                ))}
+              </div>
             </motion.div>
 
             {/* Stats row */}
