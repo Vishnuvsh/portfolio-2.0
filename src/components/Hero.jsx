@@ -281,7 +281,7 @@ function SparklesText({ text }) {
     const generate = () => Array.from({ length: 7 }).map((_, i) => ({
       id: `star-${i}-${Date.now()}`,
       size: random(12, 35),
-      color: ['var(--color-accent)', 'var(--color-accent-2)', '#ffffff'][random(0, 2)],
+      color: ['var(--color-accent)', 'var(--color-accent-2)', '#f59e0b'][random(0, 2)],
       top: `${random(-15, 80)}%`,
       left: `${random(-10, 100)}%`,
     }));

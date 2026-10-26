@@ -1,9 +1,9 @@
-import { useState, useRef, useCallback, useMemo } from 'react';
-import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { ExternalLink, ArrowUpRight, Sparkles } from 'lucide-react';
+import { useState, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ExternalLink, ArrowRight, ArrowUpRight } from 'lucide-react';
 
-// Brand icon not in lucide-react v1
-const GithubIcon = ({ size = 16 }) => (
+// GitHub inline icon
+const GithubIcon = ({ size = 15 }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/>
     <path d="M9 18c-4.51 2-5-2-7-2"/>
@@ -12,309 +12,264 @@ const GithubIcon = ({ size = 16 }) => (
 
 const projects = [
   {
-    title: 'AI Video Translator',
-    description: 'AI-driven application that translates and dubs video content into multiple languages with synchronized voice synthesis.',
-    tech: ['JavaScript', 'React', 'AI APIs', 'Node.js'],
+    title: 'AI VIDEO TRANSLATOR',
+    subtitle: 'AI Video Dubbing • 2026',
+    tags: ['Web', 'AI API'],
+    description: 'Translates and dubs video content across multiple languages with synchronized neural voice synthesis.',
+    tech: ['React 19', 'JavaScript', 'AI APIs', 'Node.js'],
     github: 'https://github.com/Vishnuvsh/ai-video-translator',
     live: 'https://ai-video-translator-rouge.vercel.app',
     image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=800&auto=format&fit=crop',
     featured: true,
-    size: 'large',
-    color: 'from-indigo-500/20 to-cyan-500/20',
     accent: '#6366f1',
+    device: 'laptop',
   },
   {
-    title: 'Home Trip Mode',
-    description: 'Smart travel planning web app with automated route optimization, checklist management, and real-time updates.',
-    tech: ['TypeScript', 'Next.js', 'Tailwind CSS'],
+    title: 'HOME TRIP MODE',
+    subtitle: 'Smart Travel Planner • 2026',
+    tags: ['Mobile', '3D'],
+    description: 'Smart travel planning app with automated route optimization, checklist management, and real-time updates.',
+    tech: ['Next.js', 'Tailwind CSS', 'TypeScript'],
     github: 'https://github.com/Vishnuvsh/home-trip-mode',
     live: 'https://home-trip-mode.vercel.app',
     image: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=800&auto=format&fit=crop',
     featured: true,
-    size: 'medium',
-    color: 'from-violet-500/20 to-purple-500/20',
     accent: '#8b5cf6',
+    device: 'phone',
   },
   {
-    title: 'AI Startup Idea Validator',
-    description: 'Automated platform that evaluates startup ideas, market competition, and generates comprehensive feasibility scores.',
-    tech: ['TypeScript', 'Next.js', 'AI APIs', 'Tailwind CSS'],
+    title: 'STARTUP VALIDATOR',
+    subtitle: 'Market Intelligence • 2026',
+    tags: ['Web', 'AI API'],
+    description: 'Automated platform that evaluates startup concepts, analyzes competition, and calculates feasibility scores.',
+    tech: ['Next.js', 'TypeScript', 'AI APIs'],
     github: 'https://github.com/Vishnuvsh/ai-startup-validator',
     live: 'https://ai-startup-validator-xi.vercel.app',
     image: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=800&auto=format&fit=crop',
     featured: true,
-    size: 'medium',
-    color: 'from-emerald-500/20 to-teal-500/20',
     accent: '#10b981',
+    device: 'laptop',
   },
   {
-    title: 'AI Vision Computer Controller',
-    description: 'Computer vision application in Python that enables controlling desktop and cursor via camera hand gestures.',
+    title: 'VISION CONTROLLER',
+    subtitle: 'Computer Vision • 2026',
+    tags: ['Desktop', 'Python'],
+    description: 'Computer vision software controlling desktop and cursor navigation in real-time via camera hand gestures.',
     tech: ['Python', 'OpenCV', 'MediaPipe', 'PyAutoGUI'],
     github: 'https://github.com/Vishnuvsh/ai-vision-computer-controller',
     live: 'https://github.com/Vishnuvsh/ai-vision-computer-controller',
     image: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=800&auto=format&fit=crop',
     featured: true,
-    size: 'small',
-    color: 'from-rose-500/20 to-pink-500/20',
     accent: '#f43f5e',
+    device: 'laptop',
   },
   {
-    title: 'Asset Management Platform',
-    description: 'Enterprise asset tracking platform with Python REST API backend and responsive React frontend dashboard.',
+    title: 'ASSET MANAGEMENT',
+    subtitle: 'Enterprise Platform • 2025',
+    tags: ['Full-Stack', 'Django'],
+    description: 'Enterprise asset tracking platform with Python REST API backend and responsive React analytics dashboard.',
     tech: ['Python', 'Django', 'React', 'REST APIs'],
     github: 'https://github.com/Vishnuvsh/asset-management-backend',
     live: 'https://asset-management-frontend-ochre.vercel.app',
     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop',
     featured: true,
-    size: 'small',
-    color: 'from-amber-500/20 to-orange-500/20',
     accent: '#f59e0b',
+    device: 'laptop',
   },
   {
-    title: 'Full-Stack E-Commerce Solution',
+    title: 'E-COMMERCE SYSTEM',
+    subtitle: 'Online Store & Admin • 2025',
+    tags: ['Web', 'Full-Stack'],
     description: 'Complete e-commerce platform with product catalogs, shopping cart, checkout workflow, and admin controls.',
-    tech: ['Python', 'HTML', 'CSS', 'Bootstrap', 'MySQL'],
+    tech: ['Python', 'MySQL', 'HTML', 'Bootstrap'],
     github: 'https://github.com/Vishnuvsh/Ecommerce',
     live: 'https://github.com/Vishnuvsh/Ecommerce',
     image: 'https://images.unsplash.com/photo-1557821552-17105176677c?q=80&w=800&auto=format&fit=crop',
     featured: false,
-    size: 'small',
-    color: 'from-sky-500/20 to-indigo-500/20',
-    accent: '#6366f1',
+    accent: '#06b6d4',
+    device: 'phone',
   },
 ];
 
-// 3D tilt card with glassmorphism
-function ProjectCard({ project, index }) {
-  const ref = useRef(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [8, -8]), { stiffness: 300, damping: 30 });
-  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-8, 8]), { stiffness: 300, damping: 30 });
-  const glareX = useTransform(x, [-0.5, 0.5], ['15%', '85%']);
-  const glareY = useTransform(y, [-0.5, 0.5], ['15%', '85%']);
-
-  const handleMouseMove = useCallback((e) => {
-    const rect = ref.current.getBoundingClientRect();
-    x.set((e.clientX - rect.left) / rect.width - 0.5);
-    y.set((e.clientY - rect.top) / rect.height - 0.5);
-  }, []);
-  const handleMouseLeave = useCallback(() => { x.set(0); y.set(0); }, []);
-
-  const isLarge = project.size === 'large';
-  const isMedium = project.size === 'medium';
-
+// Project Card inspired by Studio Nine layout
+function ProjectCard({ project }) {
   return (
     <motion.div
       layout
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.95 }}
-      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-      className={`${isLarge ? 'md:col-span-2 md:row-span-2' : isMedium ? 'md:col-span-1 md:row-span-2' : ''}`}
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.96 }}
+      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+      className="h-full flex flex-col"
     >
-      <motion.div
-        ref={ref}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        style={{ rotateX, rotateY, transformStyle: 'preserve-3d', perspective: 1200 }}
-        className="group relative h-full rounded-3xl overflow-hidden border border-[var(--color-border)] bg-[var(--color-bg-surface)]/80 backdrop-blur-sm shadow-sm hover:shadow-2xl hover:shadow-[var(--color-accent)]/15 transition-all duration-500 cursor-pointer"
-        whileHover={{ scale: 1.02 }}
-        transition={{ duration: 0.4 }}
-      >
-        {/* Glare effect */}
-        <motion.div
-          className="absolute inset-0 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-          style={{
-            background: useTransform([glareX, glareY], ([gx, gy]) =>
-              `radial-gradient(ellipse at ${gx} ${gy}, rgba(255,255,255,0.08), transparent 60%)`
-            ),
-          }}
-        />
-
-        {/* Gradient border glow on hover */}
+      <div className="group relative flex flex-col sm:flex-row justify-between h-full min-h-[250px] rounded-3xl overflow-hidden border border-[var(--color-border)] bg-[var(--color-bg-surface)] p-6 md:p-7 transition-all duration-400 hover:border-[var(--color-accent)]/40 hover:shadow-xl hover:shadow-[var(--color-accent)]/10">
+        {/* Soft ambient colored glow behind device mockup */}
         <div
-          className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-0"
-          style={{
-            boxShadow: `inset 0 0 0 1px ${project.accent}40, 0 0 30px ${project.accent}20`,
-          }}
+          className="absolute -right-6 -bottom-6 w-56 h-56 rounded-full blur-[65px] opacity-25 dark:opacity-35 group-hover:opacity-50 transition-opacity duration-500 pointer-events-none"
+          style={{ background: `radial-gradient(circle, ${project.accent}, transparent 70%)` }}
         />
 
-        {/* Image */}
-        <div className={`relative overflow-hidden ${isLarge ? 'h-72' : isMedium ? 'h-52' : 'h-44'}`}>
-          {/* Color overlay */}
-          <div className={`absolute inset-0 bg-gradient-to-br ${project.color} z-10 opacity-50 group-hover:opacity-20 transition-opacity duration-700`} />
-          {/* Dark overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-bg-surface)] via-transparent to-transparent z-10" />
-          <img
-            src={project.image}
-            alt={project.title}
-            className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-out"
-          />
+        {/* Left Side: Info & Actions */}
+        <div className="flex flex-col justify-between z-10 sm:max-w-[55%] flex-1 pr-2 sm:pr-4">
+          <div>
+            {/* Tag Pills */}
+            <div className="flex flex-wrap items-center gap-1.5 mb-3">
+              {project.tags.map((tag, i) => (
+                <span
+                  key={i}
+                  className="px-2.5 py-0.5 rounded-full text-[11px] font-semibold border border-[var(--color-border)] bg-[var(--color-secondary)]/80 text-[var(--color-text-muted)] tracking-wider uppercase"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
 
-          {/* Featured badge */}
-          {project.featured && (
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
-              className="absolute top-4 left-4 z-20 flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-black/60 backdrop-blur-xl border border-white/20 text-white text-xs font-semibold shadow-lg"
-            >
-              <span
-                className="w-2 h-2 rounded-full animate-ping"
-                style={{ background: project.accent }}
-              />
-              <span
-                className="w-2 h-2 rounded-full absolute"
-                style={{ background: project.accent, boxShadow: `0 0 8px ${project.accent}` }}
-              />
-              Featured Project
-            </motion.div>
-          )}
-        </div>
-
-        {/* Content */}
-        <div className="p-6 flex flex-col flex-grow relative" style={{ transform: 'translateZ(15px)' }}>
-          <div className="flex items-start justify-between gap-3 mb-3">
-            <h3 className={`font-bold text-[var(--color-text-main)] leading-tight group-hover:text-gradient-static transition-all ${isLarge ? 'text-2xl' : 'text-xl'}`}>
+            {/* Bold Project Title */}
+            <h3 className="text-lg md:text-xl font-black uppercase tracking-tight text-[var(--color-text-main)] group-hover:text-[var(--color-accent)] transition-colors leading-tight mb-1">
               {project.title}
             </h3>
-            <motion.div
-              className="flex-shrink-0 w-8 h-8 rounded-full bg-[var(--color-accent)]/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300"
-              whileHover={{ scale: 1.2, rotate: 45 }}
-            >
-              <ArrowUpRight size={16} className="text-[var(--color-accent)]" />
-            </motion.div>
+
+            {/* Subtitle / Category & Year */}
+            <p className="text-xs font-semibold text-[var(--color-text-muted)] tracking-wide mb-2.5">
+              {project.subtitle}
+            </p>
+
+            {/* Concise Description */}
+            <p className="text-xs text-[var(--color-text-muted)] leading-relaxed mb-4 line-clamp-2">
+              {project.description}
+            </p>
           </div>
 
-          <p className={`text-[var(--color-text-muted)] leading-relaxed mb-5 ${isLarge ? 'text-base' : 'text-sm'}`}>
-            {project.description}
-          </p>
-
-          {/* Tech badges */}
-          <div className="flex flex-wrap gap-2 mb-6 mt-auto">
-            {project.tech.map((t, i) => (
-              <span
-                key={i}
-                className="px-3 py-1 text-xs font-semibold rounded-lg border border-[var(--color-border)] bg-[var(--color-secondary)]/80 text-[var(--color-text-muted)] hover:border-[var(--color-accent)]/40 hover:text-[var(--color-accent)] hover:bg-[var(--color-accent)]/5 transition-all duration-300"
-              >
-                {t}
-              </span>
-            ))}
-          </div>
-
-          {/* Actions */}
-          <div className="flex items-center gap-4 pt-4 border-t border-[var(--color-border)]">
-            <a
-              href={project.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 text-sm font-semibold text-[var(--color-text-muted)] hover:text-[var(--color-text-main)] transition-colors group/link"
-            >
-              <GithubIcon size={16} />
-              <span className="relative">
-                Source Code
-                <span className="absolute -bottom-0.5 left-0 w-0 h-[1px] bg-[var(--color-text-main)] group-hover/link:w-full transition-all duration-300" />
-              </span>
-            </a>
+          {/* Action Buttons */}
+          <div className="flex items-center gap-2.5 pt-2 mt-auto">
             <a
               href={project.live}
               target="_blank"
               rel="noopener noreferrer"
-              className="ml-auto flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-xl transition-all duration-300 relative overflow-hidden group/live"
-              style={{
-                background: `${project.accent}12`,
-                color: project.accent,
-                border: `1px solid ${project.accent}25`,
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = `${project.accent}25`;
-                e.currentTarget.style.borderColor = `${project.accent}50`;
-                e.currentTarget.style.boxShadow = `0 0 20px ${project.accent}20`;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = `${project.accent}12`;
-                e.currentTarget.style.borderColor = `${project.accent}25`;
-                e.currentTarget.style.boxShadow = 'none';
-              }}
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-2)] shadow-sm hover:shadow-md transition-all hover:scale-105 active:scale-95"
             >
-              <ExternalLink size={14} />
-              Live Demo
+              <span>Live Demo</span>
+              <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform" />
+            </a>
+            <a
+              href={project.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium border border-[var(--color-border)] bg-[var(--color-bg-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text-main)] hover:border-[var(--color-accent)]/40 transition-all hover:scale-105"
+            >
+              <GithubIcon size={13} />
+              <span>Code</span>
             </a>
           </div>
         </div>
-      </motion.div>
+
+        {/* Right Side: Floating Device Showcase */}
+        <div className="relative mt-5 sm:mt-0 sm:w-[45%] flex items-center justify-center sm:justify-end z-10 pointer-events-none">
+          {project.device === 'phone' ? (
+            /* Sleek Smartphone Mockup */
+            <div className="relative w-28 md:w-32 rounded-[22px] border-[3px] border-slate-700/80 bg-slate-950 p-1 shadow-2xl transform sm:rotate-[-3deg] group-hover:rotate-0 group-hover:scale-105 transition-all duration-500 ease-out">
+              {/* Dynamic island */}
+              <div className="w-6 h-1.5 bg-black rounded-full mx-auto mb-1" />
+              <div className="relative rounded-[16px] overflow-hidden h-36 md:h-40 bg-slate-900">
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  loading="lazy"
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+              </div>
+            </div>
+          ) : (
+            /* Sleek Laptop / Browser Mockup */
+            <div className="relative w-full max-w-[210px] md:max-w-[230px] rounded-xl border border-slate-700/60 bg-slate-950 shadow-2xl overflow-hidden transform sm:rotate-[2.5deg] group-hover:rotate-0 group-hover:scale-105 transition-all duration-500 ease-out">
+              {/* Browser bar */}
+              <div className="flex items-center gap-1 px-2 py-1.5 bg-slate-900/90 border-b border-white/10">
+                <span className="w-1.5 h-1.5 rounded-full bg-rose-500/80" />
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-500/80" />
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500/80" />
+                <div className="ml-1.5 px-1.5 py-0.2 rounded bg-white/10 text-[8px] text-white/50 font-mono truncate max-w-[90px]">
+                  {project.live.replace('https://', '')}
+                </div>
+              </div>
+              {/* Screen preview */}
+              <div className="relative h-28 md:h-32 overflow-hidden bg-slate-900">
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  loading="lazy"
+                  className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </motion.div>
   );
 }
 
-const FILTER_TABS = [
-  { id: 'all', label: 'All Projects', count: 6 },
-  { id: 'featured', label: '⭐ Featured', count: 2 },
-  { id: 'python', label: '🐍 Python & Django' },
-  { id: 'react', label: '⚛️ React / UI' },
-];
-
 export default function Projects() {
   const [activeFilter, setActiveFilter] = useState('all');
 
+  const filterTabs = useMemo(() => [
+    { id: 'all', label: 'All Projects', count: projects.length },
+    { id: 'featured', label: '⭐ Featured', count: projects.filter((p) => p.featured).length },
+    { id: 'python', label: '🐍 Python & Django', count: projects.filter((p) => p.tech.some((t) => /python|django/i.test(t))).length },
+    { id: 'react', label: '⚛️ React / UI', count: projects.filter((p) => p.tech.some((t) => /react|next/i.test(t))).length },
+  ], []);
+
   const filteredProjects = useMemo(() => {
     if (activeFilter === 'featured') return projects.filter((p) => p.featured);
-    if (activeFilter === 'python') return projects.filter((p) => p.tech.includes('Python'));
-    if (activeFilter === 'react') return projects.filter((p) => p.tech.includes('React'));
+    if (activeFilter === 'python') return projects.filter((p) => p.tech.some((t) => /python|django/i.test(t)));
+    if (activeFilter === 'react') return projects.filter((p) => p.tech.some((t) => /react|next/i.test(t)));
     return projects;
   }, [activeFilter]);
 
   return (
-    <section id="projects" className="py-28 relative overflow-hidden">
+    <section id="projects" className="py-20 relative overflow-hidden">
       <div className="absolute inset-0 bg-[var(--color-bg-surface)]/50 dark:bg-[var(--color-bg-surface)]/20" />
-      {/* Decorative blobs */}
+      {/* Decorative ambient blobs */}
       <motion.div
         animate={{ scale: [1, 1.15, 1], x: [0, 20, 0] }}
         transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute top-0 right-0 w-96 h-96 bg-[var(--color-accent-2)]/5 rounded-full blur-3xl"
+        className="absolute top-0 right-0 w-80 h-80 bg-[var(--color-accent-2)]/5 rounded-full blur-3xl pointer-events-none"
       />
       <motion.div
         animate={{ scale: [1, 1.1, 1], x: [0, -20, 0] }}
         transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
-        className="absolute bottom-0 left-0 w-96 h-96 bg-[var(--color-accent)]/5 rounded-full blur-3xl"
+        className="absolute bottom-0 left-0 w-80 h-80 bg-[var(--color-accent)]/5 rounded-full blur-3xl pointer-events-none"
       />
 
-      <div className="container mx-auto px-6 md:px-12 relative">
-        {/* Header */}
+      <div className="container mx-auto px-6 md:px-12 relative max-w-7xl">
+        {/* Studio Nine Inspired Header */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="text-center max-w-2xl mx-auto mb-12"
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="max-w-4xl mx-auto mb-10 text-center md:text-left"
         >
-          <div className="flex items-center justify-center gap-3 mb-5">
-            <div className="h-px w-10 bg-gradient-to-r from-transparent to-[var(--color-accent)]" />
-            <span className="text-sm font-semibold tracking-widest uppercase text-[var(--color-accent)]">Portfolio</span>
-            <div className="h-px w-10 bg-gradient-to-l from-transparent to-[var(--color-accent)]" />
-          </div>
-          <h2 className="text-4xl md:text-5xl font-extrabold text-[var(--color-text-main)] mb-4">
-            Featured <span className="text-gradient">Projects</span>
+          <span className="text-xs font-bold tracking-[0.25em] uppercase text-[var(--color-accent)] block mb-2.5">
+            Selected Works
+          </span>
+          <h2 className="text-3xl md:text-5xl font-black text-[var(--color-text-main)] tracking-tight leading-[1.14]">
+            We build digital <span className="text-gradient">experiences</span> that matter
           </h2>
-          <p className="text-[var(--color-text-muted)] text-lg">
-            A curated selection of production applications and creative builds — crafted with precision.
-          </p>
         </motion.div>
 
         {/* Filter Tabs */}
-        <div className="flex flex-wrap items-center justify-center gap-2.5 mb-14">
-          {FILTER_TABS.map((tab) => {
+        <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 mb-10 max-w-6xl mx-auto">
+          {filterTabs.map((tab) => {
             const isActive = activeFilter === tab.id;
             return (
               <button
                 key={tab.id}
                 onClick={() => setActiveFilter(tab.id)}
-                className={`relative px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 cursor-pointer ${
+                className={`relative px-4 py-2 rounded-full text-xs md:text-sm font-semibold transition-all duration-300 cursor-pointer ${
                   isActive
-                    ? 'text-white shadow-lg shadow-[var(--color-accent)]/25'
+                    ? 'text-white shadow-md shadow-[var(--color-accent)]/20'
                     : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-main)] hover:bg-[var(--color-secondary)]/60 border border-[var(--color-border)]'
                 }`}
               >
@@ -325,10 +280,10 @@ export default function Projects() {
                     transition={{ type: 'spring', stiffness: 450, damping: 35 }}
                   />
                 )}
-                <span className="relative z-10 flex items-center gap-2">
+                <span className="relative z-10 flex items-center gap-1.5">
                   {tab.label}
                   {tab.count !== undefined && (
-                    <span className={`text-xs px-2 py-0.5 rounded-full ${isActive ? 'bg-white/20 text-white' : 'bg-[var(--color-secondary)] text-[var(--color-text-muted)]'}`}>
+                    <span className={`text-[11px] px-1.5 py-0.2 rounded-full ${isActive ? 'bg-white/20 text-white' : 'bg-[var(--color-secondary)] text-[var(--color-text-muted)]'}`}>
                       {tab.count}
                     </span>
                   )}
@@ -338,39 +293,36 @@ export default function Projects() {
           })}
         </div>
 
-        {/* Bento Grid with layout animation */}
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-3 auto-rows-auto gap-6">
-          <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project, index) => (
-              <ProjectCard key={project.title} project={project} index={index} />
-            ))}
-          </AnimatePresence>
-        </motion.div>
+        {/* 2-Column Aligned Studio Nine Card Grid */}
+        <div className="max-w-6xl mx-auto">
+          <motion.div layout className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+            <AnimatePresence mode="popLayout">
+              {filteredProjects.map((project) => (
+                <ProjectCard key={project.title} project={project} />
+              ))}
+            </AnimatePresence>
+          </motion.div>
+        </div>
 
         {/* GitHub CTA */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="text-center mt-16"
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="text-center mt-12"
         >
           <motion.a
             href="https://github.com/Vishnuvsh"
             target="_blank"
             rel="noopener noreferrer"
-            whileHover={{ scale: 1.03, y: -3 }}
+            whileHover={{ scale: 1.03, y: -2 }}
             whileTap={{ scale: 0.97 }}
-            className="inline-flex items-center gap-3 px-8 py-4 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-surface)]/80 backdrop-blur-sm text-[var(--color-text-main)] font-semibold hover:border-[var(--color-accent)]/50 hover:bg-[var(--color-accent)]/5 transition-all duration-300 hover:shadow-lg hover:shadow-[var(--color-accent)]/10 group"
+            className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-surface)]/80 backdrop-blur-sm text-sm text-[var(--color-text-main)] font-semibold hover:border-[var(--color-accent)]/50 hover:bg-[var(--color-accent)]/5 transition-all duration-300 hover:shadow-md group"
           >
-            <GithubIcon size={20} />
+            <GithubIcon size={17} />
             Explore More on GitHub
-            <motion.span
-              animate={{ x: [0, 3, 0], y: [0, -3, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              <ArrowUpRight size={16} className="text-[var(--color-accent)]" />
-            </motion.span>
+            <ArrowUpRight size={14} className="text-[var(--color-accent)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </motion.a>
         </motion.div>
       </div>

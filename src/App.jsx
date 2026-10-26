@@ -40,7 +40,7 @@ function FloatingParticles() {
               ? 'var(--color-accent)'
               : p.id % 3 === 1
                 ? 'var(--color-accent-2)'
-                : 'rgba(255,255,255,0.5)',
+                : 'rgba(99, 102, 241, 0.35)',
           }}
           animate={{
             y: [0, -window.innerHeight * 1.2],
@@ -72,7 +72,7 @@ function AnimatedBackground() {
           scale: [1, 1.2, 0.9, 1],
         }}
         transition={{ duration: 25, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute -top-[25%] -left-[20%] w-[70vw] h-[70vw] rounded-full opacity-[0.07] dark:opacity-[0.14]"
+        className="absolute -top-[25%] -left-[20%] w-[70vw] h-[70vw] rounded-full opacity-[0.12] dark:opacity-[0.14]"
         style={{
           background: 'radial-gradient(circle, #6366f1, #8b5cf6 40%, transparent 70%)',
           filter: 'blur(50px)',
@@ -86,7 +86,7 @@ function AnimatedBackground() {
           scale: [1, 0.85, 1.15, 1],
         }}
         transition={{ duration: 30, repeat: Infinity, ease: 'easeInOut', delay: 5 }}
-        className="absolute -bottom-[30%] -right-[20%] w-[65vw] h-[65vw] rounded-full opacity-[0.06] dark:opacity-[0.11]"
+        className="absolute -bottom-[30%] -right-[20%] w-[65vw] h-[65vw] rounded-full opacity-[0.10] dark:opacity-[0.11]"
         style={{
           background: 'radial-gradient(circle, #a78bfa, #6366f1 40%, transparent 70%)',
           filter: 'blur(50px)',
@@ -100,7 +100,7 @@ function AnimatedBackground() {
           rotate: [0, 90, 180, 360],
         }}
         transition={{ duration: 35, repeat: Infinity, ease: 'easeInOut', delay: 10 }}
-        className="absolute top-[40%] left-[25%] w-[45vw] h-[45vw] rounded-full opacity-[0.03] dark:opacity-[0.07]"
+        className="absolute top-[40%] left-[25%] w-[45vw] h-[45vw] rounded-full opacity-[0.06] dark:opacity-[0.07]"
         style={{
           background: 'radial-gradient(circle, #818cf8, transparent 65%)',
           filter: 'blur(60px)',
@@ -109,7 +109,7 @@ function AnimatedBackground() {
 
       {/* Dot grid overlay */}
       <div
-        className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]"
+        className="absolute inset-0 opacity-[0.04] dark:opacity-[0.05]"
         style={{
           backgroundImage: `radial-gradient(circle, var(--color-accent) 1px, transparent 1px)`,
           backgroundSize: '45px 45px',

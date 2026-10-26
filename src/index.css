@@ -20,19 +20,19 @@
 
 @layer base {
   :root {
-    /* Premium Light Mode — Refined Palette */
-    --color-bg-base: #f0f2f8;
+    /* Premium Light Mode — Radiant & Modern Palette */
+    --color-bg-base: #f8fafc;
     --color-bg-surface: #ffffff;
-    --color-text-main: #0a0e1a;
-    --color-text-muted: #4a5578;
-    --color-primary: #0a0e1a;
-    --color-secondary: #e8ecf5;
+    --color-text-main: #0b0f19;
+    --color-text-muted: #4b5563;
+    --color-primary: #0b0f19;
+    --color-secondary: #f1f5f9;
     --color-accent: #6366f1;        /* Indigo */
     --color-accent-2: #8b5cf6;      /* Violet */
     --color-accent-hover: #4f46e5;
-    --color-border: #d4d8e8;
-    --color-glass: rgba(255, 255, 255, 0.72);
-    --color-glass-border: rgba(255, 255, 255, 0.5);
+    --color-border: #e2e8f0;
+    --color-glass: rgba(255, 255, 255, 0.82);
+    --color-glass-border: rgba(226, 232, 240, 0.85);
   }
   
   .dark {
@@ -58,7 +58,7 @@
     backdrop-filter: blur(24px) saturate(180%);
     -webkit-backdrop-filter: blur(24px) saturate(180%);
     border: 1px solid var(--color-glass-border);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
   }
 
   .glass-premium {
@@ -67,9 +67,9 @@
     -webkit-backdrop-filter: blur(40px) saturate(200%);
     border: 1px solid var(--color-glass-border);
     box-shadow: 
-      0 0 0 1px rgba(255, 255, 255, 0.05),
-      0 8px 40px rgba(0, 0, 0, 0.08),
-      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      0 0 0 1px rgba(255, 255, 255, 0.6),
+      0 10px 25px -5px rgba(15, 23, 42, 0.06),
+      0 4px 6px -2px rgba(15, 23, 42, 0.02);
   }
 
   .glass-dark {
