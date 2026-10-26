@@ -28,13 +28,13 @@ export function ThemeProvider({ children }) {
     // Sync meta theme-color with theme
     const metaThemeColor = document.querySelector('meta[name="theme-color"]');
     if (metaThemeColor) {
-      metaThemeColor.setAttribute('content', theme === 'dark' ? '#050811' : '#f8fafc');
+      metaThemeColor.setAttribute('content', theme === 'dark' ? '#06070a' : '#FAFAFA');
     }
 
     // Sync body style directly for instantaneous transition
     if (document.body) {
-      document.body.style.backgroundColor = theme === 'dark' ? '#050811' : '#f8fafc';
-      document.body.style.color = theme === 'dark' ? '#f1f5f9' : '#0f172a';
+      document.body.style.backgroundColor = theme === 'dark' ? '#06070a' : '#FAFAFA';
+      document.body.style.color = theme === 'dark' ? '#f8fafc' : '#0A0A0A';
     }
   }, [theme]);
 

@@ -9,24 +9,33 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import { useEffect, useState, useCallback, useMemo } from 'react';
-import { ReactLenis } from 'lenis/react';
+import { ReactLenis, useLenis } from 'lenis/react';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-// Floating particles background
+// Sync Lenis smooth scroll with GSAP ScrollTrigger
+function LenisScrollSync() {
+  useLenis(() => {
+    ScrollTrigger.update();
+  });
+  return null;
+}
+
+// Floating stage light motes (warm coral & crimson motes caught in volumetric light)
 function FloatingParticles() {
   const particles = useMemo(() => {
-    return Array.from({ length: 50 }, (_, i) => ({
+    return Array.from({ length: 28 }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
-      size: Math.random() * 3 + 1,
-      duration: Math.random() * 20 + 15,
-      delay: Math.random() * 15,
-      opacity: Math.random() * 0.4 + 0.1,
+      size: Math.random() * 2.5 + 1.5,
+      duration: Math.random() * 18 + 14,
+      delay: Math.random() * 12,
+      opacity: Math.random() * 0.4 + 0.15,
     }));
   }, []);
 
   return (
-    <div className="fixed inset-0 z-[-1] overflow-hidden pointer-events-none" aria-hidden="true">
+    <div className="fixed inset-0 z-[-1] overflow-hidden pointer-events-none" style={{ contain: 'paint' }} aria-hidden="true">
       {particles.map((p) => (
         <motion.div
           key={p.id}
@@ -36,15 +45,17 @@ function FloatingParticles() {
             bottom: '-5%',
             width: p.size,
             height: p.size,
+            willChange: 'transform, opacity',
             background: p.id % 3 === 0
-              ? 'var(--color-accent)'
+              ? 'rgba(244, 63, 94, 0.55)'      /* Soft Crimson */
               : p.id % 3 === 1
-                ? 'var(--color-accent-2)'
-                : 'rgba(99, 102, 241, 0.35)',
+                ? 'rgba(255, 107, 107, 0.65)'  /* Warm Coral */
+                : 'rgba(251, 146, 60, 0.45)',  /* Warm Amber/Peach */
+            boxShadow: p.id % 2 === 0 ? '0 0 10px rgba(255, 107, 107, 0.5)' : 'none',
           }}
           animate={{
             y: [0, -window.innerHeight * 1.2],
-            x: [0, Math.sin(p.id) * 60],
+            x: [0, Math.sin(p.id) * 45],
             opacity: [0, p.opacity, p.opacity, 0],
             scale: [0, 1, 1, 0],
           }}
@@ -60,59 +71,79 @@ function FloatingParticles() {
   );
 }
 
-// Animated background with aurora effect
+// Volumetric Stage Lighting Background (Large heavily blurred soft crimson & warm coral circles)
 function AnimatedBackground() {
   return (
-    <div className="fixed inset-0 z-[-2] overflow-hidden pointer-events-none" aria-hidden="true">
-      {/* Aurora orb 1 */}
+    <div className="fixed inset-0 z-[-2] overflow-hidden pointer-events-none" style={{ contain: 'paint' }} aria-hidden="true">
+      {/* 1. Primary Central Overhead Stage Spotlight (Center Key Light) */}
       <motion.div
         animate={{
-          x: [0, 80, -40, 0],
-          y: [0, -60, 40, 0],
-          scale: [1, 1.2, 0.9, 1],
+          scale: [1, 1.08, 0.96, 1],
+          opacity: [0.85, 1, 0.85],
         }}
-        transition={{ duration: 25, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute -top-[25%] -left-[20%] w-[70vw] h-[70vw] rounded-full opacity-[0.12] dark:opacity-[0.14]"
+        transition={{ duration: 16, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute -top-[12%] left-1/2 -translate-x-1/2 w-[90vw] max-w-[1000px] h-[90vw] max-h-[1000px] rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle, #6366f1, #8b5cf6 40%, transparent 70%)',
-          filter: 'blur(50px)',
-        }}
-      />
-      {/* Aurora orb 2 */}
-      <motion.div
-        animate={{
-          x: [0, -60, 30, 0],
-          y: [0, 50, -30, 0],
-          scale: [1, 0.85, 1.15, 1],
-        }}
-        transition={{ duration: 30, repeat: Infinity, ease: 'easeInOut', delay: 5 }}
-        className="absolute -bottom-[30%] -right-[20%] w-[65vw] h-[65vw] rounded-full opacity-[0.10] dark:opacity-[0.11]"
-        style={{
-          background: 'radial-gradient(circle, #a78bfa, #6366f1 40%, transparent 70%)',
-          filter: 'blur(50px)',
-        }}
-      />
-      {/* Aurora orb 3 — center accent */}
-      <motion.div
-        animate={{
-          x: [0, 40, -30, 0],
-          y: [0, -20, 50, 0],
-          rotate: [0, 90, 180, 360],
-        }}
-        transition={{ duration: 35, repeat: Infinity, ease: 'easeInOut', delay: 10 }}
-        className="absolute top-[40%] left-[25%] w-[45vw] h-[45vw] rounded-full opacity-[0.06] dark:opacity-[0.07]"
-        style={{
-          background: 'radial-gradient(circle, #818cf8, transparent 65%)',
-          filter: 'blur(60px)',
+          background: 'radial-gradient(circle at 50% 50%, rgba(244, 63, 94, 0.22) 0%, rgba(255, 107, 107, 0.16) 32%, rgba(251, 146, 60, 0.08) 55%, transparent 75%)',
+          filter: 'blur(100px)',
+          willChange: 'transform, opacity',
         }}
       />
 
-      {/* Dot grid overlay */}
-      <div
-        className="absolute inset-0 opacity-[0.04] dark:opacity-[0.05]"
+      {/* 2. Stage Left Rim Spotlight (Soft Crimson Volumetric Glow) */}
+      <motion.div
+        animate={{
+          x: [0, 60, -30, 0],
+          y: [0, -40, 30, 0],
+          scale: [1, 1.12, 0.94, 1],
+        }}
+        transition={{ duration: 24, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute top-[8%] -left-[18%] w-[65vw] max-w-[800px] h-[65vw] max-h-[800px] rounded-full pointer-events-none"
         style={{
-          backgroundImage: `radial-gradient(circle, var(--color-accent) 1px, transparent 1px)`,
-          backgroundSize: '45px 45px',
+          background: 'radial-gradient(circle, rgba(225, 29, 72, 0.17) 0%, rgba(244, 63, 94, 0.09) 42%, transparent 70%)',
+          filter: 'blur(120px)',
+          willChange: 'transform',
+        }}
+      />
+
+      {/* 3. Stage Right Fill Spotlight (Warm Coral Volumetric Glow) */}
+      <motion.div
+        animate={{
+          x: [0, -50, 30, 0],
+          y: [0, 50, -25, 0],
+          scale: [1, 0.92, 1.10, 1],
+        }}
+        transition={{ duration: 28, repeat: Infinity, ease: 'easeInOut', delay: 4 }}
+        className="absolute top-[32%] -right-[18%] w-[70vw] max-w-[850px] h-[70vw] max-h-[850px] rounded-full pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle, rgba(255, 107, 107, 0.19) 0%, rgba(251, 113, 133, 0.10) 40%, rgba(251, 146, 60, 0.05) 60%, transparent 75%)',
+          filter: 'blur(120px)',
+          willChange: 'transform',
+        }}
+      />
+
+      {/* 4. Stage Floor Wash (Volumetric Depth Anchor for Lower Content) */}
+      <motion.div
+        animate={{
+          x: [0, 40, -30, 0],
+          y: [0, -30, 35, 0],
+          rotate: [0, 90, 180, 360],
+        }}
+        transition={{ duration: 32, repeat: Infinity, ease: 'easeInOut', delay: 8 }}
+        className="absolute bottom-[6%] left-[12%] w-[60vw] max-w-[750px] h-[60vw] max-h-[750px] rounded-full pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle, rgba(244, 63, 94, 0.15) 0%, rgba(255, 107, 107, 0.08) 45%, transparent 70%)',
+          filter: 'blur(110px)',
+          willChange: 'transform',
+        }}
+      />
+
+      {/* 5. Delicate Architectural Dot-Grid Matrix */}
+      <div
+        className="absolute inset-0 opacity-[0.05] dark:opacity-[0.06] pointer-events-none"
+        style={{
+          backgroundImage: `radial-gradient(circle, #f43f5e 1px, transparent 1px)`,
+          backgroundSize: '46px 46px',
         }}
       />
     </div>
@@ -123,7 +154,7 @@ function AnimatedBackground() {
 function ScrollProgress() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
+    stiffness: 120,
     damping: 30,
     restDelta: 0.001,
   });
@@ -133,7 +164,7 @@ function ScrollProgress() {
       className="fixed top-0 left-0 right-0 h-[3px] z-[100] origin-left"
       style={{
         scaleX,
-        background: 'linear-gradient(90deg, #6366f1, #8b5cf6, #a78bfa, #6366f1)',
+        backgroundImage: 'linear-gradient(90deg, #f43f5e, #ff6b6b, #fb923c, #f43f5e)',
         backgroundSize: '300% 100%',
         animation: 'gradient-shift 3s linear infinite',
       }}
@@ -159,7 +190,18 @@ function SectionDivider() {
 function App() {
   return (
     <ThemeProvider>
-      <ReactLenis root>
+      <ReactLenis
+        root
+        options={{
+          lerp: 0.08,
+          duration: 1.2,
+          smoothWheel: true,
+          wheelMultiplier: 1.0,
+          touchMultiplier: 1.6,
+          infinite: false,
+        }}
+      >
+        <LenisScrollSync />
         <div className="relative w-full overflow-x-hidden min-h-screen">
           <ScrollProgress />
           <AnimatedBackground />

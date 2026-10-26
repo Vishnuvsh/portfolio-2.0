@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
 import { Menu, X, Moon, Sun } from 'lucide-react';
+import { useLenis } from 'lenis/react';
 import { useTheme } from '../lib/theme';
 import { cn } from '../lib/utils';
 
@@ -18,6 +19,26 @@ export default function Navbar() {
   const [activeLink, setActiveLink] = useState('');
   const { theme, toggleTheme } = useTheme();
   const { scrollY } = useScroll();
+  const lenis = useLenis();
+
+  const handleNavClick = (e, href) => {
+    e.preventDefault();
+    if (lenis) {
+      if (href === '#' || href === '') {
+        lenis.scrollTo(0, { duration: 1.2 });
+      } else {
+        lenis.scrollTo(href, { offset: -60, duration: 1.2 });
+      }
+    } else {
+      if (href === '#' || href === '') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        const el = document.querySelector(href);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+    setIsMobileMenuOpen(false);
+  };
 
   useMotionValueEvent(scrollY, 'change', (latest) => {
     setIsScrolled(latest > 60);
@@ -57,7 +78,8 @@ export default function Navbar() {
         {/* Logo */}
         <motion.a
           href="#"
-          className="relative text-xl font-bold tracking-tight text-[var(--color-text-main)] font-[Plus_Jakarta_Sans] group"
+          onClick={(e) => handleNavClick(e, '#')}
+          className="relative text-xl font-bold tracking-tight text-[var(--color-text-main)] font-[Plus_Jakarta_Sans] group cursor-pointer"
           whileHover={{ scale: 1.04 }}
           whileTap={{ scale: 0.97 }}
         >
@@ -77,10 +99,11 @@ export default function Navbar() {
             <motion.a
               key={link.name}
               href={link.href}
+              onClick={(e) => handleNavClick(e, link.href)}
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 + i * 0.07, duration: 0.4 }}
-              className="relative px-4 py-2 text-sm font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text-main)] transition-colors duration-200 rounded-xl group"
+              className="relative px-4 py-2 text-sm font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text-main)] transition-colors duration-200 rounded-xl group cursor-pointer"
             >
               {link.name}
               {/* Hover background */}
@@ -92,7 +115,7 @@ export default function Navbar() {
                   className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-5 h-[3px] rounded-full"
                   style={{
                     background: 'linear-gradient(90deg, var(--color-accent), var(--color-accent-2))',
-                    boxShadow: '0 0 10px rgba(99, 102, 241, 0.5)',
+                    boxShadow: '0 0 10px rgba(244, 63, 94, 0.5)',
                   }}
                   transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                 />
@@ -127,12 +150,13 @@ export default function Navbar() {
           {/* CTA Button */}
           <motion.a
             href="#contact"
+            onClick={(e) => handleNavClick(e, '#contact')}
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.7 }}
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.96 }}
-            className="ml-3 px-6 py-2.5 rounded-full bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-2)] text-white text-sm font-semibold shadow-lg shadow-[var(--color-accent)]/25 hover:shadow-[var(--color-accent)]/50 transition-all relative overflow-hidden group"
+            className="ml-3 px-6 py-2.5 rounded-full bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-2)] text-white text-sm font-semibold shadow-lg shadow-[var(--color-accent)]/25 hover:shadow-[var(--color-accent)]/50 transition-all relative overflow-hidden group cursor-pointer"
           >
             <span className="relative z-10">Let's Talk</span>
             <div className="absolute inset-0 shimmer opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -185,24 +209,24 @@ export default function Navbar() {
                 <motion.a
                   key={link.name}
                   href={link.href}
+                  onClick={(e) => handleNavClick(e, link.href)}
                   initial={{ opacity: 0, x: -16 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.06 }}
                   className={cn(
-                    'text-base font-medium py-2.5 px-3 rounded-xl transition-colors',
+                    'text-base font-medium py-2.5 px-3 rounded-xl transition-colors cursor-pointer',
                     activeLink === link.href.slice(1)
                       ? 'text-[var(--color-accent)] bg-[var(--color-accent)]/10'
                       : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-main)] hover:bg-[var(--color-secondary)]'
                   )}
-                  onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {link.name}
                 </motion.a>
               ))}
               <a
                 href="#contact"
-                className="mt-2 px-5 py-3 text-center rounded-full bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-2)] text-white font-semibold text-sm"
-                onClick={() => setIsMobileMenuOpen(false)}
+                className="mt-2 px-5 py-3 text-center rounded-full bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-2)] text-white font-semibold text-sm cursor-pointer"
+                onClick={(e) => handleNavClick(e, '#contact')}
               >
                 Let's Talk
               </a>

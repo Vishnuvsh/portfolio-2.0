@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Mail, Heart, ArrowUp } from 'lucide-react';
+import { useLenis } from 'lenis/react';
 
 // Inline SVG icons for brands not in lucide-react v1
 const GithubIcon = ({ size = 20 }) => (
@@ -32,7 +33,33 @@ const socialLinks = [
 ];
 
 export default function Footer() {
-  const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+  const lenis = useLenis();
+
+  const handleLinkClick = (e, href) => {
+    e.preventDefault();
+    if (lenis) {
+      if (href === '#' || href === '') {
+        lenis.scrollTo(0, { duration: 1.2 });
+      } else {
+        lenis.scrollTo(href, { offset: -60, duration: 1.2 });
+      }
+    } else {
+      if (href === '#' || href === '') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        const el = document.querySelector(href);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
+
+  const scrollToTop = () => {
+    if (lenis) {
+      lenis.scrollTo(0, { duration: 1.4 });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
 
   return (
     <footer className="relative py-14 border-t border-[var(--color-border)] bg-[var(--color-bg-surface)]/50 overflow-hidden">
@@ -50,7 +77,11 @@ export default function Footer() {
             transition={{ duration: 0.5 }}
             className="text-center md:text-left"
           >
-            <a href="#" className="text-xl font-extrabold tracking-tight text-gradient block mb-1.5">
+            <a
+              href="#"
+              onClick={(e) => handleLinkClick(e, '#')}
+              className="text-xl font-extrabold tracking-tight text-gradient block mb-1.5 cursor-pointer"
+            >
               Vishnu<span className="text-[var(--color-accent-2)]">.</span>
             </a>
             <p className="text-sm text-[var(--color-text-muted)]">
@@ -64,12 +95,13 @@ export default function Footer() {
               <motion.a
                 key={link.name}
                 href={link.href}
+                onClick={(e) => handleLinkClick(e, link.href)}
                 initial={{ opacity: 0, y: 8 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.05 }}
                 whileHover={{ y: -2, color: 'var(--color-accent)' }}
-                className="text-sm font-medium text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors relative group"
+                className="text-sm font-medium text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors relative group cursor-pointer"
               >
                 {link.name}
                 <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[var(--color-accent)] rounded-full group-hover:w-full transition-all duration-300" />

@@ -21,7 +21,7 @@ const projects = [
     live: 'https://ai-video-translator-rouge.vercel.app',
     image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=800&auto=format&fit=crop',
     featured: true,
-    accent: '#6366f1',
+    accent: '#f43f5e',
     device: 'laptop',
   },
   {
@@ -34,7 +34,7 @@ const projects = [
     live: 'https://home-trip-mode.vercel.app',
     image: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=800&auto=format&fit=crop',
     featured: true,
-    accent: '#8b5cf6',
+    accent: '#ff6b6b',
     device: 'phone',
   },
   {
@@ -60,7 +60,7 @@ const projects = [
     live: 'https://github.com/Vishnuvsh/ai-vision-computer-controller',
     image: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=800&auto=format&fit=crop',
     featured: true,
-    accent: '#f43f5e',
+    accent: '#fb923c',
     device: 'laptop',
   },
   {
@@ -86,7 +86,7 @@ const projects = [
     live: 'https://github.com/Vishnuvsh/Ecommerce',
     image: 'https://images.unsplash.com/photo-1557821552-17105176677c?q=80&w=800&auto=format&fit=crop',
     featured: false,
-    accent: '#06b6d4',
+    accent: '#e11d48',
     device: 'phone',
   },
 ];
