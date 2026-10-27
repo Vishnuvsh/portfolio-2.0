@@ -36,6 +36,8 @@ import {
   Zap,
   Loader,
   ChevronDown,
+  Smartphone,
+  Laptop,
 } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -444,8 +446,8 @@ function SectionDivider() {
 // =====================================================================
 function ScrambleTypewriter({ words }) {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
-  const [displayText, setDisplayText] = useState('');
-  const [phase, setPhase] = useState('typing');
+  const [displayText, setDisplayText] = useState(words[0] || '');
+  const [phase, setPhase] = useState('holding');
   const CHARS = '!<>-_\\/[]{}—=+*^?#@$%&';
 
   useEffect(() => {
@@ -795,17 +797,17 @@ function CentralCutoutPortrait({ scrollYProgress }) {
       ref={cardRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative flex items-center justify-center my-8 md:my-12 w-full max-w-xl mx-auto select-none"
+      className="relative flex items-center justify-center my-6 lg:my-0 w-full max-w-[420px] lg:max-w-none mx-auto select-none"
       style={{ perspective: 1300 }}
     >
       {/* 1. Volumetric Key Glow Circle */}
       <motion.div
-        className="absolute w-[440px] h-[440px] sm:w-[560px] sm:h-[560px] md:w-[640px] md:h-[640px] rounded-full pointer-events-none"
+        className="absolute w-[360px] h-[360px] sm:w-[440px] h-[440px] lg:w-[480px] lg:h-[480px] rounded-full pointer-events-none"
         style={{
           scale: stageLightScale,
           opacity: stageLightOpacity,
-          background: 'radial-gradient(circle at 50% 50%, rgba(244, 63, 94, 0.45) 0%, rgba(255, 107, 107, 0.30) 38%, rgba(251, 146, 60, 0.12) 60%, transparent 75%)',
-          filter: 'blur(65px)',
+          background: 'radial-gradient(circle at 50% 50%, rgba(244, 63, 94, 0.40) 0%, rgba(255, 107, 107, 0.28) 38%, rgba(251, 146, 60, 0.10) 60%, transparent 75%)',
+          filter: 'blur(60px)',
           willChange: 'transform, opacity',
         }}
       />
@@ -813,18 +815,18 @@ function CentralCutoutPortrait({ scrollYProgress }) {
       <motion.div
         animate={{ rotate: 360 }}
         transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
-        className="absolute w-[360px] h-[360px] sm:w-[460px] sm:h-[460px] md:w-[520px] md:h-[520px] rounded-full pointer-events-none opacity-60"
+        className="absolute w-[300px] h-[300px] sm:w-[380px] sm:h-[380px] lg:w-[400px] lg:h-[400px] rounded-full pointer-events-none opacity-50"
         style={{
-          background: 'conic-gradient(from 0deg, rgba(244, 63, 94, 0.5), rgba(255, 107, 107, 0.4), transparent 45%, rgba(255, 107, 107, 0.35), rgba(244, 63, 94, 0.5))',
+          background: 'conic-gradient(from 0deg, rgba(244, 63, 94, 0.45), rgba(255, 107, 107, 0.35), transparent 45%, rgba(255, 107, 107, 0.3), rgba(244, 63, 94, 0.45))',
           filter: 'blur(45px)',
         }}
       />
       {/* 3. Stage Floor Bounce Light Anchor */}
       <div
-        className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-[85%] sm:w-[110%] h-24 rounded-full pointer-events-none opacity-70"
+        className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-[85%] sm:w-[105%] h-20 rounded-full pointer-events-none opacity-60"
         style={{
-          background: 'radial-gradient(ellipse at center, rgba(244, 63, 94, 0.35) 0%, rgba(255, 107, 107, 0.18) 45%, transparent 75%)',
-          filter: 'blur(30px)',
+          background: 'radial-gradient(ellipse at center, rgba(244, 63, 94, 0.30) 0%, rgba(255, 107, 107, 0.15) 45%, transparent 75%)',
+          filter: 'blur(28px)',
         }}
       />
 
@@ -844,7 +846,7 @@ function CentralCutoutPortrait({ scrollYProgress }) {
         className="relative z-10 flex items-center justify-center cursor-pointer group"
       >
         <div
-          className="relative w-[260px] h-[330px] sm:w-[320px] sm:h-[400px] md:w-[370px] md:h-[460px] rounded-[38px] sm:rounded-[48px] overflow-hidden border-2 border-white/85 dark:border-white/20 shadow-[0_30px_70px_-15px_rgba(244,63,94,0.32)] backdrop-blur-md"
+          className="relative w-[260px] h-[340px] sm:w-[310px] sm:h-[400px] md:w-[340px] md:h-[440px] lg:w-[360px] lg:h-[460px] xl:w-[380px] xl:h-[480px] rounded-[36px] sm:rounded-[44px] overflow-hidden border-2 border-white/85 dark:border-white/20 shadow-[0_25px_60px_-15px_rgba(244,63,94,0.32)] backdrop-blur-md"
           style={{ background: 'linear-gradient(145deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.2) 100%)' }}
         >
           <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-white to-transparent opacity-90 z-20" />
@@ -863,7 +865,7 @@ function CentralCutoutPortrait({ scrollYProgress }) {
         </div>
 
         {/* Orbiting Satellite Badges */}
-        <motion.div style={{ y: badgeExpY, z: 55 }} className="absolute -top-4 -left-4 sm:-top-6 sm:-left-12 z-30">
+        <motion.div style={{ y: badgeExpY, z: 55 }} className="absolute -top-4 -left-4 sm:-top-5 sm:-left-8 lg:-left-6 z-30">
           <div className="glass-premium rounded-2xl px-3.5 py-2.5 sm:px-4 sm:py-3 shadow-xl border border-white/80 dark:border-white/10 flex items-center gap-3">
             <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-[var(--color-accent)] to-[var(--color-accent-2)] flex items-center justify-center text-white shadow-md shadow-[var(--color-accent)]/30">
               <Code2 size={19} />
@@ -875,7 +877,7 @@ function CentralCutoutPortrait({ scrollYProgress }) {
           </div>
         </motion.div>
 
-        <motion.div style={{ y: badgeAvailY, z: 45 }} className="absolute top-24 -right-4 sm:top-28 sm:-right-12 z-30">
+        <motion.div style={{ y: badgeAvailY, z: 45 }} className="absolute top-24 -right-4 sm:top-28 sm:-right-8 lg:-right-6 z-30">
           <div className="glass-premium rounded-2xl px-3.5 py-2.5 sm:px-4 sm:py-3 shadow-xl border border-white/80 dark:border-white/10 flex items-center gap-3">
             <div className="relative flex h-3 w-3">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
@@ -888,7 +890,7 @@ function CentralCutoutPortrait({ scrollYProgress }) {
           </div>
         </motion.div>
 
-        <motion.div style={{ y: badgeStatsY, z: 35 }} className="absolute -bottom-4 -left-2 sm:-bottom-5 sm:left-4 z-30 hidden sm:flex">
+        <motion.div style={{ y: badgeStatsY, z: 35 }} className="absolute -bottom-4 -left-2 sm:-bottom-5 sm:left-4 z-30 flex">
           <div className="glass-premium rounded-2xl px-3.5 py-2 shadow-lg border border-white/80 dark:border-white/10 flex items-center gap-2">
             <Sparkles size={14} className="text-[var(--color-accent)] animate-pulse" />
             <span className="text-xs font-semibold text-[var(--color-text-main)]">15+ Production Apps Built</span>
@@ -915,130 +917,141 @@ function Hero() {
   };
 
   return (
-    <section id="hero" ref={heroRef} className="relative min-h-[105vh] flex flex-col justify-between items-center pt-28 pb-16 px-4 sm:px-6 md:px-12 overflow-hidden">
-      <div className="container mx-auto max-w-5xl flex flex-col items-center text-center relative z-10">
-        {/* Top Intro */}
-        <div className="flex flex-col items-center max-w-3xl">
-          <div className="flex flex-wrap items-center justify-center gap-2.5 mb-6">
-            <span className="px-4 py-1.5 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-surface)]/80 backdrop-blur-md text-xs font-semibold text-[var(--color-text-main)] shadow-sm flex items-center gap-2">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+    <section
+      id="hero"
+      ref={heroRef}
+      className="relative min-h-[96vh] lg:min-h-screen flex flex-col justify-between pt-28 sm:pt-32 pb-8 px-4 sm:px-6 lg:px-12 xl:px-16 overflow-hidden"
+    >
+      {/* Background Volumetric Mesh Glows */}
+      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-[var(--color-accent)]/8 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-[var(--color-accent-2)]/10 rounded-full blur-[150px] pointer-events-none" />
+
+      <div className="container mx-auto max-w-7xl relative z-10 my-auto py-4 lg:py-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 xl:gap-14 items-center">
+          
+          {/* Left Column: Headlines, Bio, Tech Stack, CTAs, Stats */}
+          <div className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left order-2 lg:order-1">
+            {/* Status pills */}
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2.5 mb-5">
+              <span className="px-3.5 py-1.5 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-surface)]/80 backdrop-blur-md text-xs font-semibold text-[var(--color-text-main)] shadow-xs flex items-center gap-2">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                </span>
+                Available for opportunities
               </span>
-              Available for opportunities
-            </span>
-            <span className="px-4 py-1.5 rounded-full border border-[var(--color-accent)]/30 bg-[var(--color-accent)]/8 backdrop-blur-md text-xs font-semibold text-[var(--color-accent)] shadow-sm flex items-center gap-2">
-              <Sparkles size={13} className="text-[var(--color-accent)] animate-pulse" />
-              MCP & AI Integrated
-            </span>
-          </div>
-
-          <div className="mb-4">
-            <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-[1.08] text-[var(--color-text-main)] mb-2">
-              Hi, I'm <SparklesText text="Vishnu" />
-            </h1>
-            <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[var(--color-text-main)] min-h-[1.35em] mt-1">
-              <ScrambleTypewriter words={ROLES} />
-            </h2>
-          </div>
-
-          <p className="text-base sm:text-lg text-[var(--color-text-muted)] max-w-2xl leading-relaxed mb-2">
-            Engineering scalable web architectures, tactile micro-interactions, and AI-augmented applications with{' '}
-            <span className="text-[var(--color-text-main)] font-semibold">React</span>,{' '}
-            <span className="text-[var(--color-text-main)] font-semibold">Python</span>, and{' '}
-            <span className="text-gradient-static font-semibold">volumetric design precision</span>.
-          </p>
-        </div>
-
-        {/* Central Cutout Portrait */}
-        <CentralCutoutPortrait scrollYProgress={scrollYProgress} />
-
-        {/* Bottom Content */}
-        <div className="flex flex-col items-center w-full max-w-3xl">
-          <div className="flex flex-wrap items-center justify-center gap-2 mb-8">
-            {['React 19', 'Python & Django', 'Tailwind CSS', 'MySQL', 'RESTful APIs', 'Model Context Protocol (MCP)'].map((tech, i) => (
-              <span
-                key={i}
-                className="px-3.5 py-1.5 text-xs font-medium rounded-full border border-[var(--color-border)] bg-[var(--color-bg-surface)]/75 text-[var(--color-text-muted)] hover:border-[var(--color-accent)]/50 hover:text-[var(--color-accent)] hover:bg-[var(--color-accent)]/5 hover:scale-105 transition-all duration-300 cursor-default shadow-xs"
-              >
-                {tech}
+              <span className="px-3.5 py-1.5 rounded-full border border-[var(--color-accent)]/30 bg-[var(--color-accent)]/8 backdrop-blur-md text-xs font-semibold text-[var(--color-accent)] shadow-xs flex items-center gap-2">
+                <Sparkles size={13} className="text-[var(--color-accent)] animate-pulse" />
+                MCP 1.0 & AI Integrated
               </span>
-            ))}
-          </div>
+            </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
-            <MagneticButton href="#projects" variant="primary">
-              View My Work
-              <motion.span animate={{ x: [0, 5, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
-                <ArrowRight size={18} />
-              </motion.span>
-            </MagneticButton>
-            <MagneticButton
-              href="https://resilient-genie-df3d71.netlify.app/VishnuV%20-%20Python%20Developer.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              variant="secondary"
-            >
-              Download CV
-              <Download size={17} />
-            </MagneticButton>
-          </div>
+            {/* Main Headline & Role */}
+            <div className="mb-4">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-extrabold tracking-tight leading-[1.08] text-[var(--color-text-main)] mb-2">
+                Hi, I'm <SparklesText text="Vishnu" />
+              </h1>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-[var(--color-text-main)] min-h-[1.4em] flex items-center justify-center lg:justify-start">
+                <ScrambleTypewriter words={ROLES} />
+              </h2>
+            </div>
 
-          <div className="flex items-center justify-center gap-3 mb-10">
-            <span className="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)] flex items-center gap-1.5 mr-1 select-none">
-              <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] animate-pulse" />
-              Connect
-            </span>
-            <div className="flex items-center gap-2.5">
-              {HERO_SOCIALS.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target={social.href.startsWith('http') ? '_blank' : undefined}
-                  rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                  aria-label={social.label}
-                  className="flex items-center justify-center w-10 h-10 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-surface)]/80 backdrop-blur-md text-[var(--color-text-muted)] hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/50 hover:bg-[var(--color-accent)]/10 hover:shadow-lg transition-all duration-300 cursor-pointer"
+            {/* Description */}
+            <p className="text-base sm:text-lg text-[var(--color-text-muted)] max-w-xl leading-relaxed mb-6 font-normal">
+              Engineering scalable web architectures, tactile micro-interactions, and AI-augmented applications with{' '}
+              <span className="text-[var(--color-text-main)] font-semibold">React 19</span>,{' '}
+              <span className="text-[var(--color-text-main)] font-semibold">Python</span>, and{' '}
+              <span className="text-gradient-static font-semibold">volumetric design precision</span>.
+            </p>
+
+            {/* Tech stack pills */}
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2 mb-8 max-w-xl">
+              {['React 19', 'Python & Django', 'Tailwind CSS', 'MySQL', 'RESTful APIs', 'Model Context Protocol (MCP)'].map((tech, i) => (
+                <span
+                  key={i}
+                  className="px-3.5 py-1.5 text-xs font-medium rounded-full border border-[var(--color-border)] bg-[var(--color-bg-surface)]/75 text-[var(--color-text-muted)] hover:border-[var(--color-accent)]/50 hover:text-[var(--color-accent)] hover:bg-[var(--color-accent)]/5 hover:scale-105 transition-all duration-300 cursor-default shadow-xs"
                 >
-                  <social.icon size={18} />
-                </a>
+                  {tech}
+                </span>
+              ))}
+            </div>
+
+            {/* CTAs & Socials */}
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 mb-8 w-full">
+              <MagneticButton href="#projects" variant="primary">
+                View My Work
+                <motion.span animate={{ x: [0, 5, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
+                  <ArrowRight size={18} />
+                </motion.span>
+              </MagneticButton>
+              <MagneticButton
+                href="https://resilient-genie-df3d71.netlify.app/VishnuV%20-%20Python%20Developer.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="secondary"
+              >
+                Download CV
+                <Download size={17} />
+              </MagneticButton>
+
+              <div className="flex items-center gap-2.5 sm:ml-2">
+                {HERO_SOCIALS.map((social) => (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    target={social.href.startsWith('http') ? '_blank' : undefined}
+                    rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                    aria-label={social.label}
+                    className="flex items-center justify-center w-11 h-11 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-surface)]/80 backdrop-blur-md text-[var(--color-text-muted)] hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/50 hover:bg-[var(--color-accent)]/10 hover:shadow-md transition-all duration-300 cursor-pointer"
+                  >
+                    <social.icon size={18} />
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {/* Impact Metrics Row */}
+            <div className="w-full max-w-lg grid grid-cols-3 gap-3 sm:gap-4 pt-6 border-t border-[var(--color-border)]/80">
+              {[
+                { value: '3+', label: 'Years Experience' },
+                { value: '15+', label: 'Projects Built' },
+                { value: '100%', label: 'Client Satisfaction' },
+              ].map((stat, i) => (
+                <div key={i} className="text-center lg:text-left">
+                  <div className="text-2xl sm:text-3xl font-extrabold text-gradient tracking-tight">{stat.value}</div>
+                  <div className="text-[11px] sm:text-xs text-[var(--color-text-muted)] font-medium mt-0.5">{stat.label}</div>
+                </div>
               ))}
             </div>
           </div>
 
-          <div className="w-full max-w-xl grid grid-cols-3 gap-4 pt-6 border-t border-[var(--color-border)]/80 mb-8">
-            {[
-              { value: '3+', label: 'Years Experience' },
-              { value: '15+', label: 'Projects Built' },
-              { value: '100%', label: 'Client Satisfaction' },
-            ].map((stat, i) => (
-              <div key={i} className="text-center">
-                <div className="text-xl sm:text-2xl font-extrabold text-gradient">{stat.value}</div>
-                <div className="text-[11px] sm:text-xs text-[var(--color-text-muted)] font-medium mt-0.5">{stat.label}</div>
-              </div>
-            ))}
+          {/* Right Column: 3D Portrait with Orbiting Satellites */}
+          <div className="lg:col-span-5 flex justify-center lg:justify-end order-1 lg:order-2">
+            <CentralCutoutPortrait scrollYProgress={scrollYProgress} />
           </div>
-        </div>
 
-        {/* Scroll Cue */}
-        <div
-          onClick={() => handleScrollTo('#about')}
-          className="flex flex-col items-center gap-2 text-[var(--color-text-muted)] cursor-pointer hover:text-[var(--color-accent)] transition-colors group mt-2"
-        >
-          <span className="text-[11px] font-semibold tracking-[0.22em] uppercase text-[var(--color-text-muted)] group-hover:text-[var(--color-accent)] transition-colors">
-            Scroll to Explore
-          </span>
-          <motion.div
-            animate={{ y: [0, 6, 0] }}
-            transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
-            className="w-5 h-8 rounded-full border-2 border-[var(--color-border)] group-hover:border-[var(--color-accent)] flex items-start justify-center p-1 transition-colors"
-          >
-            <motion.div
-              animate={{ y: [0, 10, 0], opacity: [1, 0.2, 1] }}
-              transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
-              className="w-1 h-1.5 rounded-full bg-[var(--color-accent)]"
-            />
-          </motion.div>
         </div>
+      </div>
+
+      {/* Scroll Cue */}
+      <div
+        onClick={() => handleScrollTo('#about')}
+        className="relative z-10 flex flex-col items-center gap-2 text-[var(--color-text-muted)] cursor-pointer hover:text-[var(--color-accent)] transition-colors group pt-3 pb-1"
+      >
+        <span className="text-[11px] font-semibold tracking-[0.22em] uppercase text-[var(--color-text-muted)] group-hover:text-[var(--color-accent)] transition-colors">
+          Scroll to Explore
+        </span>
+        <motion.div
+          animate={{ y: [0, 6, 0] }}
+          transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+          className="w-5 h-8 rounded-full border-2 border-[var(--color-border)] group-hover:border-[var(--color-accent)] flex items-start justify-center p-1 transition-colors"
+        >
+          <motion.div
+            animate={{ y: [0, 10, 0], opacity: [1, 0.2, 1] }}
+            transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+            className="w-1 h-1.5 rounded-full bg-[var(--color-accent)]"
+          />
+        </motion.div>
       </div>
     </section>
   );
@@ -1362,130 +1375,186 @@ function Projects() {
   }, [filter]);
 
   return (
-    <section id="projects" className="py-28 relative overflow-hidden">
-      <div className="container mx-auto px-6 md:px-12 relative max-w-6xl">
+    <section id="projects" className="py-24 sm:py-28 relative overflow-hidden">
+      {/* Subtle ambient lighting */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[var(--color-accent)]/5 rounded-full blur-[140px] pointer-events-none" />
+
+      <div className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-12 relative max-w-7xl">
+        {/* iOS Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.7 }}
-          className="text-center max-w-2xl mx-auto mb-14"
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.6 }}
+          className="text-center max-w-2xl mx-auto mb-10"
         >
-          <div className="flex items-center justify-center gap-3 mb-5">
-            <div className="h-px w-10 bg-gradient-to-r from-transparent to-[var(--color-accent)]" />
-            <span className="text-sm font-semibold tracking-widest uppercase text-[var(--color-accent)]">Portfolio</span>
-            <div className="h-px w-10 bg-gradient-to-l from-transparent to-[var(--color-accent)]" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/[0.04] dark:bg-white/[0.08] border border-black/[0.06] dark:border-white/[0.1] backdrop-blur-md mb-3 shadow-2xs">
+            <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] animate-pulse" />
+            <span className="text-[11px] font-semibold tracking-wider uppercase text-[var(--color-accent)]">iOS App Suite • Portfolio</span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-extrabold text-[var(--color-text-main)] mb-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[var(--color-text-main)] mb-3 tracking-tight">
             Featured <span className="text-gradient">Projects</span>
           </h2>
-          <p className="text-[var(--color-text-muted)] text-lg">A showcase of production-ready applications, architectures, and experiments.</p>
+          <p className="text-[var(--color-text-muted)] text-sm sm:text-base leading-relaxed">
+            A curated suite of production apps, AI integrations, and responsive architectures crafted with tactile precision.
+          </p>
         </motion.div>
 
-        {/* Filter Pills */}
-        <div className="flex flex-wrap justify-center gap-2 mb-12">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setFilter(cat)}
-              className={`px-4 py-2 rounded-full text-xs font-semibold transition-all duration-300 cursor-pointer ${
-                filter === cat
-                  ? 'bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-2)] text-white shadow-md shadow-[var(--color-accent)]/30'
-                  : 'bg-[var(--color-bg-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text-main)]'
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
+        {/* Apple iOS Segmented Control Filter */}
+        <div className="flex justify-center mb-10">
+          <div className="inline-flex p-1 rounded-full bg-black/[0.04] dark:bg-white/[0.06] backdrop-blur-xl border border-black/[0.06] dark:border-white/[0.08] shadow-xs">
+            {categories.map((cat) => {
+              const isActive = filter === cat;
+              return (
+                <button
+                  key={cat}
+                  onClick={() => setFilter(cat)}
+                  className={`relative px-3.5 sm:px-4 py-1.5 rounded-full text-xs font-semibold transition-colors duration-200 cursor-pointer select-none ${
+                    isActive
+                      ? 'text-[var(--color-text-main)] dark:text-white'
+                      : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-main)]'
+                  }`}
+                >
+                  {isActive && (
+                    <motion.div
+                      layoutId="ios-project-filter"
+                      className="absolute inset-0 rounded-full bg-white dark:bg-zinc-800 shadow-sm border border-black/[0.04] dark:border-white/[0.1]"
+                      transition={{ type: 'spring', stiffness: 450, damping: 32 }}
+                    />
+                  )}
+                  <span className="relative z-10 flex items-center gap-1.5">
+                    {cat}
+                    {cat === 'All' && (
+                      <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${isActive ? 'bg-[var(--color-accent)]/15 text-[var(--color-accent)] font-bold' : 'bg-black/5 dark:bg-white/10 text-[var(--color-text-muted)]'}`}>
+                        {PROJECTS.length}
+                      </span>
+                    )}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
-        {/* 2-Column Responsive Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-stretch">
-          {filteredProjects.map((project) => (
-            <motion.div
-              key={project.title}
-              layout
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-40px' }}
-              transition={{ duration: 0.5 }}
-              whileHover={{ y: -6 }}
-              className="rounded-3xl border border-[var(--color-border)] bg-[var(--color-bg-surface)]/85 backdrop-blur-md overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-400 flex flex-col group relative"
-            >
-              {/* Project Preview Window Frame */}
-              <div className="relative aspect-[16/10] overflow-hidden bg-slate-950">
-                <div className="absolute top-3 left-3 z-20 flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/10">
-                  <span className="w-2 h-2 rounded-full bg-rose-500 inline-block" />
-                  <span className="w-2 h-2 rounded-full bg-amber-500 inline-block" />
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block" />
-                  <span className="text-[10px] text-white/70 font-mono ml-2">{project.device}</span>
-                </div>
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-90 group-hover:opacity-100"
+        {/* Compact 3-Column iOS App Store Grid */}
+        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6 items-stretch">
+          <AnimatePresence mode="popLayout">
+            {filteredProjects.map((project) => (
+              <motion.div
+                key={project.title}
+                layout
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                whileHover={{ y: -4 }}
+                className="group relative rounded-[26px] border border-black/[0.08] dark:border-white/[0.1] bg-white/75 dark:bg-[#12151c]/80 backdrop-blur-2xl p-3.5 sm:p-4 shadow-[0_4px_20px_-2px_rgba(0,0,0,0.04)] hover:shadow-[0_16px_36px_-8px_rgba(244,63,94,0.18)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.4)] transition-all duration-300 flex flex-col justify-between overflow-hidden"
+              >
+                {/* Subtle iOS ambient glow on hover */}
+                <div
+                  className="absolute -top-12 -right-12 w-32 h-32 rounded-full blur-2xl opacity-0 group-hover:opacity-30 transition-opacity duration-500 pointer-events-none"
+                  style={{ background: project.accent || 'var(--color-accent)' }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-bg-surface)] via-transparent to-transparent opacity-40 pointer-events-none" />
-              </div>
 
-              {/* Card Details */}
-              <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between">
                 <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-mono font-semibold tracking-wider text-[var(--color-accent)] uppercase">
-                      {project.subtitle}
-                    </span>
-                    <div className="flex gap-1.5">
-                      {project.tags.map((t) => (
-                        <span key={t} className="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-[var(--color-secondary)] text-[var(--color-text-muted)]">
-                          {t}
-                        </span>
-                      ))}
+                  {/* Compact Media Stage with iOS App Preview Frame */}
+                  <div className="relative h-36 sm:h-40 w-full rounded-[18px] overflow-hidden bg-zinc-950 mb-3.5 group/media ring-1 ring-inset ring-black/10 dark:ring-white/10">
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/25 pointer-events-none" />
+
+                    {/* iOS Dynamic Glass Badges on Image */}
+                    <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between z-10 pointer-events-none">
+                      <span className="px-2.5 py-1 rounded-full bg-black/55 backdrop-blur-md text-[10px] font-semibold text-white/90 border border-white/15 flex items-center gap-1.5 shadow-sm">
+                        <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: project.accent || '#f43f5e' }} />
+                        {project.category}
+                      </span>
+                      <span className="px-2 py-0.5 rounded-full bg-black/55 backdrop-blur-md text-[10px] font-mono text-white/80 border border-white/15 flex items-center gap-1">
+                        {project.device === 'phone' ? (
+                          <>
+                            <Smartphone size={11} className="text-white/80" />
+                            <span>iOS</span>
+                          </>
+                        ) : (
+                          <>
+                            <Laptop size={11} className="text-white/80" />
+                            <span>macOS</span>
+                          </>
+                        )}
+                      </span>
                     </div>
                   </div>
 
-                  <h3 className="text-xl font-extrabold text-[var(--color-text-main)] mb-2.5 group-hover:text-[var(--color-accent)] transition-colors">
-                    {project.title}
-                  </h3>
+                  {/* iOS App Meta Header: Squircle App Icon + Title */}
+                  <div className="flex items-center gap-3 mb-2.5">
+                    <div
+                      className="w-10 h-10 rounded-[12px] flex items-center justify-center text-white shadow-sm flex-shrink-0 transition-transform duration-300 group-hover:scale-105"
+                      style={{
+                        background: `linear-gradient(135deg, ${project.accent || 'var(--color-accent)'} 0%, var(--color-accent-2) 100%)`,
+                        boxShadow: `0 4px 12px ${project.accent ? `${project.accent}40` : 'rgba(244,63,94,0.3)'}`,
+                      }}
+                    >
+                      <Code2 size={18} />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="text-[10px] font-semibold uppercase tracking-wider text-[var(--color-accent)] truncate">
+                        {project.subtitle}
+                      </div>
+                      <h3 className="text-sm sm:text-base font-bold text-[var(--color-text-main)] group-hover:text-[var(--color-accent)] transition-colors truncate">
+                        {project.title}
+                      </h3>
+                    </div>
+                  </div>
 
-                  <p className="text-xs sm:text-sm text-[var(--color-text-muted)] leading-relaxed mb-5">
+                  {/* Concise 2-line Description */}
+                  <p className="text-xs text-[var(--color-text-muted)] leading-relaxed line-clamp-2 mb-3 min-h-[2.5em]">
                     {project.description}
                   </p>
 
-                  <div className="flex flex-wrap gap-1.5 mb-6">
+                  {/* Compact iOS Tech Chips */}
+                  <div className="flex flex-wrap gap-1.5 mb-4">
                     {project.tech.map((t) => (
-                      <span key={t} className="px-2.5 py-1 rounded-lg text-[11px] font-medium bg-[var(--color-secondary)]/80 text-[var(--color-text-main)] border border-[var(--color-border)]/60">
+                      <span
+                        key={t}
+                        className="px-2 py-0.5 rounded-md text-[10px] font-medium bg-black/[0.04] dark:bg-white/[0.06] text-[var(--color-text-main)] border border-black/[0.04] dark:border-white/[0.06]"
+                      >
                         {t}
                       </span>
                     ))}
                   </div>
                 </div>
 
-                {/* Actions */}
-                <div className="flex items-center justify-between pt-4 border-t border-[var(--color-border)]/70">
+                {/* iOS App Store Action Bar */}
+                <div className="pt-3 border-t border-black/[0.06] dark:border-white/[0.08] flex items-center justify-between">
                   <a
                     href={project.live}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[var(--color-accent)] hover:underline cursor-pointer"
+                    className="px-3.5 py-1.5 rounded-full bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-white text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-xs active:scale-95 transition-all cursor-pointer"
                   >
-                    Live Demo
-                    <ExternalLink size={14} />
+                    <span>Open</span>
+                    <ExternalLink size={12} />
                   </a>
+
                   <a
                     href={project.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[var(--color-text-muted)] hover:text-[var(--color-text-main)] transition-colors cursor-pointer"
+                    className="px-2.5 py-1.5 rounded-full bg-black/[0.04] dark:bg-white/[0.06] hover:bg-black/[0.08] dark:hover:bg-white/[0.12] text-[var(--color-text-muted)] hover:text-[var(--color-text-main)] text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
+                    aria-label={`Source code for ${project.title}`}
                   >
-                    <GithubIcon size={15} />
-                    Source Code
+                    <GithubIcon size={13} />
+                    <span className="text-[11px]">Code</span>
                   </a>
                 </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
       </div>
     </section>
   );
