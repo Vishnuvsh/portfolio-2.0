@@ -32,6 +32,9 @@ import {
   X,
   ArrowUp,
   ExternalLink,
+  ArrowUpRight,
+  Lock,
+  Globe,
   Layers,
   Zap,
   Loader,
@@ -1363,8 +1366,17 @@ function Skills() {
 }
 
 // =====================================================================
-// 9. PROJECTS SECTION (STUDIO NINE 2-COLUMN GRID)
+// 9. PROJECTS SECTION (MODERN BENTO STUDIO GRID)
 // =====================================================================
+const getCleanUrl = (url) => {
+  try {
+    const parsed = new URL(url);
+    return parsed.hostname + (parsed.pathname && parsed.pathname !== '/' ? parsed.pathname.replace(/\/$/, '') : '');
+  } catch {
+    return (url || '').replace(/^https?:\/\//, '');
+  }
+};
+
 function Projects() {
   const [filter, setFilter] = useState('All');
   const categories = ['All', 'Web', 'AI API', 'Python', 'Full-Stack'];
@@ -1375,60 +1387,67 @@ function Projects() {
   }, [filter]);
 
   return (
-    <section id="projects" className="py-24 sm:py-28 relative overflow-hidden">
+    <section id="projects" className="py-24 sm:py-32 relative overflow-hidden">
       {/* Subtle ambient lighting */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[var(--color-accent)]/5 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] bg-[var(--color-accent)]/5 rounded-full blur-[150px] pointer-events-none" />
 
       <div className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-12 relative max-w-7xl">
-        {/* iOS Section Header */}
+        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.6 }}
-          className="text-center max-w-2xl mx-auto mb-10"
+          className="text-center max-w-2xl mx-auto mb-12"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/[0.04] dark:bg-white/[0.08] border border-black/[0.06] dark:border-white/[0.1] backdrop-blur-md mb-3 shadow-2xs">
-            <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] animate-pulse" />
-            <span className="text-[11px] font-semibold tracking-wider uppercase text-[var(--color-accent)]">iOS App Suite • Portfolio</span>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/[0.04] dark:bg-white/[0.08] border border-black/[0.06] dark:border-white/[0.1] backdrop-blur-md mb-4 shadow-2xs">
+            <span className="w-2 h-2 rounded-full bg-[var(--color-accent)] animate-pulse" />
+            <span className="text-[11px] font-semibold tracking-wider uppercase text-[var(--color-accent)]">
+              Selected Works • Engineering Portfolio
+            </span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[var(--color-text-main)] mb-3 tracking-tight">
             Featured <span className="text-gradient">Projects</span>
           </h2>
           <p className="text-[var(--color-text-muted)] text-sm sm:text-base leading-relaxed">
-            A curated suite of production apps, AI integrations, and responsive architectures crafted with tactile precision.
+            Production full-stack platforms, autonomous AI integrations, and responsive web applications engineered with precision.
           </p>
         </motion.div>
 
-        {/* Apple iOS Segmented Control Filter */}
-        <div className="flex justify-center mb-10">
-          <div className="inline-flex p-1 rounded-full bg-black/[0.04] dark:bg-white/[0.06] backdrop-blur-xl border border-black/[0.06] dark:border-white/[0.08] shadow-xs">
+        {/* Segmented Filter Control */}
+        <div className="flex justify-center mb-12">
+          <div className="inline-flex p-1.5 rounded-2xl bg-black/[0.04] dark:bg-white/[0.06] backdrop-blur-xl border border-black/[0.06] dark:border-white/[0.08] shadow-sm">
             {categories.map((cat) => {
               const isActive = filter === cat;
+              const count = cat === 'All' ? PROJECTS.length : PROJECTS.filter((p) => p.category === cat || p.tags.includes(cat)).length;
               return (
                 <button
                   key={cat}
                   onClick={() => setFilter(cat)}
-                  className={`relative px-3.5 sm:px-4 py-1.5 rounded-full text-xs font-semibold transition-colors duration-200 cursor-pointer select-none ${
+                  className={`relative px-4 py-2 rounded-xl text-xs font-semibold transition-colors duration-200 cursor-pointer select-none flex items-center gap-2 ${
                     isActive
-                      ? 'text-[var(--color-text-main)] dark:text-white'
+                      ? 'text-[var(--color-text-main)] dark:text-white shadow-xs'
                       : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-main)]'
                   }`}
                 >
                   {isActive && (
                     <motion.div
-                      layoutId="ios-project-filter"
-                      className="absolute inset-0 rounded-full bg-white dark:bg-zinc-800 shadow-sm border border-black/[0.04] dark:border-white/[0.1]"
+                      layoutId="bento-project-filter"
+                      className="absolute inset-0 rounded-xl bg-white dark:bg-zinc-800 shadow-sm border border-black/[0.04] dark:border-white/[0.1]"
                       transition={{ type: 'spring', stiffness: 450, damping: 32 }}
                     />
                   )}
                   <span className="relative z-10 flex items-center gap-1.5">
                     {cat}
-                    {cat === 'All' && (
-                      <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${isActive ? 'bg-[var(--color-accent)]/15 text-[var(--color-accent)] font-bold' : 'bg-black/5 dark:bg-white/10 text-[var(--color-text-muted)]'}`}>
-                        {PROJECTS.length}
-                      </span>
-                    )}
+                    <span
+                      className={`text-[10px] px-1.5 py-0.2 rounded-full ${
+                        isActive
+                          ? 'bg-[var(--color-accent)]/15 text-[var(--color-accent)] font-bold'
+                          : 'bg-black/5 dark:bg-white/10 text-[var(--color-text-muted)]'
+                      }`}
+                    >
+                      {count}
+                    </span>
                   </span>
                 </button>
               );
@@ -1436,119 +1455,163 @@ function Projects() {
           </div>
         </div>
 
-        {/* Compact 3-Column iOS App Store Grid */}
-        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6 items-stretch">
+        {/* Modern Bento Studio 2-Column Grid */}
+        <motion.div layout className="grid grid-cols-1 lg:grid-cols-2 gap-7 lg:gap-8 items-stretch">
           <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project) => (
+            {filteredProjects.map((project, idx) => (
               <motion.div
                 key={project.title}
                 layout
-                initial={{ opacity: 0, scale: 0.95 }}
+                initial={{ opacity: 0, scale: 0.96 }}
                 animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                whileHover={{ y: -4 }}
-                className="group relative rounded-[26px] border border-black/[0.08] dark:border-white/[0.1] bg-white/75 dark:bg-[#12151c]/80 backdrop-blur-2xl p-3.5 sm:p-4 shadow-[0_4px_20px_-2px_rgba(0,0,0,0.04)] hover:shadow-[0_16px_36px_-8px_rgba(244,63,94,0.18)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.4)] transition-all duration-300 flex flex-col justify-between overflow-hidden"
+                exit={{ opacity: 0, scale: 0.96 }}
+                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                whileHover={{ y: -6 }}
+                className="group relative rounded-[28px] border border-black/[0.08] dark:border-white/[0.08] bg-white/80 dark:bg-[#0d1017]/90 backdrop-blur-2xl p-4 sm:p-5 shadow-[0_4px_24px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-12px_rgba(244,63,94,0.22)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)] hover:border-black/20 dark:hover:border-white/20 transition-all duration-400 flex flex-col justify-between overflow-hidden"
               >
-                {/* Subtle iOS ambient glow on hover */}
+                {/* Ambient dynamic glow on hover */}
                 <div
-                  className="absolute -top-12 -right-12 w-32 h-32 rounded-full blur-2xl opacity-0 group-hover:opacity-30 transition-opacity duration-500 pointer-events-none"
+                  className="absolute -top-20 -right-20 w-64 h-64 rounded-full blur-3xl opacity-0 group-hover:opacity-20 transition-opacity duration-500 pointer-events-none"
                   style={{ background: project.accent || 'var(--color-accent)' }}
                 />
 
                 <div>
-                  {/* Compact Media Stage with iOS App Preview Frame */}
-                  <div className="relative h-36 sm:h-40 w-full rounded-[18px] overflow-hidden bg-zinc-950 mb-3.5 group/media ring-1 ring-inset ring-black/10 dark:ring-white/10">
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/25 pointer-events-none" />
-
-                    {/* iOS Dynamic Glass Badges on Image */}
-                    <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between z-10 pointer-events-none">
-                      <span className="px-2.5 py-1 rounded-full bg-black/55 backdrop-blur-md text-[10px] font-semibold text-white/90 border border-white/15 flex items-center gap-1.5 shadow-sm">
-                        <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: project.accent || '#f43f5e' }} />
-                        {project.category}
-                      </span>
-                      <span className="px-2 py-0.5 rounded-full bg-black/55 backdrop-blur-md text-[10px] font-mono text-white/80 border border-white/15 flex items-center gap-1">
-                        {project.device === 'phone' ? (
-                          <>
-                            <Smartphone size={11} className="text-white/80" />
-                            <span>iOS</span>
-                          </>
-                        ) : (
-                          <>
-                            <Laptop size={11} className="text-white/80" />
-                            <span>macOS</span>
-                          </>
-                        )}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* iOS App Meta Header: Squircle App Icon + Title */}
-                  <div className="flex items-center gap-3 mb-2.5">
-                    <div
-                      className="w-10 h-10 rounded-[12px] flex items-center justify-center text-white shadow-sm flex-shrink-0 transition-transform duration-300 group-hover:scale-105"
-                      style={{
-                        background: `linear-gradient(135deg, ${project.accent || 'var(--color-accent)'} 0%, var(--color-accent-2) 100%)`,
-                        boxShadow: `0 4px 12px ${project.accent ? `${project.accent}40` : 'rgba(244,63,94,0.3)'}`,
-                      }}
-                    >
-                      <Code2 size={18} />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <div className="text-[10px] font-semibold uppercase tracking-wider text-[var(--color-accent)] truncate">
-                        {project.subtitle}
+                  {/* Browser Window Mockup Frame */}
+                  <div className="relative rounded-[20px] overflow-hidden bg-zinc-950 border border-black/10 dark:border-white/10 mb-5 shadow-inner">
+                    {/* Browser Chrome Header */}
+                    <div className="flex items-center justify-between px-3.5 py-2.5 bg-zinc-900/90 border-b border-white/[0.08] backdrop-blur-md">
+                      {/* macOS Traffic Lights */}
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f56]/90 border border-[#e0443e]/40" />
+                        <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]/90 border border-[#dea123]/40" />
+                        <span className="w-2.5 h-2.5 rounded-full bg-[#27c93f]/90 border border-[#1aab29]/40" />
                       </div>
-                      <h3 className="text-sm sm:text-base font-bold text-[var(--color-text-main)] group-hover:text-[var(--color-accent)] transition-colors truncate">
-                        {project.title}
-                      </h3>
+
+                      {/* Mock URL bar */}
+                      <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/40 border border-white/[0.08] text-[11px] font-mono text-zinc-300 max-w-[200px] sm:max-w-[280px] truncate shadow-inner">
+                        <Lock size={10} className="text-emerald-400 flex-shrink-0" />
+                        <span className="truncate">{getCleanUrl(project.live)}</span>
+                      </div>
+
+                      {/* Status Beacon / Platform Badge */}
+                      <div className="flex items-center gap-1.5 text-[10px] font-mono text-zinc-400">
+                        <span className="relative flex h-2 w-2">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                          <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                        </span>
+                        <span className="hidden sm:inline font-semibold text-emerald-400/90">LIVE</span>
+                      </div>
+                    </div>
+
+                    {/* Media Window Preview */}
+                    <div className="relative h-48 sm:h-56 md:h-60 w-full overflow-hidden group/media bg-zinc-900">
+                      <img
+                        src={project.image}
+                        alt={project.title}
+                        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
+
+                      {/* Floating Badges inside Preview */}
+                      <div className="absolute top-3 left-3 right-3 flex items-center justify-between pointer-events-none">
+                        <span className="px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-[11px] font-semibold text-white/95 border border-white/15 flex items-center gap-1.5 shadow-sm">
+                          <span
+                            className="w-2 h-2 rounded-full"
+                            style={{
+                              backgroundColor: project.accent || '#f43f5e',
+                              boxShadow: `0 0 8px ${project.accent || '#f43f5e'}`,
+                            }}
+                          />
+                          {project.category}
+                        </span>
+                        <span className="px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-[11px] font-mono font-bold text-white/90 border border-white/15 shadow-sm">
+                          #{String(idx + 1).padStart(2, '0')}
+                        </span>
+                      </div>
+
+                      {/* Device pill bottom left of media */}
+                      <div className="absolute bottom-3 left-3 pointer-events-none">
+                        <span className="px-2.5 py-1 rounded-md bg-black/70 backdrop-blur-md text-[10px] font-mono text-zinc-300 border border-white/10 flex items-center gap-1.5">
+                          {project.device === 'phone' ? (
+                            <Smartphone size={11} className="text-zinc-300" />
+                          ) : (
+                            <Laptop size={11} className="text-zinc-300" />
+                          )}
+                          <span className="capitalize">{project.device || 'Web App'}</span>
+                        </span>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Concise 2-line Description */}
-                  <p className="text-xs text-[var(--color-text-muted)] leading-relaxed line-clamp-2 mb-3 min-h-[2.5em]">
-                    {project.description}
-                  </p>
-
-                  {/* Compact iOS Tech Chips */}
-                  <div className="flex flex-wrap gap-1.5 mb-4">
-                    {project.tech.map((t) => (
+                  {/* Card Meta & Header */}
+                  <div>
+                    {/* Subtitle & Role */}
+                    <div className="flex items-center justify-between mb-2">
                       <span
-                        key={t}
-                        className="px-2 py-0.5 rounded-md text-[10px] font-medium bg-black/[0.04] dark:bg-white/[0.06] text-[var(--color-text-main)] border border-black/[0.04] dark:border-white/[0.06]"
+                        className="text-[11px] font-mono font-bold tracking-wider uppercase"
+                        style={{ color: project.accent || 'var(--color-accent)' }}
                       >
-                        {t}
+                        {project.subtitle}
                       </span>
-                    ))}
+                      <span className="text-[11px] font-mono text-[var(--color-text-muted)]">
+                        {project.tags?.[0] || 'Web'}
+                      </span>
+                    </div>
+
+                    {/* Title */}
+                    <h3 className="text-xl sm:text-2xl font-extrabold text-[var(--color-text-main)] group-hover:text-[var(--color-accent)] transition-colors mb-2.5 tracking-tight flex items-center justify-between">
+                      <span>{project.title}</span>
+                      <ArrowUpRight
+                        size={20}
+                        className="text-[var(--color-text-muted)] group-hover:text-[var(--color-accent)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300 opacity-0 group-hover:opacity-100 flex-shrink-0"
+                      />
+                    </h3>
+
+                    {/* Description */}
+                    <p className="text-sm text-[var(--color-text-muted)] leading-relaxed mb-4 line-clamp-2 sm:line-clamp-3">
+                      {project.description}
+                    </p>
+
+                    {/* Tech Stack Pills */}
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-5">
+                      {project.tech.map((t) => (
+                        <span
+                          key={t}
+                          className="px-2.5 py-1 rounded-lg text-[11px] font-mono font-medium bg-black/[0.04] dark:bg-white/[0.06] text-[var(--color-text-main)] border border-black/[0.06] dark:border-white/[0.08] transition-colors"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
 
-                {/* iOS App Store Action Bar */}
-                <div className="pt-3 border-t border-black/[0.06] dark:border-white/[0.08] flex items-center justify-between">
+                {/* Card Action Bar */}
+                <div className="pt-4 border-t border-black/[0.06] dark:border-white/[0.08] flex items-center justify-between gap-3">
                   <a
                     href={project.live}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-3.5 py-1.5 rounded-full bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-white text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-xs active:scale-95 transition-all cursor-pointer"
+                    className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider text-white shadow-md active:scale-[0.98] transition-all cursor-pointer group/btn"
+                    style={{
+                      background: `linear-gradient(135deg, ${project.accent || 'var(--color-accent)'} 0%, var(--color-accent-hover) 100%)`,
+                      boxShadow: `0 4px 14px ${project.accent ? `${project.accent}35` : 'rgba(244,63,94,0.3)'}`,
+                    }}
                   >
-                    <span>Open</span>
-                    <ExternalLink size={12} />
+                    <span>Live Demo</span>
+                    <ExternalLink size={13} className="transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
                   </a>
 
                   <a
                     href={project.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-2.5 py-1.5 rounded-full bg-black/[0.04] dark:bg-white/[0.06] hover:bg-black/[0.08] dark:hover:bg-white/[0.12] text-[var(--color-text-muted)] hover:text-[var(--color-text-main)] text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
+                    className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-xs text-[var(--color-text-main)] bg-black/[0.04] dark:bg-white/[0.06] hover:bg-black/[0.08] dark:hover:bg-white/[0.12] border border-black/[0.06] dark:border-white/[0.08] active:scale-[0.98] transition-all cursor-pointer"
                     aria-label={`Source code for ${project.title}`}
                   >
-                    <GithubIcon size={13} />
-                    <span className="text-[11px]">Code</span>
+                    <GithubIcon size={14} />
+                    <span>Code</span>
                   </a>
                 </div>
               </motion.div>
