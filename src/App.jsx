@@ -447,67 +447,30 @@ function SectionDivider() {
 // =====================================================================
 // 4. MICRO-INTERACTION COMPONENTS
 // =====================================================================
-function ScrambleTypewriter({ words }) {
-  const [currentWordIndex, setCurrentWordIndex] = useState(0);
-  const [displayText, setDisplayText] = useState(words[0] || '');
-  const [phase, setPhase] = useState('holding');
-  const CHARS = '!<>-_\\/[]{}—=+*^?#@$%&';
+function RoleMorpher({ roles }) {
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    const word = words[currentWordIndex];
-    let iteration = 0;
-
-    if (phase === 'typing') {
-      const interval = setInterval(() => {
-        setDisplayText(
-          word.split('').map((letter, idx) => {
-            if (idx < Math.floor(iteration)) return letter;
-            if (letter === ' ') return ' ';
-            return CHARS[Math.floor(Math.random() * CHARS.length)];
-          }).join('').slice(0, Math.ceil(iteration + 1))
-        );
-        iteration += 0.45;
-        if (iteration >= word.length) {
-          clearInterval(interval);
-          setTimeout(() => setPhase('holding'), 200);
-        }
-      }, 30);
-      return () => clearInterval(interval);
-    }
-
-    if (phase === 'holding') {
-      setDisplayText(word);
-      const timeout = setTimeout(() => setPhase('deleting'), 2400);
-      return () => clearTimeout(timeout);
-    }
-
-    if (phase === 'deleting') {
-      let len = word.length;
-      const interval = setInterval(() => {
-        len -= 1;
-        setDisplayText(word.slice(0, len));
-        if (len <= 0) {
-          clearInterval(interval);
-          setCurrentWordIndex((prev) => (prev + 1) % words.length);
-          setPhase('typing');
-        }
-      }, 35);
-      return () => clearInterval(interval);
-    }
-  }, [phase, currentWordIndex, words]);
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % roles.length);
+    }, 3200);
+    return () => clearInterval(timer);
+  }, [roles.length]);
 
   return (
-    <span className="inline-block min-w-[20px]">
-      <span className="text-gradient font-bold">{displayText}</span>
-      <motion.span
-        animate={{ opacity: [1, 0] }}
-        transition={{ duration: 0.5, repeat: Infinity, repeatType: 'reverse' }}
-        className="inline-block ml-1 w-[3px] h-[0.85em] rounded-sm align-middle"
-        style={{
-          background: 'linear-gradient(180deg, var(--color-accent), var(--color-accent-2))',
-          boxShadow: '0 0 10px var(--color-accent)',
-        }}
-      />
+    <span className="relative inline-flex items-center overflow-hidden h-[1.35em] align-middle">
+      <AnimatePresence mode="wait">
+        <motion.span
+          key={roles[index]}
+          initial={{ y: 26, opacity: 0, filter: 'blur(4px)' }}
+          animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
+          exit={{ y: -26, opacity: 0, filter: 'blur(4px)' }}
+          transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+          className="text-gradient font-extrabold tracking-tight inline-block whitespace-nowrap"
+        >
+          {roles[index]}
+        </motion.span>
+      </AnimatePresence>
     </span>
   );
 }
@@ -768,21 +731,21 @@ function CentralCutoutPortrait({ scrollYProgress }) {
 
   const springProgress = useSpring(scrollYProgress, { stiffness: 85, damping: 24, restDelta: 0.001 });
 
-  const portraitY = useTransform(springProgress, [0, 1], [0, 170]);
-  const portraitScale = useTransform(springProgress, [0, 0.45, 1], [1, 1.09, 0.93]);
-  const scrollRotateX = useTransform(springProgress, [0, 1], [0, 14]);
-  const scrollRotateY = useTransform(springProgress, [0, 1], [0, -10]);
+  const portraitY = useTransform(springProgress, [0, 1], [0, 140]);
+  const portraitScale = useTransform(springProgress, [0, 0.45, 1], [1, 1.06, 0.94]);
+  const scrollRotateX = useTransform(springProgress, [0, 1], [0, 10]);
+  const scrollRotateY = useTransform(springProgress, [0, 1], [0, -8]);
   const scrollRotateZ = useTransform(springProgress, [0, 1], [0, 2]);
 
-  const mouseRotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [10, -10]), { stiffness: 180, damping: 25 });
-  const mouseRotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-10, 10]), { stiffness: 180, damping: 25 });
+  const mouseRotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [8, -8]), { stiffness: 180, damping: 25 });
+  const mouseRotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-8, 8]), { stiffness: 180, damping: 25 });
 
   const finalRotateX = useTransform([scrollRotateX, mouseRotateX], ([s, m]) => s + m);
   const finalRotateY = useTransform([scrollRotateY, mouseRotateY], ([s, m]) => s + m);
 
-  const badgeExpY = useTransform(springProgress, [0, 1], [0, 80]);
-  const badgeAvailY = useTransform(springProgress, [0, 1], [0, 220]);
-  const badgeStatsY = useTransform(springProgress, [0, 1], [0, 130]);
+  const badgeExpY = useTransform(springProgress, [0, 1], [0, 40]);
+  const badgeAvailY = useTransform(springProgress, [0, 1], [0, 60]);
+  const badgeStatsY = useTransform(springProgress, [0, 1], [0, 50]);
 
   const stageLightScale = useTransform(springProgress, [0, 0.5, 1], [1, 1.25, 0.95]);
   const stageLightOpacity = useTransform(springProgress, [0, 0.8, 1], [0.95, 1, 0.35]);
@@ -800,17 +763,17 @@ function CentralCutoutPortrait({ scrollYProgress }) {
       ref={cardRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative flex items-center justify-center my-6 lg:my-0 w-full max-w-[420px] lg:max-w-none mx-auto select-none"
+      className="relative flex items-center justify-center my-4 lg:my-0 w-full max-w-[380px] sm:max-w-[420px] lg:max-w-none mx-auto select-none"
       style={{ perspective: 1300 }}
     >
       {/* 1. Volumetric Key Glow Circle */}
       <motion.div
-        className="absolute w-[360px] h-[360px] sm:w-[440px] h-[440px] lg:w-[480px] lg:h-[480px] rounded-full pointer-events-none"
+        className="absolute w-[320px] h-[320px] sm:w-[420px] sm:h-[420px] lg:w-[460px] lg:h-[460px] rounded-full pointer-events-none"
         style={{
           scale: stageLightScale,
           opacity: stageLightOpacity,
-          background: 'radial-gradient(circle at 50% 50%, rgba(244, 63, 94, 0.40) 0%, rgba(255, 107, 107, 0.28) 38%, rgba(251, 146, 60, 0.10) 60%, transparent 75%)',
-          filter: 'blur(60px)',
+          background: 'radial-gradient(circle at 50% 50%, rgba(244, 63, 94, 0.38) 0%, rgba(255, 107, 107, 0.24) 38%, rgba(251, 146, 60, 0.08) 60%, transparent 75%)',
+          filter: 'blur(55px)',
           willChange: 'transform, opacity',
         }}
       />
@@ -818,17 +781,17 @@ function CentralCutoutPortrait({ scrollYProgress }) {
       <motion.div
         animate={{ rotate: 360 }}
         transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
-        className="absolute w-[300px] h-[300px] sm:w-[380px] sm:h-[380px] lg:w-[400px] lg:h-[400px] rounded-full pointer-events-none opacity-50"
+        className="absolute w-[280px] h-[280px] sm:w-[360px] sm:h-[360px] lg:w-[390px] lg:h-[390px] rounded-full pointer-events-none opacity-45"
         style={{
           background: 'conic-gradient(from 0deg, rgba(244, 63, 94, 0.45), rgba(255, 107, 107, 0.35), transparent 45%, rgba(255, 107, 107, 0.3), rgba(244, 63, 94, 0.45))',
-          filter: 'blur(45px)',
+          filter: 'blur(40px)',
         }}
       />
       {/* 3. Stage Floor Bounce Light Anchor */}
       <div
-        className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-[85%] sm:w-[105%] h-20 rounded-full pointer-events-none opacity-60"
+        className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-[85%] sm:w-[105%] h-20 rounded-full pointer-events-none opacity-50"
         style={{
-          background: 'radial-gradient(ellipse at center, rgba(244, 63, 94, 0.30) 0%, rgba(255, 107, 107, 0.15) 45%, transparent 75%)',
+          background: 'radial-gradient(ellipse at center, rgba(244, 63, 94, 0.28) 0%, rgba(255, 107, 107, 0.12) 45%, transparent 75%)',
           filter: 'blur(28px)',
         }}
       />
@@ -843,13 +806,13 @@ function CentralCutoutPortrait({ scrollYProgress }) {
           rotateZ: scrollRotateZ,
           transformStyle: 'preserve-3d',
         }}
-        initial={{ opacity: 0, scale: 0.85, y: 50 }}
+        initial={{ opacity: 0, scale: 0.88, y: 40 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
         className="relative z-10 flex items-center justify-center cursor-pointer group"
       >
         <div
-          className="relative w-[260px] h-[340px] sm:w-[310px] sm:h-[400px] md:w-[340px] md:h-[440px] lg:w-[360px] lg:h-[460px] xl:w-[380px] xl:h-[480px] rounded-[36px] sm:rounded-[44px] overflow-hidden border-2 border-white/85 dark:border-white/20 shadow-[0_25px_60px_-15px_rgba(244,63,94,0.32)] backdrop-blur-md"
+          className="relative w-[260px] h-[330px] sm:w-[300px] sm:h-[390px] md:w-[330px] md:h-[430px] lg:w-[350px] lg:h-[450px] xl:w-[370px] xl:h-[470px] rounded-[36px] sm:rounded-[44px] overflow-hidden border-2 border-white/85 dark:border-white/20 shadow-[0_25px_60px_-15px_rgba(244,63,94,0.32)] backdrop-blur-md"
           style={{ background: 'linear-gradient(145deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.2) 100%)' }}
         >
           <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-white to-transparent opacity-90 z-20" />
@@ -867,34 +830,34 @@ function CentralCutoutPortrait({ scrollYProgress }) {
           <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-20" />
         </div>
 
-        {/* Orbiting Satellite Badges */}
-        <motion.div style={{ y: badgeExpY, z: 55 }} className="absolute -top-4 -left-4 sm:-top-5 sm:-left-8 lg:-left-6 z-30">
-          <div className="glass-premium rounded-2xl px-3.5 py-2.5 sm:px-4 sm:py-3 shadow-xl border border-white/80 dark:border-white/10 flex items-center gap-3">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-[var(--color-accent)] to-[var(--color-accent-2)] flex items-center justify-center text-white shadow-md shadow-[var(--color-accent)]/30">
-              <Code2 size={19} />
+        {/* Orbiting Satellite Badges (Responsive positioning without mobile clipping) */}
+        <motion.div style={{ y: badgeExpY, z: 55 }} className="absolute -top-3 -left-2 sm:-top-5 sm:-left-6 z-30">
+          <div className="glass-premium rounded-2xl px-3 py-2 sm:px-4 sm:py-2.5 shadow-xl border border-white/80 dark:border-white/10 flex items-center gap-2.5 backdrop-blur-xl">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-[var(--color-accent)] to-[var(--color-accent-2)] flex items-center justify-center text-white shadow-md shadow-[var(--color-accent)]/30 flex-shrink-0">
+              <Code2 size={16} />
             </div>
             <div>
               <div className="text-xs sm:text-sm font-bold text-[var(--color-text-main)]">3+ Years Exp.</div>
-              <div className="text-[10px] sm:text-xs text-[var(--color-text-muted)] font-medium">Full-Stack Dev</div>
+              <div className="text-[10px] text-[var(--color-text-muted)] font-medium">Full-Stack Dev</div>
             </div>
           </div>
         </motion.div>
 
-        <motion.div style={{ y: badgeAvailY, z: 45 }} className="absolute top-24 -right-4 sm:top-28 sm:-right-8 lg:-right-6 z-30">
-          <div className="glass-premium rounded-2xl px-3.5 py-2.5 sm:px-4 sm:py-3 shadow-xl border border-white/80 dark:border-white/10 flex items-center gap-3">
-            <div className="relative flex h-3 w-3">
+        <motion.div style={{ y: badgeAvailY, z: 45 }} className="absolute top-20 -right-2 sm:top-24 sm:-right-6 z-30">
+          <div className="glass-premium rounded-2xl px-3 py-2 sm:px-4 sm:py-2.5 shadow-xl border border-white/80 dark:border-white/10 flex items-center gap-2.5 backdrop-blur-xl">
+            <div className="relative flex h-2.5 w-2.5 flex-shrink-0">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500" />
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
             </div>
             <div>
               <div className="text-xs sm:text-sm font-bold text-[var(--color-text-main)]">Available for Hire</div>
-              <div className="text-[10px] sm:text-xs text-emerald-600 dark:text-emerald-400 font-medium">Full-time & Contracts</div>
+              <div className="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium">Full-time & Contracts</div>
             </div>
           </div>
         </motion.div>
 
-        <motion.div style={{ y: badgeStatsY, z: 35 }} className="absolute -bottom-4 -left-2 sm:-bottom-5 sm:left-4 z-30 flex">
-          <div className="glass-premium rounded-2xl px-3.5 py-2 shadow-lg border border-white/80 dark:border-white/10 flex items-center gap-2">
+        <motion.div style={{ y: badgeStatsY, z: 35 }} className="absolute -bottom-3 left-1/2 -translate-x-1/2 sm:translate-x-0 sm:left-4 z-30 flex">
+          <div className="glass-premium rounded-2xl px-3.5 py-2 shadow-lg border border-white/80 dark:border-white/10 flex items-center gap-2 backdrop-blur-xl whitespace-nowrap">
             <Sparkles size={14} className="text-[var(--color-accent)] animate-pulse" />
             <span className="text-xs font-semibold text-[var(--color-text-main)]">15+ Production Apps Built</span>
           </div>
@@ -933,10 +896,16 @@ function Hero() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 xl:gap-14 items-center">
           
           {/* Left Column: Headlines, Bio, Tech Stack, CTAs, Stats */}
-          <div className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left order-2 lg:order-1">
+          <div className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left order-1">
+            
             {/* Status pills */}
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2.5 mb-5">
-              <span className="px-3.5 py-1.5 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-surface)]/80 backdrop-blur-md text-xs font-semibold text-[var(--color-text-main)] shadow-xs flex items-center gap-2">
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="flex flex-wrap items-center justify-center lg:justify-start gap-2.5 mb-6"
+            >
+              <span className="px-3.5 py-1.5 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-surface)]/85 backdrop-blur-md text-xs font-semibold text-[var(--color-text-main)] shadow-xs flex items-center gap-2">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
@@ -945,42 +914,78 @@ function Hero() {
               </span>
               <span className="px-3.5 py-1.5 rounded-full border border-[var(--color-accent)]/30 bg-[var(--color-accent)]/8 backdrop-blur-md text-xs font-semibold text-[var(--color-accent)] shadow-xs flex items-center gap-2">
                 <Sparkles size={13} className="text-[var(--color-accent)] animate-pulse" />
-                MCP 1.0 & AI Integrated
+                MCP 1.0 &amp; AI Integrated
               </span>
-            </div>
+            </motion.div>
 
             {/* Main Headline & Role */}
-            <div className="mb-4">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-extrabold tracking-tight leading-[1.08] text-[var(--color-text-main)] mb-2">
+            <div className="mb-5 w-full">
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.15 }}
+                className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-extrabold tracking-tight leading-[1.08] text-[var(--color-text-main)] mb-3"
+              >
                 Hi, I'm <SparklesText text="Vishnu" />
-              </h1>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-[var(--color-text-main)] min-h-[1.4em] flex items-center justify-center lg:justify-start">
-                <ScrambleTypewriter words={ROLES} />
-              </h2>
+              </motion.h1>
+              <motion.div
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.25 }}
+                className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-[var(--color-text-main)] min-h-[1.4em] flex items-center justify-center lg:justify-start"
+              >
+                <RoleMorpher roles={ROLES} />
+              </motion.div>
             </div>
 
             {/* Description */}
-            <p className="text-base sm:text-lg text-[var(--color-text-muted)] max-w-xl leading-relaxed mb-6 font-normal">
+            <motion.p
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.35 }}
+              className="text-base sm:text-lg text-[var(--color-text-muted)] max-w-xl leading-relaxed mb-6 font-normal"
+            >
               Engineering scalable web architectures, tactile micro-interactions, and AI-augmented applications with{' '}
               <span className="text-[var(--color-text-main)] font-semibold">React 19</span>,{' '}
               <span className="text-[var(--color-text-main)] font-semibold">Python</span>, and{' '}
               <span className="text-gradient-static font-semibold">volumetric design precision</span>.
-            </p>
+            </motion.p>
 
             {/* Tech stack pills */}
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2 mb-8 max-w-xl">
-              {['React 19', 'Python & Django', 'Tailwind CSS', 'MySQL', 'RESTful APIs', 'Model Context Protocol (MCP)'].map((tech, i) => (
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.45 }}
+              className="flex flex-wrap items-center justify-center lg:justify-start gap-2 mb-8 max-w-xl"
+            >
+              {[
+                { name: 'React 19', highlight: true },
+                { name: 'Python & Django', highlight: true },
+                { name: 'Tailwind CSS' },
+                { name: 'MySQL' },
+                { name: 'RESTful APIs' },
+                { name: 'Model Context Protocol (MCP)', highlight: true },
+              ].map((tech) => (
                 <span
-                  key={i}
-                  className="px-3.5 py-1.5 text-xs font-medium rounded-full border border-[var(--color-border)] bg-[var(--color-bg-surface)]/75 text-[var(--color-text-muted)] hover:border-[var(--color-accent)]/50 hover:text-[var(--color-accent)] hover:bg-[var(--color-accent)]/5 hover:scale-105 transition-all duration-300 cursor-default shadow-xs"
+                  key={tech.name}
+                  className={`px-3.5 py-1.5 text-xs font-medium rounded-full border transition-all duration-300 hover:scale-105 cursor-default shadow-xs ${
+                    tech.highlight
+                      ? 'border-[var(--color-accent)]/40 bg-[var(--color-accent)]/8 text-[var(--color-accent)] font-semibold'
+                      : 'border-[var(--color-border)] bg-[var(--color-bg-surface)]/75 text-[var(--color-text-muted)] hover:border-[var(--color-accent)]/50 hover:text-[var(--color-accent)]'
+                  }`}
                 >
-                  {tech}
+                  {tech.name}
                 </span>
               ))}
-            </div>
+            </motion.div>
 
             {/* CTAs & Socials */}
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 mb-8 w-full">
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.55 }}
+              className="flex flex-wrap items-center justify-center lg:justify-start gap-4 mb-8 w-full"
+            >
               <MagneticButton href="#projects" variant="primary">
                 View My Work
                 <motion.span animate={{ x: [0, 5, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
@@ -1011,10 +1016,15 @@ function Hero() {
                   </a>
                 ))}
               </div>
-            </div>
+            </motion.div>
 
             {/* Impact Metrics Row */}
-            <div className="w-full max-w-lg grid grid-cols-3 gap-3 sm:gap-4 pt-6 border-t border-[var(--color-border)]/80">
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.65 }}
+              className="w-full max-w-lg grid grid-cols-3 gap-3 sm:gap-4 pt-6 border-t border-[var(--color-border)]/80"
+            >
               {[
                 { value: '3+', label: 'Years Experience' },
                 { value: '15+', label: 'Projects Built' },
@@ -1025,11 +1035,11 @@ function Hero() {
                   <div className="text-[11px] sm:text-xs text-[var(--color-text-muted)] font-medium mt-0.5">{stat.label}</div>
                 </div>
               ))}
-            </div>
+            </motion.div>
           </div>
 
           {/* Right Column: 3D Portrait with Orbiting Satellites */}
-          <div className="lg:col-span-5 flex justify-center lg:justify-end order-1 lg:order-2">
+          <div className="lg:col-span-5 flex justify-center lg:justify-end order-2">
             <CentralCutoutPortrait scrollYProgress={scrollYProgress} />
           </div>
 
