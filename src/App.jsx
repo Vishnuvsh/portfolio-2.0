@@ -252,40 +252,73 @@ const PROJECTS = [
 
 const EXPERIENCES = [
   {
-    role: 'Full-Stack Developer',
-    company: 'Freelance & Client Systems',
-    location: 'Remote',
-    period: '2023 – Present',
-    type: 'Full-time / Contract',
+    role: 'Full Stack Developer',
+    company: 'Kyle Solutions Private Limited',
+    location: 'Kozhikode, Kerala',
+    period: 'February 2026 – August 2026',
+    type: 'Full-time',
     description:
-      'Developing scalable web applications using React, Python, and Django for diverse client specifications. Focusing on clean code, responsive design, and seamless user experiences that drive real business value.',
+      'Actively contributing to the ongoing development and deployment of a scalable CRM system, ensuring performance and accessibility in a live production environment. Partnering with cross-functional teams to deliver client-facing applications.',
     achievements: [
-      'Delivered 10+ client web applications on time and with 100% satisfaction',
-      'Improved core web vitals and application performance by 40% through code splitting',
-      'Built reusable component architectures that accelerated feature release cycles by 30%',
+      'Actively contributing to the ongoing development and deployment of a scalable CRM system, ensuring performance and accessibility in a live production environment.',
+      'Partnered with a cross-functional team to build and deploy client-facing applications, significantly enhancing the user interface and real-time operations of a Retail POS system.',
     ],
-    skills: ['React 19', 'Python', 'Django REST', 'MySQL', 'RESTful APIs', 'Tailwind CSS', 'MCP'],
+    skills: ['React 19', 'Python', 'CRM Architecture', 'Retail POS', 'REST APIs', 'Production Deployment', 'Tailwind CSS'],
     color: 'from-rose-500 to-amber-500',
     accent: '#f43f5e',
     accentLight: 'rgba(244, 63, 94, 0.12)',
   },
   {
-    role: 'Software Developer Intern',
-    company: 'Tech Solutions Inc.',
-    location: 'On-site / Hybrid',
-    period: '2022 – 2023',
-    type: 'Internship',
+    role: 'Python Full Stack Developer',
+    company: 'Knovista Technologies Pvt. Ltd',
+    location: 'Kadavanthra, Kochi',
+    period: 'August 2025 – January 2026',
+    type: 'Full-time',
     description:
-      'Assisted in building RESTful APIs, optimized database queries, and collaborated with the engineering team to implement modern, responsive user interfaces.',
+      'Engineered secure backend APIs with JWT-based authentication and executed rigorous requirement analysis, testing, and debugging within an iterative Agile delivery model.',
     achievements: [
-      'Built and integrated 5+ RESTful endpoints consumed by mobile and web clients',
-      'Reduced database query latency by 35% through indexing and query optimization',
-      'Collaborated on frontend redesign that improved user retention by 25%',
+      'Implemented JWT-based authentication and authorization mechanisms for secure API access.',
+      'Executed requirement analysis, API testing, debugging, and bug fixing to ensure smooth backend operations.',
+      'Operated within an Agile development environment, following iterative development and incorporating continuous feedback.',
     ],
-    skills: ['Python', 'JavaScript', 'HTML5', 'CSS3', 'MySQL', 'Git & GitHub'],
-    color: 'from-orange-500 to-amber-500',
+    skills: ['Python', 'Django REST', 'JWT Auth', 'API Testing', 'MySQL / PostgreSQL', 'Agile / Scrum', 'Debugging'],
+    color: 'from-amber-500 to-rose-500',
     accent: '#ff6b6b',
     accentLight: 'rgba(255, 107, 107, 0.12)',
+  },
+  {
+    role: 'Junior Python Developer',
+    company: 'Doctosmart Edutech Pvt. Ltd',
+    location: 'Govt. Cyberpark, Calicut',
+    period: 'October 2024 – February 2025',
+    type: 'Full-time',
+    description:
+      'Developed robust backend APIs and handled frontend integration for a comprehensive Clinical Management System, collaborating closely with engineering teams in healthcare tech.',
+    achievements: [
+      'Developed backend APIs and handled frontend integration for a Clinical Management System.',
+      'Collaborated with cross-functional team members using Git and GitHub to deliver a production-ready healthcare solution.',
+    ],
+    skills: ['Python', 'Django', 'RESTful APIs', 'Frontend Integration', 'Healthcare Tech', 'Git & GitHub'],
+    color: 'from-emerald-500 to-teal-500',
+    accent: '#10b981',
+    accentLight: 'rgba(16, 185, 129, 0.12)',
+  },
+  {
+    role: 'Python Developer Intern',
+    company: 'Zion IT Pvt. Ltd',
+    location: 'Calicut, Kerala',
+    period: 'November 2023 – June 2024',
+    type: 'Internship',
+    description:
+      'Supported frontend development tasks and responsive UI styling using HTML, CSS, and Bootstrap, collaborating with senior developers via Git and GitHub.',
+    achievements: [
+      'Supported frontend tasks with HTML, CSS, and Bootstrap for client web projects.',
+      'Collaborated using Git and GitHub for version control and sprint coordination.',
+    ],
+    skills: ['Python', 'HTML5', 'CSS3', 'Bootstrap', 'Git & GitHub', 'UI Integration'],
+    color: 'from-orange-500 to-amber-500',
+    accent: '#fb923c',
+    accentLight: 'rgba(251, 146, 60, 0.12)',
   },
 ];
 
@@ -1665,7 +1698,7 @@ function Experience() {
           {EXPERIENCES.map((exp, index) => {
             const isOpen = openIndex === index;
             return (
-              <div key={exp.role} className="relative">
+              <div key={`${exp.company}-${exp.role}`} className="relative">
                 {/* Timeline Dot */}
                 <div className="absolute -left-[31px] sm:-left-[39px] top-6 z-10">
                   <div
