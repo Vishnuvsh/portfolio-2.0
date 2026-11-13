@@ -133,6 +133,14 @@
     background: linear-gradient(90deg, transparent, var(--color-accent), var(--color-accent-2), transparent);
     opacity: 0.2;
   }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
 
 html {
