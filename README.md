@@ -55,4 +55,64 @@ Portfolio 2.0 is an award-winning executive developer portfolio built to showcas
 5. **Asset Management Platform** — Enterprise tracking system with Python REST API backend and React analytics.
 6. **E-Commerce System** — Full-stack store with product catalog, cart workflows, and administrative dashboards.
 
+---
+
+## 🤖 Model Context Protocol (MCP) Server
+
+Portfolio 2.0 includes a custom standalone MCP server (`mcp/server.js`) compliant with `@modelcontextprotocol/sdk`. It allows AI assistants (Claude Code, Cursor, Antigravity, Gemini) to directly query Vishnu's structured portfolio profile, verified experiences, skill matrix, and project repositories.
+
+```bash
+# Launch MCP Server
+npm run mcp
+```
+
+### Available MCP Tools
+
+- `get_profile` — Detailed developer biography, highlights, and contact information
+- `get_experiences` — Verified career history and quantifiable contributions
+- `get_projects` — Detailed directory of shipped production systems
+- `get_skills` — Technical fluency across Frontend, Backend, and AI tooling
+
+---
+
+## ⚙️ Getting Started
+
+### Prerequisites
+
+- Node.js (v18.0.0 or higher)
+- npm or pnpm
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/Vishnuvsh/portfolio-2.0.git
+
+# Navigate into directory
+cd portfolio-2.0
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+### Production Build
+
+```bash
+# Build production bundle
+npm run build
+
+# Preview production build locally
+npm run preview
+```
+
+---
+
+## 📄 License
+
+Created with precision by [Vishnu V](https://github.com/Vishnuvsh). Distributed under the MIT License.
+
+
 
