@@ -30,3 +30,29 @@ Portfolio 2.0 is an award-winning executive developer portfolio built to showcas
 - **Audited Professional Experience Timeline**: Accordion-style timeline detailing verified production engineering roles across Kyle Solutions, Knovista Technologies, Doctosmart Edutech, and Zion IT.
 - **Lenis Kinetic Smooth Scroll**: Hardware-accelerated smooth scrolling integrated with Framer Motion spring scroll triggers.
 
+---
+
+## 🛠️ Technology Stack
+
+| Layer | Technologies |
+|---|---|
+| **Frontend Framework** | React 19, Vite 8, TypeScript / JavaScript |
+| **Styling & Design System** | Tailwind CSS v4, PostCSS, Space Grotesk, JetBrains Mono |
+| **Animation & Physics** | Framer Motion 12, GSAP ScrollTrigger, Lenis Smooth Scroll |
+| **Backend & Architecture** | Python 3, Django REST Framework, Node.js |
+| **Databases** | MySQL, PostgreSQL |
+| **AI & Protocols** | Model Context Protocol (MCP), OpenCV, MediaPipe, AI APIs |
+| **Code Quality & Tooling** | Oxlint, Git, GitHub Actions |
+
+---
+
+## 📂 Featured Projects
+
+1. **AI Video Translator** — Multi-language neural voice dubbing and lip-sync synchronization platform.
+2. **Home Trip Mode** — Smart travel itinerary planner with dynamic route optimization and checklists.
+3. **Startup Validator** — Automated market feasibility, competitor analysis, and investment viability scoring platform.
+4. **Vision Controller** — Computer vision desktop navigation via real-time camera gesture recognition.
+5. **Asset Management Platform** — Enterprise tracking system with Python REST API backend and React analytics.
+6. **E-Commerce System** — Full-stack store with product catalog, cart workflows, and administrative dashboards.
+
+
