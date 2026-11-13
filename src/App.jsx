@@ -33,8 +33,6 @@ import {
   ArrowUp,
   ExternalLink,
   ArrowUpRight,
-  Lock,
-  Globe,
   Layers,
   Zap,
   Loader,
@@ -70,9 +68,7 @@ const LinkedinIcon = ({ size = 18 }) => (
 // =====================================================================
 const ROLES = [
   'Full-Stack Developer',
-  'React 19 Specialist',
   'Python & Django Architect',
-  'UI/UX Craftsman',
   'Problem Solver',
 ];
 
