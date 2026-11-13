@@ -1,16 +1,20 @@
-# React + Vite
+# Vishnu V — Portfolio 2.0
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+> **Executive Developer Portfolio & AI Systems Showcase**  
+> Engineered with React 19, Tailwind CSS v4, Framer Motion, Lenis Smooth Scroll, and Model Context Protocol (MCP).
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🚀 Live Demo & Links
 
-## React Compiler
+- **Live Portfolio**: [https://resilient-genie-df3d71.netlify.app/](https://resilient-genie-df3d71.netlify.app/)
+- **Resume (CV)**: [Download PDF](https://resilient-genie-df3d71.netlify.app/VishnuV%20-%20Python%20Developer.pdf)
+- **GitHub**: [@Vishnuvsh](https://github.com/Vishnuvsh)
+- **LinkedIn**: [in/vishnu-v-b5256b341](http://www.linkedin.com/in/vishnu-v-b5256b341)
+- **Email**: [vishnuvsh44@gmail.com](mailto:vishnuvsh44@gmail.com)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the Oxlint configuration
+## 💡 Overview
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+Portfolio 2.0 is an award-winning executive developer portfolio built to showcase high-velocity full-stack platforms, autonomous AI workflows, and tactile micro-interactions with volumetric lighting precision.
