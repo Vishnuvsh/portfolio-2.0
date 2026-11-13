@@ -44,10 +44,23 @@ node mcp/server.js
   "mcpServers": {
     "vishnu-portfolio": {
       "command": "node",
-      "args": ["c:/Users/vishn/OneDrive/Desktop/portfolio-2.0/mcp/server.js"]
+      "args": ["<PATH_TO_PORTFOLIO>/mcp/server.js"]
     }
   }
 }
+```
+
+### Cursor (`.cursor/mcp.json`):
+```json
+{
+  "mcpServers": {
+    "vishnu-portfolio": {
+      "command": "node",
+      "args": ["./mcp/server.js"]
+    }
+  }
+}
+```
 ```
 
 ### Antigravity IDE:
