@@ -39,6 +39,10 @@ import {
   ChevronDown,
   Smartphone,
   Laptop,
+  Database,
+  Server,
+  ShieldCheck,
+  Activity,
 } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -318,23 +322,88 @@ const EXPERIENCES = [
   },
 ];
 
-const CODE_SNIPPET = `// vishnu.config.ts
-export const vishnu = {
-  name: "Vishnu V",
-  title: "Full-Stack Developer",
-  location: "Kerala, India 🇮🇳",
-  status: "Available for Hire 🟢",
-  stack: {
-    frontend: ["React 19", "Tailwind CSS", "Framer Motion", "Lenis"],
-    backend:  ["Python", "Django REST Framework", "MySQL", "APIs"],
-    tooling:  ["Model Context Protocol (MCP)", "Git", "Vite"]
+const ARCHITECTURE_TIERS = [
+  {
+    id: 'frontend',
+    tier: '01 / CLIENT TIER',
+    name: 'Frontend',
+    title: 'Modern UI & Tactile UX',
+    icon: Code2,
+    accent: '#f43f5e',
+    summary: 'Fluid, 60fps responsive interfaces engineered with React 19, Tailwind CSS v4, and kinetic Framer Motion micro-interactions.',
+    metrics: [
+      { label: 'Core UI', value: 'React 19' },
+      { label: 'Styling', value: 'Tailwind v4' },
+      { label: 'Animation', value: 'Framer Motion + Lenis' },
+    ],
+    features: [
+      'Declarative component hierarchies with modular state management',
+      'Hardware-accelerated kinetic smooth scrolling with zero jank',
+      'Mobile-first responsive layouts with sub-100ms interaction latency',
+    ],
+    chips: ['React 19', 'Tailwind CSS', 'Framer Motion', 'Lenis', 'Vite', 'a11y'],
   },
-  deliverables: [
-    "High-performance responsive web apps",
-    "Scalable database architectures",
-    "Production-grade full-stack solutions"
-  ]
-};`;
+  {
+    id: 'backend',
+    tier: '02 / SERVICE LAYER',
+    name: 'Backend',
+    title: 'API & Business Logic',
+    icon: Server,
+    accent: '#ff6b6b',
+    summary: 'Modular, secure RESTful API architectures built with Python and Django REST Framework, with JWT auth and rigorous testing.',
+    metrics: [
+      { label: 'Runtime', value: 'Python 3.12+' },
+      { label: 'Framework', value: 'Django REST (DRF)' },
+      { label: 'Security', value: 'JWT & RBAC' },
+    ],
+    features: [
+      'JWT token authentication with granular role-based permissions',
+      'Normalized REST endpoints with robust data validation serializers',
+      'Iterative Agile delivery with systematic debugging and test suites',
+    ],
+    chips: ['Python', 'Django REST', 'JWT Security', 'RESTful APIs', 'Postman', 'Agile'],
+  },
+  {
+    id: 'database',
+    tier: '03 / DATA LAYER',
+    name: 'Database',
+    title: 'Relational Schemas & Storage',
+    icon: Database,
+    accent: '#fb923c',
+    summary: 'Structured relational database design with schema normalization, query indexing, ACID transactions, and data integrity.',
+    metrics: [
+      { label: 'Engines', value: 'MySQL • PostgreSQL' },
+      { label: 'Transactions', value: 'ACID Compliant' },
+      { label: 'Optimization', value: 'Query Indexing' },
+    ],
+    features: [
+      'Normalized entity-relationship schemas ensuring zero data redundancy',
+      'Query indexing reducing latency in production CRM/POS environments',
+      'Safe schema migration pipelines and automated relational integrity',
+    ],
+    chips: ['MySQL', 'PostgreSQL', 'Schema Design', 'Indexing', 'ORM', 'Transactions'],
+  },
+  {
+    id: 'ai-mcp',
+    tier: '04 / PROTOCOL LAYER',
+    name: 'AI & MCP',
+    title: 'AI & Model Context Protocol',
+    icon: Zap,
+    accent: '#10b981',
+    summary: 'Next-generation agentic workflows, LLM tool integration, and custom Model Context Protocol (MCP) servers.',
+    metrics: [
+      { label: 'Protocol', value: 'MCP 1.0 Spec' },
+      { label: 'Intelligence', value: 'AI APIs & LLMs' },
+      { label: 'Computer Vision', value: 'OpenCV • MediaPipe' },
+    ],
+    features: [
+      'Custom standalone MCP servers allowing AI agents to interface with apps',
+      'Computer vision software controlling desktops via real-time hand gestures',
+      'Neural audio dubbing and autonomous startup evaluation workflows',
+    ],
+    chips: ['MCP Server', 'OpenCV', 'MediaPipe', 'AI APIs', 'Autonomous Agents'],
+  },
+];
 
 // =====================================================================
 // 3. BACKGROUND & AMBIENT VISUALS
@@ -1100,139 +1169,276 @@ function Hero() {
 }
 
 // =====================================================================
-// 7. ABOUT SECTION (DEVELOPER BENTO GRID)
+// 7. ABOUT SECTION (INTERACTIVE ARCHITECTURE MATRIX)
 // =====================================================================
 function About() {
+  const [activeTierIdx, setActiveTierIdx] = useState(0);
   const [copied, setCopied] = useState(false);
+  const activeTier = ARCHITECTURE_TIERS[activeTierIdx];
 
-  const handleCopyCode = () => {
-    navigator.clipboard.writeText(CODE_SNIPPET);
+  const handleCopyStack = () => {
+    const stackSummary = `Vishnu V - Full-Stack Architecture Stack:
+• Frontend: React 19, Tailwind CSS v4, Framer Motion, Lenis
+• Backend: Python, Django REST Framework, JWT Security
+• Database: MySQL, PostgreSQL, Relational Schema Design
+• Protocols: Model Context Protocol (MCP 1.0), AI APIs, OpenCV
+Status: Open for Senior & Full-Stack Opportunities`;
+    navigator.clipboard.writeText(stackSummary);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
   return (
     <section id="about" className="py-24 md:py-32 relative overflow-hidden">
-      <div className="container mx-auto px-6 md:px-12 relative z-10 max-w-6xl">
+      <div className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-12 relative z-10 max-w-6xl">
+        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.6 }}
-          className="text-center max-w-3xl mx-auto mb-16"
+          className="text-center max-w-3xl mx-auto mb-14"
         >
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-[var(--color-accent)]/20 bg-[var(--color-accent)]/5 text-xs font-semibold text-[var(--color-accent)] mb-4">
+          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-[var(--color-accent)]/20 bg-[var(--color-accent)]/5 text-xs font-semibold text-[var(--color-accent)] mb-3 shadow-2xs">
             <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] animate-pulse" />
-            Engineering Philosophy
+            Engineering Philosophy &amp; Methodology
           </div>
-          <h2 className="text-4xl md:text-5xl font-extrabold text-[var(--color-text-main)] tracking-tight mb-4">
-            Crafting digital <span className="text-gradient">experiences</span> that matter
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[var(--color-text-main)] tracking-tight mb-3">
+            Architecting for <span className="text-gradient">Precision &amp; Scale</span>
           </h2>
-          <p className="text-base sm:text-lg text-[var(--color-text-muted)] leading-relaxed">
-            I combine robust software engineering with thoughtful design principles to build applications that are powerful, intuitive, and built for production.
+          <p className="text-sm sm:text-base text-[var(--color-text-muted)] leading-relaxed max-w-2xl mx-auto">
+            An intuitive view of how I bridge normalized relational schemas, secure API gateways, and tactile user interfaces into cohesive production systems.
           </p>
         </motion.div>
 
-        {/* Bento Grid */}
+        {/* Bento Grid Row 1: Interactive System Architecture vs Executive Thesis */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-          {/* Bento Card 1: IDE Preview */}
+          
+          {/* Card 1: Interactive Architecture Blueprint Console (7 Cols) */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.7 }}
-            className="lg:col-span-7 rounded-3xl border border-[var(--color-border)] bg-[var(--color-bg-surface)]/85 backdrop-blur-md shadow-xl overflow-hidden flex flex-col group hover:border-[var(--color-accent)]/40 transition-colors duration-400"
+            className="lg:col-span-7 rounded-3xl border border-[var(--color-border)] bg-[var(--color-bg-surface)]/90 backdrop-blur-xl shadow-xl overflow-hidden flex flex-col justify-between group hover:border-[var(--color-accent)]/40 transition-all duration-300"
           >
-            <div className="flex items-center justify-between px-5 py-3.5 border-b border-[var(--color-border)]/70 bg-[var(--color-secondary)]/50">
+            {/* Window Chrome Header */}
+            <div className="flex items-center justify-between px-4 sm:px-5 py-3 border-b border-[var(--color-border)]/70 bg-[var(--color-secondary)]/50">
               <div className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded-full bg-rose-500/80 inline-block" />
-                <span className="w-3 h-3 rounded-full bg-amber-500/80 inline-block" />
-                <span className="w-3 h-3 rounded-full bg-emerald-500/80 inline-block" />
-                <span className="ml-3 text-xs font-mono font-medium text-[var(--color-text-muted)] flex items-center gap-1.5">
-                  <Terminal size={13} className="text-[var(--color-accent)]" />
-                  vishnu.config.ts
+                <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80 inline-block" />
+                <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80 inline-block" />
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80 inline-block" />
+                <span className="ml-2 text-xs font-mono font-medium text-[var(--color-text-muted)] flex items-center gap-1.5">
+                  <Terminal size={12} className="text-[var(--color-accent)]" />
+                  architecture.matrix.sys
                 </span>
               </div>
               <button
-                onClick={handleCopyCode}
+                onClick={handleCopyStack}
                 className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-mono text-[var(--color-text-muted)] hover:text-[var(--color-accent)] hover:bg-[var(--color-accent)]/10 transition-colors cursor-pointer"
-                aria-label="Copy snippet"
+                aria-label="Copy stack summary"
               >
                 {copied ? <Check size={12} className="text-emerald-500" /> : <Copy size={12} />}
-                <span>{copied ? 'Copied!' : 'Copy'}</span>
+                <span>{copied ? 'Copied!' : 'Copy Stack'}</span>
               </button>
             </div>
 
-            <div className="p-5 sm:p-6 font-mono text-xs sm:text-[13px] leading-relaxed text-[var(--color-text-main)] overflow-x-auto flex-1 bg-[var(--color-bg-base)]/50">
-              <div className="text-[var(--color-text-muted)]">// System configuration &amp; architectural scope</div>
-              <div>
-                <span className="text-[var(--color-accent)] font-semibold">export const</span>{' '}
-                <span className="font-bold text-[var(--color-accent-2)]">vishnu</span> = {'{'}
+            {/* Interactive Tier Navigation Tabs */}
+            <div className="p-4 sm:p-5 pb-0">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 p-1 rounded-2xl bg-black/[0.03] dark:bg-white/[0.04] border border-black/[0.04] dark:border-white/[0.06]">
+                {ARCHITECTURE_TIERS.map((tier, idx) => {
+                  const isActive = idx === activeTierIdx;
+                  const Icon = tier.icon;
+                  return (
+                    <button
+                      key={tier.id}
+                      onClick={() => setActiveTierIdx(idx)}
+                      className={`relative flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer select-none ${
+                        isActive
+                          ? 'text-[var(--color-text-main)] dark:text-white shadow-xs'
+                          : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-main)]'
+                      }`}
+                    >
+                      {isActive && (
+                        <motion.div
+                          layoutId="about-tier-active"
+                          className="absolute inset-0 rounded-xl bg-white dark:bg-zinc-800 shadow-sm border border-black/[0.06] dark:border-white/[0.1]"
+                          transition={{ type: 'spring', stiffness: 450, damping: 32 }}
+                        />
+                      )}
+                      <span className="relative z-10 flex items-center gap-1.5 truncate">
+                        <Icon size={13} style={{ color: isActive ? tier.accent : undefined }} />
+                        <span className="truncate">{tier.name}</span>
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
-              <div className="pl-4"><span className="text-[var(--color-text-muted)]">name:</span> <span className="text-emerald-600 dark:text-emerald-400 font-semibold">"Vishnu V"</span>,</div>
-              <div className="pl-4"><span className="text-[var(--color-text-muted)]">role:</span> <span className="text-emerald-600 dark:text-emerald-400 font-semibold">"Full-Stack Developer"</span>,</div>
-              <div className="pl-4"><span className="text-[var(--color-text-muted)]">status:</span> <span className="text-emerald-600 dark:text-emerald-400 font-semibold">"Available for Hire 🟢"</span>,</div>
-              <div className="pl-4"><span className="text-[var(--color-text-muted)]">stack:</span> {'{'}</div>
-              <div className="pl-8"><span className="text-[var(--color-text-muted)]">frontend:</span> [<span className="text-amber-600 dark:text-amber-400">"React 19"</span>, <span className="text-amber-600 dark:text-amber-400">"Tailwind CSS"</span>, <span className="text-amber-600 dark:text-amber-400">"Framer Motion"</span>],</div>
-              <div className="pl-8"><span className="text-[var(--color-text-muted)]">backend:</span> [<span className="text-amber-600 dark:text-amber-400">"Python"</span>, <span className="text-amber-600 dark:text-amber-400">"Django REST"</span>, <span className="text-amber-600 dark:text-amber-400">"MySQL"</span>],</div>
-              <div className="pl-8"><span className="text-[var(--color-text-muted)]">protocols:</span> [<span className="text-amber-600 dark:text-amber-400">"Model Context Protocol (MCP)"</span>, <span className="text-amber-600 dark:text-amber-400">"REST APIs"</span>]</div>
-              <div className="pl-4">{'}'},</div>
-              <div className="pl-4"><span className="text-[var(--color-text-muted)]">focus:</span> <span className="text-indigo-600 dark:text-indigo-400 font-medium">"High-velocity, performant &amp; delightful web applications"</span></div>
-              <div>{'};'}</div>
             </div>
 
+            {/* Active Tier Dynamic Showcase Body */}
+            <div className="p-4 sm:p-6 flex-1 flex flex-col justify-between">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeTier.id}
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -15 }}
+                  transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  {/* Tier Label & Title */}
+                  <div className="flex items-center justify-between mb-2">
+                    <span
+                      className="text-[11px] font-mono font-bold tracking-wider uppercase"
+                      style={{ color: activeTier.accent }}
+                    >
+                      {activeTier.tier}
+                    </span>
+                    <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-md bg-black/[0.04] dark:bg-white/[0.06] text-[var(--color-text-muted)]">
+                      Tier {activeTierIdx + 1} of {ARCHITECTURE_TIERS.length}
+                    </span>
+                  </div>
+
+                  <h3 className="text-xl sm:text-2xl font-extrabold text-[var(--color-text-main)] mb-2.5 tracking-tight flex items-center gap-2.5">
+                    <div
+                      className="w-8 h-8 rounded-lg flex items-center justify-center text-white flex-shrink-0 shadow-xs"
+                      style={{ background: activeTier.accent }}
+                    >
+                      <activeTier.icon size={16} />
+                    </div>
+                    <span>{activeTier.title}</span>
+                  </h3>
+
+                  <p className="text-xs sm:text-sm text-[var(--color-text-muted)] leading-relaxed mb-4">
+                    {activeTier.summary}
+                  </p>
+
+                  {/* 3-Column Technical Metric HUD */}
+                  <div className="grid grid-cols-3 gap-2 sm:gap-3 p-3 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] border border-black/[0.04] dark:border-white/[0.06] mb-4">
+                    {activeTier.metrics.map((m, i) => (
+                      <div key={i} className="text-left px-1">
+                        <div className="text-[10px] uppercase font-mono tracking-wider text-[var(--color-text-muted)] truncate">
+                          {m.label}
+                        </div>
+                        <div className="text-xs sm:text-sm font-bold text-[var(--color-text-main)] truncate mt-0.5" style={{ color: i === 0 ? activeTier.accent : undefined }}>
+                          {m.value}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Key Production Features */}
+                  <div className="space-y-1.5 mb-4">
+                    {activeTier.features.map((feat, i) => (
+                      <div key={i} className="flex items-start gap-2 text-xs text-[var(--color-text-muted)]">
+                        <span
+                          className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0"
+                          style={{ backgroundColor: activeTier.accent }}
+                        />
+                        <span className="leading-relaxed">{feat}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Tech Tags */}
+                  <div className="flex flex-wrap gap-1.5 pt-1">
+                    {activeTier.chips.map((chip) => (
+                      <span
+                        key={chip}
+                        className="px-2.5 py-1 rounded-lg text-[10px] font-mono font-medium bg-black/[0.03] dark:bg-white/[0.05] text-[var(--color-text-main)] border border-black/[0.05] dark:border-white/[0.06]"
+                      >
+                        {chip}
+                      </span>
+                    ))}
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
+            {/* Bottom Status Terminal Bar */}
             <div className="px-5 py-3 border-t border-[var(--color-border)]/70 bg-[var(--color-secondary)]/30 flex items-center justify-between text-xs text-[var(--color-text-muted)]">
               <span className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span>All systems operational</span>
+                <span className="text-[11px] font-medium">All 4 Tiers Fully Integrated</span>
               </span>
-              <span className="font-mono text-[11px]">UTF-8 • Node v20 • React 19</span>
+              <span className="font-mono text-[11px] hidden sm:inline text-[var(--color-text-muted)]">
+                React 19 • Python 3 • MySQL • MCP 1.0
+              </span>
             </div>
           </motion.div>
 
-          {/* Bento Card 2: Narrative */}
+          {/* Card 2: Executive Engineering Narrative (5 Cols) */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="lg:col-span-5 rounded-3xl border border-[var(--color-border)] bg-[var(--color-bg-surface)]/85 backdrop-blur-md p-6 sm:p-8 shadow-xl flex flex-col justify-between group hover:border-[var(--color-accent)]/40 transition-colors duration-400 relative overflow-hidden"
+            className="lg:col-span-5 rounded-3xl border border-[var(--color-border)] bg-[var(--color-bg-surface)]/90 backdrop-blur-xl p-6 sm:p-8 shadow-xl flex flex-col justify-between group hover:border-[var(--color-accent)]/40 transition-all duration-300 relative overflow-hidden"
           >
             <div>
               <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[var(--color-accent)] mb-3">
                 <Cpu size={14} />
                 Background &amp; Expertise
               </div>
-              <h3 className="text-2xl font-bold text-[var(--color-text-main)] mb-3 leading-snug">
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-[var(--color-text-main)] mb-3 leading-snug tracking-tight">
                 Bridging backend stability with frontend finesse.
               </h3>
               <p className="text-sm text-[var(--color-text-muted)] leading-relaxed mb-4">
                 Based in Kerala, India, I specialize in full-stack architecture that scales effortlessly. My passion lies in taking ideas from raw database schemas to polished, responsive, and animated user experiences.
               </p>
-              <p className="text-sm text-[var(--color-text-muted)] leading-relaxed">
+              <p className="text-sm text-[var(--color-text-muted)] leading-relaxed mb-6">
                 Whether implementing complex RESTful services in Python/Django or crafting buttery-smooth interactive components in React, I focus on velocity, maintainability, and client satisfaction.
               </p>
+
+              {/* 4 Connected HUD Metric Tiles */}
+              <div className="grid grid-cols-2 gap-3 mb-6">
+                {[
+                  { title: '3+ Years', label: 'Production Software', color: '#f43f5e' },
+                  { title: '15+ Shipped', label: 'Full-Stack Apps', color: '#ff6b6b' },
+                  { title: 'Django REST', label: 'Secure Backend APIs', color: '#fb923c' },
+                  { title: 'React 19 & MCP', label: 'Tactile & AI-Driven', color: '#10b981' },
+                ].map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="p-3 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] border border-black/[0.05] dark:border-white/[0.06] hover:border-[var(--color-accent)]/30 transition-colors"
+                  >
+                    <div className="text-base sm:text-lg font-extrabold tracking-tight" style={{ color: item.color }}>
+                      {item.title}
+                    </div>
+                    <div className="text-[11px] font-medium text-[var(--color-text-muted)] mt-0.5 truncate">
+                      {item.label}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-2.5 pt-6 mt-6 border-t border-[var(--color-border)]/70">
-              {[
-                '3+ Years Building',
-                '15+ Projects Shipped',
-                'Django REST APIs',
-                'Modern React & Next.js',
-                'MySQL Database Design',
-                'MCP AI Integration',
-              ].map((item, idx) => (
-                <div key={idx} className="flex items-center gap-2 text-xs font-medium text-[var(--color-text-main)]">
-                  <CheckCircle2 size={14} className="text-[var(--color-accent)] flex-shrink-0" />
-                  <span>{item}</span>
-                </div>
-              ))}
+            {/* Bottom Actions */}
+            <div className="pt-4 border-t border-[var(--color-border)]/70 flex items-center gap-3">
+              <a
+                href="#projects"
+                className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider text-white shadow-md active:scale-[0.98] transition-all cursor-pointer"
+                style={{
+                  background: 'linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%)',
+                }}
+              >
+                <span>View Shipped Work</span>
+                <ArrowRight size={13} />
+              </a>
+              <a
+                href="https://resilient-genie-df3d71.netlify.app/VishnuV%20-%20Python%20Developer.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl font-semibold text-xs text-[var(--color-text-main)] bg-black/[0.04] dark:bg-white/[0.06] hover:bg-black/[0.08] dark:hover:bg-white/[0.12] border border-black/[0.06] dark:border-white/[0.08] transition-colors cursor-pointer"
+              >
+                <Download size={13} />
+                <span>CV</span>
+              </a>
             </div>
           </motion.div>
         </div>
 
-        {/* Bento Row 2: 4 Pillars */}
+        {/* Bento Row 2: 4 Pillars Capability Deck */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-6">
           {PILLARS.map((pillar, i) => (
             <motion.div
@@ -1242,18 +1448,18 @@ function About() {
               viewport={{ once: true, margin: '-40px' }}
               transition={{ duration: 0.5, delay: i * 0.08 }}
               whileHover={{ y: -4 }}
-              className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-surface)]/80 backdrop-blur-sm p-6 shadow-sm hover:shadow-lg transition-all duration-300 group relative overflow-hidden"
+              className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-surface)]/85 backdrop-blur-md p-5 sm:p-6 shadow-sm hover:shadow-lg transition-all duration-300 group relative overflow-hidden"
             >
               <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center mb-4 transition-transform group-hover:scale-110"
+                className="w-10 h-10 rounded-xl flex items-center justify-center mb-4 transition-transform group-hover:scale-110 shadow-xs"
                 style={{ background: `${pillar.color}15`, color: pillar.color }}
               >
                 <pillar.icon size={20} />
               </div>
-              <div className="text-[11px] font-semibold tracking-wider uppercase text-[var(--color-accent)] mb-1">
+              <div className="text-[11px] font-mono font-bold tracking-wider uppercase mb-1" style={{ color: pillar.color }}>
                 {pillar.badge}
               </div>
-              <h4 className="text-base font-bold text-[var(--color-text-main)] mb-2">
+              <h4 className="text-base font-bold text-[var(--color-text-main)] mb-1.5">
                 {pillar.title}
               </h4>
               <p className="text-xs text-[var(--color-text-muted)] leading-relaxed">
