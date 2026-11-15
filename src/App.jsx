@@ -410,7 +410,7 @@ const ARCHITECTURE_TIERS = [
 // =====================================================================
 function FloatingParticles() {
   const [particles] = useState(() =>
-    Array.from({ length: 18 }).map((_, i) => ({
+    Array.from({ length: typeof window !== 'undefined' && window.innerWidth < 768 ? 8 : 18 }).map((_, i) => ({
       id: i,
       x: Math.random() * 100,
       size: Math.random() * 2.8 + 1.2,
@@ -459,7 +459,7 @@ function AnimatedBackground() {
       <motion.div
         animate={{ scale: [1, 1.08, 0.96, 1], opacity: [0.85, 1, 0.85] }}
         transition={{ duration: 16, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute -top-[12%] left-1/2 -translate-x-1/2 w-[90vw] max-w-[1000px] h-[90vw] max-h-[1000px] rounded-full pointer-events-none"
+        className="absolute -top-[12%] left-1/2 -translate-x-1/2 w-[70vw] sm:w-[90vw] max-w-[1000px] h-[70vw] sm:h-[90vw] max-h-[1000px] rounded-full pointer-events-none"
         style={{
           background: 'radial-gradient(circle at 50% 50%, rgba(244, 63, 94, 0.22) 0%, rgba(255, 107, 107, 0.16) 32%, rgba(251, 146, 60, 0.08) 55%, transparent 75%)',
           filter: 'blur(100px)',
@@ -866,7 +866,7 @@ function CentralCutoutPortrait({ scrollYProgress }) {
     >
       {/* 1. Volumetric Key Glow Circle */}
       <motion.div
-        className="absolute w-[320px] h-[320px] sm:w-[420px] sm:h-[420px] lg:w-[460px] lg:h-[460px] rounded-full pointer-events-none"
+        className="absolute w-[250px] h-[250px] sm:w-[420px] sm:h-[420px] lg:w-[460px] lg:h-[460px] rounded-full pointer-events-none"
         style={{
           scale: stageLightScale,
           opacity: stageLightOpacity,
@@ -879,7 +879,7 @@ function CentralCutoutPortrait({ scrollYProgress }) {
       <motion.div
         animate={{ rotate: 360 }}
         transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
-        className="absolute w-[280px] h-[280px] sm:w-[360px] sm:h-[360px] lg:w-[390px] lg:h-[390px] rounded-full pointer-events-none opacity-45"
+        className="absolute w-[220px] h-[220px] sm:w-[360px] sm:h-[360px] lg:w-[390px] lg:h-[390px] rounded-full pointer-events-none opacity-45"
         style={{
           background: 'conic-gradient(from 0deg, rgba(244, 63, 94, 0.45), rgba(255, 107, 107, 0.35), transparent 45%, rgba(255, 107, 107, 0.3), rgba(244, 63, 94, 0.45))',
           filter: 'blur(40px)',
@@ -910,7 +910,7 @@ function CentralCutoutPortrait({ scrollYProgress }) {
         className="relative z-10 flex items-center justify-center cursor-pointer group"
       >
         <div
-          className="relative w-[260px] h-[330px] sm:w-[300px] sm:h-[390px] md:w-[330px] md:h-[430px] lg:w-[350px] lg:h-[450px] xl:w-[370px] xl:h-[470px] rounded-[36px] sm:rounded-[44px] overflow-hidden border-2 border-white/85 dark:border-white/20 shadow-[0_25px_60px_-15px_rgba(244,63,94,0.32)] backdrop-blur-md"
+          className="relative w-[220px] h-[280px] sm:w-[300px] sm:h-[390px] md:w-[330px] md:h-[430px] lg:w-[350px] lg:h-[450px] xl:w-[370px] xl:h-[470px] rounded-[28px] sm:rounded-[44px] overflow-hidden border-2 border-white/85 dark:border-white/20 shadow-[0_25px_60px_-15px_rgba(244,63,94,0.32)] backdrop-blur-md"
           style={{ background: 'linear-gradient(145deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.2) 100%)' }}
         >
           <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-white to-transparent opacity-90 z-20" />
@@ -984,7 +984,7 @@ function Hero() {
     <section
       id="hero"
       ref={heroRef}
-      className="relative min-h-[96vh] lg:min-h-screen flex flex-col justify-between pt-28 sm:pt-32 pb-8 px-4 sm:px-6 lg:px-12 xl:px-16 overflow-hidden"
+      className="relative min-h-[92vh] sm:min-h-[96vh] lg:min-h-screen flex flex-col justify-between pt-24 sm:pt-32 pb-6 sm:pb-8 px-4 sm:px-6 lg:px-12 xl:px-16 overflow-hidden"
     >
       {/* Background Volumetric Mesh Glows */}
       <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-[var(--color-accent)]/8 rounded-full blur-[140px] pointer-events-none" />
@@ -1022,7 +1022,7 @@ function Hero() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.15 }}
-                className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-extrabold tracking-tight leading-[1.08] text-[var(--color-text-main)] mb-3"
+                className="text-3xl sm:text-5xl md:text-6xl xl:text-7xl font-extrabold tracking-tight leading-[1.08] text-[var(--color-text-main)] mb-3"
               >
                 Hi, I'm <SparklesText text="Vishnu" />
               </motion.h1>
@@ -1030,7 +1030,7 @@ function Hero() {
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.25 }}
-                className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-[var(--color-text-main)] min-h-[1.4em] flex items-center justify-center lg:justify-start"
+                className="text-xl sm:text-3xl md:text-4xl font-bold tracking-tight text-[var(--color-text-main)] min-h-[1.4em] flex items-center justify-center lg:justify-start"
               >
                 <RoleMorpher roles={ROLES} />
               </motion.div>
@@ -1041,7 +1041,7 @@ function Hero() {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.35 }}
-              className="text-base sm:text-lg text-[var(--color-text-muted)] max-w-xl leading-relaxed mb-6 font-normal"
+              className="text-sm sm:text-lg text-[var(--color-text-muted)] max-w-xl leading-relaxed mb-5 sm:mb-6 font-normal"
             >
               Engineering scalable web architectures, tactile micro-interactions, and AI-augmented applications with{' '}
               <span className="text-[var(--color-text-main)] font-semibold">React 19</span>,{' '}
@@ -1054,7 +1054,7 @@ function Hero() {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.45 }}
-              className="flex flex-wrap items-center justify-center lg:justify-start gap-2 mb-8 max-w-xl"
+              className="flex flex-wrap items-center justify-center lg:justify-start gap-1.5 sm:gap-2 mb-6 sm:mb-8 max-w-xl"
             >
               {[
                 { name: 'React 19', highlight: true },
@@ -1121,7 +1121,7 @@ function Hero() {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.65 }}
-              className="w-full max-w-lg grid grid-cols-3 gap-3 sm:gap-4 pt-6 border-t border-[var(--color-border)]/80"
+              className="w-full max-w-lg grid grid-cols-3 gap-2 sm:gap-4 pt-4 sm:pt-6 border-t border-[var(--color-border)]/80"
             >
               {[
                 { value: '3+', label: 'Years Experience' },
@@ -1129,7 +1129,7 @@ function Hero() {
                 { value: '100%', label: 'Client Satisfaction' },
               ].map((stat, i) => (
                 <div key={i} className="text-center lg:text-left">
-                  <div className="text-2xl sm:text-3xl font-extrabold text-gradient tracking-tight">{stat.value}</div>
+                  <div className="text-xl sm:text-3xl font-extrabold text-gradient tracking-tight">{stat.value}</div>
                   <div className="text-[11px] sm:text-xs text-[var(--color-text-muted)] font-medium mt-0.5">{stat.label}</div>
                 </div>
               ))}
@@ -1169,7 +1169,7 @@ function Hero() {
 }
 
 // =====================================================================
-// 7. ABOUT SECTION (INTERACTIVE ARCHITECTURE MATRIX)
+// 7. ABOUT SECTION (INTERACTIVE ARCHITECTURE MATRIX & PIPELINE)
 // =====================================================================
 function About() {
   const [activeTierIdx, setActiveTierIdx] = useState(0);
@@ -1189,7 +1189,13 @@ Status: Open for Senior & Full-Stack Opportunities`;
   };
 
   return (
-    <section id="about" className="py-24 md:py-32 relative overflow-hidden">
+    <section id="about" className="py-16 sm:py-24 md:py-32 relative overflow-hidden">
+      {/* Dynamic Ambient Spotlight matching active tier */}
+      <div
+        className="absolute top-1/3 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full blur-[140px] pointer-events-none transition-colors duration-700 opacity-20 dark:opacity-25"
+        style={{ backgroundColor: activeTier.accent }}
+      />
+
       <div className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-12 relative z-10 max-w-6xl">
         {/* Section Header */}
         <motion.div
@@ -1197,16 +1203,16 @@ Status: Open for Senior & Full-Stack Opportunities`;
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.6 }}
-          className="text-center max-w-3xl mx-auto mb-14"
+          className="text-center max-w-3xl mx-auto mb-12 sm:mb-16"
         >
-          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-[var(--color-accent)]/20 bg-[var(--color-accent)]/5 text-xs font-semibold text-[var(--color-accent)] mb-3 shadow-2xs">
-            <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] animate-pulse" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[var(--color-accent)]/20 bg-[var(--color-accent)]/8 text-xs font-semibold text-[var(--color-accent)] mb-3.5 shadow-2xs">
+            <span className="w-2 h-2 rounded-full bg-[var(--color-accent)] animate-pulse" />
             Engineering Philosophy &amp; Methodology
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[var(--color-text-main)] tracking-tight mb-3">
             Architecting for <span className="text-gradient">Precision &amp; Scale</span>
           </h2>
-          <p className="text-sm sm:text-base text-[var(--color-text-muted)] leading-relaxed max-w-2xl mx-auto">
+          <p className="text-sm sm:text-base text-[var(--color-text-muted)] leading-relaxed max-w-2xl mx-auto font-normal">
             An intuitive view of how I bridge normalized relational schemas, secure API gateways, and tactile user interfaces into cohesive production systems.
           </p>
         </motion.div>
@@ -1220,7 +1226,7 @@ Status: Open for Senior & Full-Stack Opportunities`;
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.7 }}
-            className="lg:col-span-7 rounded-3xl border border-[var(--color-border)] bg-[var(--color-bg-surface)]/90 backdrop-blur-xl shadow-xl overflow-hidden flex flex-col justify-between group hover:border-[var(--color-accent)]/40 transition-all duration-300"
+            className="lg:col-span-7 rounded-3xl border border-[var(--color-border)] bg-[var(--color-bg-surface)]/90 backdrop-blur-xl shadow-xl overflow-hidden flex flex-col justify-between group hover:border-[var(--color-accent)]/40 transition-all duration-300 relative"
           >
             {/* Window Chrome Header */}
             <div className="flex items-center justify-between px-4 sm:px-5 py-3 border-b border-[var(--color-border)]/70 bg-[var(--color-secondary)]/50">
@@ -1229,23 +1235,31 @@ Status: Open for Senior & Full-Stack Opportunities`;
                 <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80 inline-block" />
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80 inline-block" />
                 <span className="ml-2 text-xs font-mono font-medium text-[var(--color-text-muted)] flex items-center gap-1.5">
-                  <Terminal size={12} className="text-[var(--color-accent)]" />
+                  <Terminal size={13} className="text-[var(--color-accent)]" />
                   architecture.matrix.sys
                 </span>
               </div>
               <button
                 onClick={handleCopyStack}
-                className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-mono text-[var(--color-text-muted)] hover:text-[var(--color-accent)] hover:bg-[var(--color-accent)]/10 transition-colors cursor-pointer"
+                className="flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-mono font-medium text-[var(--color-text-muted)] hover:text-[var(--color-accent)] hover:bg-[var(--color-accent)]/10 transition-colors cursor-pointer"
                 aria-label="Copy stack summary"
               >
-                {copied ? <Check size={12} className="text-emerald-500" /> : <Copy size={12} />}
+                {copied ? <Check size={13} className="text-emerald-500" /> : <Copy size={13} />}
                 <span>{copied ? 'Copied!' : 'Copy Stack'}</span>
               </button>
             </div>
 
-            {/* Interactive Tier Navigation Tabs */}
-            <div className="p-4 sm:p-5 pb-0">
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 p-1 rounded-2xl bg-black/[0.03] dark:bg-white/[0.04] border border-black/[0.04] dark:border-white/[0.06]">
+            {/* Architecture Pipeline Flow Stepper */}
+            <div className="px-4 sm:px-6 pt-5 pb-3 border-b border-[var(--color-border)]/50 bg-black/[0.01] dark:bg-white/[0.01]">
+              <div className="text-[10px] uppercase font-mono font-bold tracking-widest text-[var(--color-text-muted)] mb-3 flex items-center justify-between">
+                <span>Production Pipeline Flow</span>
+                <span className="text-[var(--color-accent)] flex items-center gap-1">
+                  <Activity size={11} className="animate-pulse" /> Live Telemetry
+                </span>
+              </div>
+
+              {/* Responsive Stepper Grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 {ARCHITECTURE_TIERS.map((tier, idx) => {
                   const isActive = idx === activeTierIdx;
                   const Icon = tier.icon;
@@ -1253,23 +1267,44 @@ Status: Open for Senior & Full-Stack Opportunities`;
                     <button
                       key={tier.id}
                       onClick={() => setActiveTierIdx(idx)}
-                      className={`relative flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer select-none ${
+                      className={`relative flex flex-col p-2.5 sm:p-3 rounded-2xl text-left transition-all duration-300 cursor-pointer border ${
                         isActive
-                          ? 'text-[var(--color-text-main)] dark:text-white shadow-xs'
-                          : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-main)]'
+                          ? 'border-[var(--color-accent)]/50 bg-white dark:bg-zinc-900 shadow-md scale-[1.02]'
+                          : 'border-[var(--color-border)]/60 bg-[var(--color-secondary)]/40 hover:border-[var(--color-border)] hover:bg-[var(--color-secondary)]/80'
                       }`}
                     >
+                      <div className="flex items-center justify-between w-full mb-1.5">
+                        <div
+                          className="w-7 h-7 rounded-lg flex items-center justify-center text-white text-xs shadow-xs"
+                          style={{
+                            background: isActive
+                              ? tier.accent
+                              : 'var(--color-border)',
+                            color: isActive ? '#fff' : 'var(--color-text-muted)',
+                          }}
+                        >
+                          <Icon size={14} />
+                        </div>
+                        <span className="text-[9px] font-mono font-bold text-[var(--color-text-muted)]">
+                          0{idx + 1}
+                        </span>
+                      </div>
+                      <span className="text-xs font-bold text-[var(--color-text-main)] truncate">
+                        {tier.name}
+                      </span>
+                      <span className="text-[10px] text-[var(--color-text-muted)] truncate">
+                        {tier.metrics[0].value}
+                      </span>
+
+                      {/* Active Indicator Bar */}
                       {isActive && (
                         <motion.div
-                          layoutId="about-tier-active"
-                          className="absolute inset-0 rounded-xl bg-white dark:bg-zinc-800 shadow-sm border border-black/[0.06] dark:border-white/[0.1]"
+                          layoutId="pipeline-active-indicator"
+                          className="absolute -bottom-[1px] left-3 right-3 h-[2px] rounded-full"
+                          style={{ background: tier.accent }}
                           transition={{ type: 'spring', stiffness: 450, damping: 32 }}
                         />
                       )}
-                      <span className="relative z-10 flex items-center gap-1.5 truncate">
-                        <Icon size={13} style={{ color: isActive ? tier.accent : undefined }} />
-                        <span className="truncate">{tier.name}</span>
-                      </span>
                     </button>
                   );
                 })}
@@ -1289,9 +1324,10 @@ Status: Open for Senior & Full-Stack Opportunities`;
                   {/* Tier Label & Title */}
                   <div className="flex items-center justify-between mb-2">
                     <span
-                      className="text-[11px] font-mono font-bold tracking-wider uppercase"
+                      className="text-[11px] font-mono font-bold tracking-wider uppercase flex items-center gap-1.5"
                       style={{ color: activeTier.accent }}
                     >
+                      <span className="w-1.5 h-1.5 rounded-full inline-block" style={{ backgroundColor: activeTier.accent }} />
                       {activeTier.tier}
                     </span>
                     <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-md bg-black/[0.04] dark:bg-white/[0.06] text-[var(--color-text-muted)]">
@@ -1299,7 +1335,7 @@ Status: Open for Senior & Full-Stack Opportunities`;
                     </span>
                   </div>
 
-                  <h3 className="text-xl sm:text-2xl font-extrabold text-[var(--color-text-main)] mb-2.5 tracking-tight flex items-center gap-2.5">
+                  <h3 className="text-xl sm:text-2xl font-extrabold text-[var(--color-text-main)] mb-2 tracking-tight flex items-center gap-2.5">
                     <div
                       className="w-8 h-8 rounded-lg flex items-center justify-center text-white flex-shrink-0 shadow-xs"
                       style={{ background: activeTier.accent }}
@@ -1309,18 +1345,21 @@ Status: Open for Senior & Full-Stack Opportunities`;
                     <span>{activeTier.title}</span>
                   </h3>
 
-                  <p className="text-xs sm:text-sm text-[var(--color-text-muted)] leading-relaxed mb-4">
+                  <p className="text-xs sm:text-sm text-[var(--color-text-muted)] leading-relaxed mb-4 font-normal">
                     {activeTier.summary}
                   </p>
 
                   {/* 3-Column Technical Metric HUD */}
-                  <div className="grid grid-cols-3 gap-2 sm:gap-3 p-3 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] border border-black/[0.04] dark:border-white/[0.06] mb-4">
+                  <div className="grid grid-cols-3 gap-2 sm:gap-3 p-3 sm:p-3.5 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] border border-black/[0.05] dark:border-white/[0.06] mb-4">
                     {activeTier.metrics.map((m, i) => (
                       <div key={i} className="text-left px-1">
                         <div className="text-[10px] uppercase font-mono tracking-wider text-[var(--color-text-muted)] truncate">
                           {m.label}
                         </div>
-                        <div className="text-xs sm:text-sm font-bold text-[var(--color-text-main)] truncate mt-0.5" style={{ color: i === 0 ? activeTier.accent : undefined }}>
+                        <div
+                          className="text-xs sm:text-sm font-bold text-[var(--color-text-main)] truncate mt-0.5"
+                          style={{ color: i === 0 ? activeTier.accent : undefined }}
+                        >
                           {m.value}
                         </div>
                       </div>
@@ -1328,9 +1367,9 @@ Status: Open for Senior & Full-Stack Opportunities`;
                   </div>
 
                   {/* Key Production Features */}
-                  <div className="space-y-1.5 mb-4">
+                  <div className="space-y-2 mb-5">
                     {activeTier.features.map((feat, i) => (
-                      <div key={i} className="flex items-start gap-2 text-xs text-[var(--color-text-muted)]">
+                      <div key={i} className="flex items-start gap-2.5 text-xs text-[var(--color-text-muted)]">
                         <span
                           className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0"
                           style={{ backgroundColor: activeTier.accent }}
@@ -1341,11 +1380,11 @@ Status: Open for Senior & Full-Stack Opportunities`;
                   </div>
 
                   {/* Tech Tags */}
-                  <div className="flex flex-wrap gap-1.5 pt-1">
+                  <div className="flex flex-wrap gap-1.5">
                     {activeTier.chips.map((chip) => (
                       <span
                         key={chip}
-                        className="px-2.5 py-1 rounded-lg text-[10px] font-mono font-medium bg-black/[0.03] dark:bg-white/[0.05] text-[var(--color-text-main)] border border-black/[0.05] dark:border-white/[0.06]"
+                        className="px-2.5 py-1 rounded-lg text-[10px] font-mono font-medium bg-black/[0.03] dark:bg-white/[0.05] text-[var(--color-text-main)] border border-black/[0.05] dark:border-white/[0.06] hover:border-[var(--color-accent)]/30 transition-colors"
                       >
                         {chip}
                       </span>
@@ -1375,8 +1414,11 @@ Status: Open for Senior & Full-Stack Opportunities`;
             transition={{ duration: 0.7, delay: 0.1 }}
             className="lg:col-span-5 rounded-3xl border border-[var(--color-border)] bg-[var(--color-bg-surface)]/90 backdrop-blur-xl p-6 sm:p-8 shadow-xl flex flex-col justify-between group hover:border-[var(--color-accent)]/40 transition-all duration-300 relative overflow-hidden"
           >
-            <div>
-              <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[var(--color-accent)] mb-3">
+            {/* Top decorative glow */}
+            <div className="absolute top-0 right-0 w-44 h-44 bg-[var(--color-accent)]/8 rounded-full blur-2xl pointer-events-none" />
+
+            <div className="relative z-10">
+              <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[var(--color-accent)] mb-3.5 px-3 py-1 rounded-full bg-[var(--color-accent)]/8 border border-[var(--color-accent)]/20">
                 <Cpu size={14} />
                 Background &amp; Expertise
               </div>
@@ -1400,7 +1442,7 @@ Status: Open for Senior & Full-Stack Opportunities`;
                 ].map((item, idx) => (
                   <div
                     key={idx}
-                    className="p-3 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] border border-black/[0.05] dark:border-white/[0.06] hover:border-[var(--color-accent)]/30 transition-colors"
+                    className="p-3.5 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] border border-black/[0.05] dark:border-white/[0.06] hover:border-[var(--color-accent)]/40 hover:bg-[var(--color-accent)]/[0.02] transition-all duration-300"
                   >
                     <div className="text-base sm:text-lg font-extrabold tracking-tight" style={{ color: item.color }}>
                       {item.title}
@@ -1414,10 +1456,10 @@ Status: Open for Senior & Full-Stack Opportunities`;
             </div>
 
             {/* Bottom Actions */}
-            <div className="pt-4 border-t border-[var(--color-border)]/70 flex items-center gap-3">
+            <div className="pt-4 border-t border-[var(--color-border)]/70 flex items-center gap-3 relative z-10">
               <a
                 href="#projects"
-                className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider text-white shadow-md active:scale-[0.98] transition-all cursor-pointer"
+                className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-bold text-xs uppercase tracking-wider text-white shadow-md active:scale-[0.98] transition-all cursor-pointer"
                 style={{
                   background: 'linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%)',
                 }}
@@ -1429,7 +1471,7 @@ Status: Open for Senior & Full-Stack Opportunities`;
                 href="https://resilient-genie-df3d71.netlify.app/VishnuV%20-%20Python%20Developer.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl font-semibold text-xs text-[var(--color-text-main)] bg-black/[0.04] dark:bg-white/[0.06] hover:bg-black/[0.08] dark:hover:bg-white/[0.12] border border-black/[0.06] dark:border-white/[0.08] transition-colors cursor-pointer"
+                className="inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-xl font-semibold text-xs text-[var(--color-text-main)] bg-black/[0.04] dark:bg-white/[0.06] hover:bg-black/[0.08] dark:hover:bg-white/[0.12] border border-black/[0.06] dark:border-white/[0.08] transition-colors cursor-pointer"
               >
                 <Download size={13} />
                 <span>CV</span>
@@ -1439,7 +1481,7 @@ Status: Open for Senior & Full-Stack Opportunities`;
         </div>
 
         {/* Bento Row 2: 4 Pillars Capability Deck */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 mt-6">
           {PILLARS.map((pillar, i) => (
             <motion.div
               key={pillar.title}
@@ -1448,23 +1490,25 @@ Status: Open for Senior & Full-Stack Opportunities`;
               viewport={{ once: true, margin: '-40px' }}
               transition={{ duration: 0.5, delay: i * 0.08 }}
               whileHover={{ y: -4 }}
-              className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-surface)]/85 backdrop-blur-md p-5 sm:p-6 shadow-sm hover:shadow-lg transition-all duration-300 group relative overflow-hidden"
+              className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-surface)]/85 backdrop-blur-md p-5 sm:p-6 shadow-sm hover:shadow-lg transition-all duration-300 group relative overflow-hidden flex flex-col justify-between"
             >
-              <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center mb-4 transition-transform group-hover:scale-110 shadow-xs"
-                style={{ background: `${pillar.color}15`, color: pillar.color }}
-              >
-                <pillar.icon size={20} />
+              <div>
+                <div
+                  className="w-10 h-10 rounded-xl flex items-center justify-center mb-4 transition-transform group-hover:scale-110 shadow-xs"
+                  style={{ background: `${pillar.color}15`, color: pillar.color }}
+                >
+                  <pillar.icon size={20} />
+                </div>
+                <div className="text-[11px] font-mono font-bold tracking-wider uppercase mb-1" style={{ color: pillar.color }}>
+                  {pillar.badge}
+                </div>
+                <h4 className="text-base font-bold text-[var(--color-text-main)] mb-1.5">
+                  {pillar.title}
+                </h4>
+                <p className="text-xs text-[var(--color-text-muted)] leading-relaxed">
+                  {pillar.desc}
+                </p>
               </div>
-              <div className="text-[11px] font-mono font-bold tracking-wider uppercase mb-1" style={{ color: pillar.color }}>
-                {pillar.badge}
-              </div>
-              <h4 className="text-base font-bold text-[var(--color-text-main)] mb-1.5">
-                {pillar.title}
-              </h4>
-              <p className="text-xs text-[var(--color-text-muted)] leading-relaxed">
-                {pillar.desc}
-              </p>
               <div
                 className="absolute bottom-0 left-0 right-0 h-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 style={{ background: pillar.color }}
@@ -1518,7 +1562,7 @@ function Skills() {
   const activeCat = SKILL_CATEGORIES.find((c) => c.name === activeCategory);
 
   return (
-    <section id="skills" className="py-28 relative overflow-hidden">
+    <section id="skills" className="py-16 sm:py-28 relative overflow-hidden">
       <div className="container mx-auto px-6 md:px-12 relative max-w-6xl">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -1532,19 +1576,19 @@ function Skills() {
             <span className="text-sm font-semibold tracking-widest uppercase text-[var(--color-accent)]">Tech Stack</span>
             <div className="h-px w-10 bg-gradient-to-l from-transparent to-[var(--color-accent)]" />
           </div>
-          <h2 className="text-4xl md:text-5xl font-extrabold text-[var(--color-text-main)] mb-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[var(--color-text-main)] mb-4">
             My <span className="text-gradient">Skills</span>
           </h2>
           <p className="text-[var(--color-text-muted)] text-lg">Technologies and tools I wield to bring ideas to life.</p>
         </motion.div>
 
         {/* Tabs */}
-        <div className="flex flex-wrap justify-center gap-3 mb-14">
+        <div className="flex flex-wrap justify-center gap-2.5 sm:gap-3 mb-12 sm:mb-14">
           {SKILL_CATEGORIES.map((cat) => (
             <button
               key={cat.name}
               onClick={() => setActiveCategory(cat.name)}
-              className={`relative px-6 py-3 rounded-2xl text-sm font-semibold transition-all duration-300 overflow-hidden cursor-pointer ${
+              className={`relative px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl text-xs sm:text-sm font-semibold transition-all duration-300 overflow-hidden cursor-pointer ${
                 activeCategory === cat.name
                   ? 'text-white shadow-lg'
                   : 'text-[var(--color-text-muted)] border border-[var(--color-border)] bg-[var(--color-bg-surface)] hover:text-[var(--color-text-main)]'
@@ -1553,7 +1597,7 @@ function Skills() {
               {activeCategory === cat.name && (
                 <motion.div
                   layoutId="active-cat-bg"
-                  className={`absolute inset-0 bg-gradient-to-r ${cat.color} rounded-2xl`}
+                  className={`absolute inset-0 bg-gradient-to-r ${cat.color} rounded-xl sm:rounded-2xl`}
                   style={{ boxShadow: `0 4px 20px ${cat.glow}` }}
                 />
               )}
@@ -1570,7 +1614,7 @@ function Skills() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.4 }}
-            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5 py-4 max-w-4xl mx-auto"
+            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-5 py-4 max-w-4xl mx-auto"
           >
             {activeCat?.skills.map((skill, i) => (
               <motion.div
@@ -1579,7 +1623,7 @@ function Skills() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: i * 0.06 }}
                 whileHover={{ y: -5, scale: 1.03 }}
-                className="flex flex-col items-center gap-3 p-5 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-surface)]/80 backdrop-blur-sm shadow-sm hover:shadow-lg transition-all duration-300"
+                className="flex flex-col items-center gap-3 p-4 sm:p-5 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-surface)]/80 backdrop-blur-sm shadow-sm hover:shadow-lg transition-all duration-300"
               >
                 <CircularProgressRing level={skill.level} color={activeCat.ringColor} delay={i * 0.05} />
                 <span className="text-sm font-semibold text-[var(--color-text-main)] text-center leading-tight">
@@ -1591,7 +1635,7 @@ function Skills() {
         </AnimatePresence>
 
         {/* Marquee Ticker */}
-        <div className="mt-20 relative overflow-hidden">
+        <div className="mt-12 sm:mt-20 relative overflow-hidden">
           <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[var(--color-bg-base)] to-transparent z-10 pointer-events-none" />
           <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-[var(--color-bg-base)] to-transparent z-10 pointer-events-none" />
           <div className="flex gap-4 animate-marquee whitespace-nowrap">
@@ -1835,28 +1879,28 @@ function Experience() {
   const [openIndex, setOpenIndex] = useState(0);
 
   return (
-    <section id="experience" className="py-28 relative overflow-hidden">
-      <div className="container mx-auto px-6 md:px-12 relative max-w-4xl">
+    <section id="experience" className="py-16 sm:py-28 relative overflow-hidden">
+      <div className="container mx-auto px-4 sm:px-6 md:px-12 relative max-w-4xl">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.7 }}
-          className="text-center max-w-2xl mx-auto mb-16"
+          className="text-center max-w-2xl mx-auto mb-12 sm:mb-16"
         >
           <div className="flex items-center justify-center gap-3 mb-5">
             <div className="h-px w-10 bg-gradient-to-r from-transparent to-[var(--color-accent)]" />
             <span className="text-sm font-semibold tracking-widest uppercase text-[var(--color-accent)]">Journey</span>
             <div className="h-px w-10 bg-gradient-to-l from-transparent to-[var(--color-accent)]" />
           </div>
-          <h2 className="text-4xl md:text-5xl font-extrabold text-[var(--color-text-main)] mb-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[var(--color-text-main)] mb-3">
             Professional <span className="text-gradient">Experience</span>
           </h2>
-          <p className="text-[var(--color-text-muted)] text-lg">My engineering path and measurable contributions across teams and clients.</p>
+          <p className="text-[var(--color-text-muted)] text-sm sm:text-lg">My engineering path and measurable contributions across teams and clients.</p>
         </motion.div>
 
         {/* Timeline */}
-        <div className="relative pl-6 sm:pl-8 border-l-2 border-dashed border-[var(--color-border)] space-y-8">
+        <div className="relative pl-5 sm:pl-8 border-l-2 border-dashed border-[var(--color-border)] space-y-6 sm:space-y-8">
           {EXPERIENCES.map((exp, index) => {
             const isOpen = openIndex === index;
             return (
@@ -1875,17 +1919,17 @@ function Experience() {
                 <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-surface)]/85 backdrop-blur-md overflow-hidden shadow-sm hover:shadow-lg transition-all">
                   <button
                     onClick={() => setOpenIndex(isOpen ? -1 : index)}
-                    className="w-full text-left p-6 flex items-start gap-4 cursor-pointer"
+                    className="w-full text-left p-4 sm:p-6 flex items-start gap-3 sm:gap-4 cursor-pointer"
                   >
                     <div
-                      className="w-12 h-12 rounded-xl flex items-center justify-center shadow-md flex-shrink-0"
+                      className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shadow-md flex-shrink-0"
                       style={{ background: `${exp.accent}15`, color: exp.accent }}
                     >
-                      <Briefcase size={20} />
+                      <Briefcase size={18} />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex flex-wrap items-center gap-2 mb-1">
-                        <h3 className="text-lg font-bold text-[var(--color-text-main)]">{exp.role}</h3>
+                        <h3 className="text-base sm:text-lg font-bold text-[var(--color-text-main)]">{exp.role}</h3>
                         <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold" style={{ background: exp.accentLight, color: exp.accent }}>
                           {exp.type}
                         </span>
@@ -1905,7 +1949,7 @@ function Experience() {
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        className="px-6 pb-6 pt-2 border-t border-[var(--color-border)]/60"
+                        className="px-4 sm:px-6 pb-5 sm:pb-6 pt-2 border-t border-[var(--color-border)]/60"
                       >
                         <p className="text-sm text-[var(--color-text-muted)] leading-relaxed mb-4">{exp.description}</p>
                         <div className="mb-4">
@@ -1961,17 +2005,17 @@ function Contact() {
   };
 
   return (
-    <section id="contact" className="py-24 relative overflow-hidden">
-      <div className="container mx-auto px-6 max-w-6xl">
+    <section id="contact" className="py-16 sm:py-24 relative overflow-hidden">
+      <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="rounded-[2.5rem] overflow-hidden flex flex-col lg:flex-row shadow-2xl border border-[var(--color-border)] bg-[var(--color-bg-surface)] relative"
+          className="rounded-2xl sm:rounded-[2.5rem] overflow-hidden flex flex-col lg:flex-row shadow-2xl border border-[var(--color-border)] bg-[var(--color-bg-surface)] relative"
         >
           {/* Left Panel */}
-          <div className="lg:w-2/5 p-8 sm:p-12 lg:p-14 bg-gradient-to-br from-[var(--color-accent)] via-[var(--color-accent-2)] to-[var(--color-accent)] text-white relative overflow-hidden flex flex-col justify-between">
+          <div className="lg:w-2/5 p-6 sm:p-12 lg:p-14 bg-gradient-to-br from-[var(--color-accent)] via-[var(--color-accent-2)] to-[var(--color-accent)] text-white relative overflow-hidden flex flex-col justify-between">
             <div className="relative z-10">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 backdrop-blur-md text-xs font-semibold text-white mb-6 border border-white/20">
                 <span className="w-2 h-2 rounded-full bg-emerald-300 animate-ping" />
@@ -2043,7 +2087,7 @@ function Contact() {
           </div>
 
           {/* Right Panel: Form */}
-          <div className="lg:w-3/5 p-8 sm:p-12 lg:p-14 bg-[var(--color-bg-surface)] relative flex flex-col justify-between">
+          <div className="lg:w-3/5 p-6 sm:p-12 lg:p-14 bg-[var(--color-bg-surface)] relative flex flex-col justify-between">
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-accent)]/8 text-xs font-semibold text-[var(--color-accent)] mb-4 border border-[var(--color-accent)]/20">
                 <Sparkles size={12} />

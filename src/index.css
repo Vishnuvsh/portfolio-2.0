@@ -337,3 +337,63 @@ input:focus, textarea:focus {
   transform: rotate(-90deg);
   transform-origin: 50% 50%;
 }
+
+
+/* ========================================
+   MOBILE-FIRST RESPONSIVE ENHANCEMENTS
+   ======================================== */
+
+/* Reduce heavy blur effects on mobile for performance */
+@media (max-width: 640px) {
+  .glass-premium {
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+  }
+  
+  .glass {
+    backdrop-filter: blur(16px) saturate(160%);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+  }
+}
+
+/* Better touch targets on mobile */
+@media (max-width: 768px) {
+  button, a, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Prevent text size adjust on orientation change */
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+  
+  /* Smoother momentum scrolling */
+  .scrollbar-hide {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Better form inputs on mobile */
+  input, textarea {
+    font-size: 16px !important; /* Prevents iOS zoom on focus */
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 380px) {
+  body {
+    font-size: 14px;
+  }
+}
+
+/* Safe area insets for notched phones */
+@supports (padding: max(0px)) {
+  .fixed.top-0 {
+    padding-top: max(0px, env(safe-area-inset-top));
+  }
+  
+  footer {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+}
