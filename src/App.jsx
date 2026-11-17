@@ -924,8 +924,17 @@ function CentralCutoutPortrait({ scrollYProgress }) {
             }}
           />
           <div className="absolute inset-0 bg-gradient-to-tr from-[var(--color-accent)]/15 via-transparent to-[var(--color-accent-2)]/20 pointer-events-none mix-blend-overlay z-10" />
-          <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[var(--color-bg-base)]/70 via-[var(--color-bg-base)]/20 to-transparent pointer-events-none z-10" />
+          <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[var(--color-bg-base)]/80 via-[var(--color-bg-base)]/30 to-transparent pointer-events-none z-10" />
           <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-20" />
+          
+          {/* 2026 In-Portrait Telemetry Capsule */}
+          <div className="absolute bottom-3 inset-x-3 z-20 flex items-center justify-between px-3 py-1.5 rounded-xl bg-black/50 dark:bg-black/70 backdrop-blur-md border border-white/20 text-[10px] font-mono text-white/90 shadow-sm">
+            <span className="flex items-center gap-1.5">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span>CORE::ACTIVE</span>
+            </span>
+            <span className="opacity-75">LATENCY: 18ms</span>
+          </div>
         </div>
 
         {/* Orbiting Satellite Badges (Responsive positioning without mobile clipping) */}
@@ -968,6 +977,7 @@ function CentralCutoutPortrait({ scrollYProgress }) {
 function Hero() {
   const heroRef = useRef(null);
   const lenis = useLenis();
+  const [emailCopied, setEmailCopied] = useState(false);
 
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
 
@@ -977,6 +987,15 @@ function Hero() {
     } else {
       const el = document.querySelector(target);
       if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleCopyEmail = (e) => {
+    e.preventDefault();
+    if (navigator?.clipboard) {
+      navigator.clipboard.writeText('vishnuvsh44@gmail.com');
+      setEmailCopied(true);
+      setTimeout(() => setEmailCopied(false), 2400);
     }
   };
 
@@ -996,43 +1015,71 @@ function Hero() {
           {/* Left Column: Headlines, Bio, Tech Stack, CTAs, Stats */}
           <div className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left order-1">
             
-            {/* Status pills */}
+            {/* 2026 Unified Cyber-Spatial Telemetry Dock */}
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="flex flex-wrap items-center justify-center lg:justify-start gap-2.5 mb-6"
+              className="inline-flex flex-wrap items-center justify-center lg:justify-start gap-2 p-1.5 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-surface)]/80 backdrop-blur-xl shadow-xs mb-6 max-w-full"
             >
-              <span className="px-3.5 py-1.5 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-surface)]/85 backdrop-blur-md text-xs font-semibold text-[var(--color-text-main)] shadow-xs flex items-center gap-2">
+              {/* Radar Status Badge */}
+              <div className="flex items-center gap-2 px-3 py-1 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 text-xs font-semibold">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
                 </span>
-                Available for opportunities
-              </span>
-              <span className="px-3.5 py-1.5 rounded-full border border-[var(--color-accent)]/30 bg-[var(--color-accent)]/8 backdrop-blur-md text-xs font-semibold text-[var(--color-accent)] shadow-xs flex items-center gap-2">
-                <Sparkles size={13} className="text-[var(--color-accent)] animate-pulse" />
-                MCP 1.0 &amp; AI Integrated
-              </span>
+                <span>AVAILABLE FOR Q4 2026</span>
+              </div>
+
+              {/* Location Coordinate */}
+              <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-mono text-[var(--color-text-muted)]">
+                <MapPin size={12} className="text-[var(--color-accent)]" />
+                <span>KERALA, INDIA</span>
+                <span className="text-[var(--color-border)]">•</span>
+                <span className="text-[10px] opacity-75">UTC+05:30</span>
+              </div>
+
+              {/* MCP Protocol Signal */}
+              <div className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-[var(--color-accent)]/8 text-[var(--color-accent)] border border-[var(--color-accent)]/20 text-xs font-semibold">
+                <Sparkles size={12} className="text-[var(--color-accent)] animate-pulse" />
+                <span>MCP 1.0 &amp; AI INTEGRATED</span>
+              </div>
             </motion.div>
 
-            {/* Main Headline & Role */}
+            {/* Eyebrow & Main Headline */}
             <div className="mb-5 w-full">
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="flex items-center justify-center lg:justify-start gap-2 font-mono text-xs uppercase tracking-wider text-[var(--color-text-muted)] mb-3"
+              >
+                <Terminal size={13} className="text-[var(--color-accent)]" />
+                <span className="font-semibold text-[var(--color-text-main)]">FULL-STACK ENGINEER</span>
+                <span className="opacity-30">//</span>
+                <span>SYSTEMS &amp; AI ARCHITECT</span>
+              </motion.div>
+
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.15 }}
-                className="text-3xl sm:text-5xl md:text-6xl xl:text-7xl font-extrabold tracking-tight leading-[1.08] text-[var(--color-text-main)] mb-3"
+                className="text-4xl sm:text-6xl md:text-7xl xl:text-8xl font-black tracking-tight leading-[1.05] text-[var(--color-text-main)] mb-3"
               >
                 Hi, I'm <SparklesText text="Vishnu" />
               </motion.h1>
+
+              {/* Dynamic Kinetic Role Cockpit */}
               <motion.div
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.25 }}
-                className="text-xl sm:text-3xl md:text-4xl font-bold tracking-tight text-[var(--color-text-main)] min-h-[1.4em] flex items-center justify-center lg:justify-start"
+                className="flex items-center justify-center lg:justify-start gap-2.5 text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-[var(--color-text-main)] min-h-[1.5em]"
               >
-                <RoleMorpher roles={ROLES} />
+                <span className="text-[var(--color-text-muted)] font-normal text-base sm:text-xl">Engineering</span>
+                <div className="inline-flex items-center px-3 py-1 rounded-xl bg-[var(--color-bg-surface)]/90 border border-[var(--color-border)] shadow-xs">
+                  <RoleMorpher roles={ROLES} />
+                </div>
               </motion.div>
             </div>
 
@@ -1041,54 +1088,65 @@ function Hero() {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.35 }}
-              className="text-sm sm:text-lg text-[var(--color-text-muted)] max-w-xl leading-relaxed mb-5 sm:mb-6 font-normal"
+              className="text-sm sm:text-lg text-[var(--color-text-muted)] max-w-xl leading-relaxed mb-6 font-normal"
             >
-              Engineering scalable web architectures, tactile micro-interactions, and AI-augmented applications with{' '}
+              Architecting scalable web systems, resilient API backends, and tactile micro-interactions with{' '}
               <span className="text-[var(--color-text-main)] font-semibold">React 19</span>,{' '}
-              <span className="text-[var(--color-text-main)] font-semibold">Python</span>, and{' '}
-              <span className="text-gradient-static font-semibold">volumetric design precision</span>.
+              <span className="text-[var(--color-text-main)] font-semibold">Python/Django</span>, and{' '}
+              <span className="text-gradient-static font-semibold">autonomous AI protocols</span>.
             </motion.p>
 
-            {/* Tech stack pills */}
+            {/* 2026 Core Stack Console (Modular Matrix Dock) */}
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.45 }}
-              className="flex flex-wrap items-center justify-center lg:justify-start gap-1.5 sm:gap-2 mb-6 sm:mb-8 max-w-xl"
+              className="w-full max-w-xl mb-7"
             >
-              {[
-                { name: 'React 19', highlight: true },
-                { name: 'Python & Django', highlight: true },
-                { name: 'Tailwind CSS' },
-                { name: 'MySQL' },
-                { name: 'RESTful APIs' },
-                { name: 'Model Context Protocol (MCP)', highlight: true },
-              ].map((tech) => (
-                <span
-                  key={tech.name}
-                  className={`px-3.5 py-1.5 text-xs font-medium rounded-full border transition-all duration-300 hover:scale-105 cursor-default shadow-xs ${
-                    tech.highlight
-                      ? 'border-[var(--color-accent)]/40 bg-[var(--color-accent)]/8 text-[var(--color-accent)] font-semibold'
-                      : 'border-[var(--color-border)] bg-[var(--color-bg-surface)]/75 text-[var(--color-text-muted)] hover:border-[var(--color-accent)]/50 hover:text-[var(--color-accent)]'
-                  }`}
-                >
-                  {tech.name}
-                </span>
-              ))}
+              <div className="p-2 sm:p-2.5 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-surface)]/70 backdrop-blur-md shadow-xs">
+                <div className="flex items-center justify-between px-2 pb-2 text-[10px] font-mono uppercase text-[var(--color-text-muted)] border-b border-[var(--color-border)]/50 mb-2">
+                  <div className="flex items-center gap-1.5">
+                    <Activity size={11} className="text-[var(--color-accent)] animate-pulse" />
+                    <span>CORE ARCHITECTURE MATRIX</span>
+                  </div>
+                  <span className="text-emerald-500 font-semibold">// 5 TIERS LOADED</span>
+                </div>
+                <div className="flex flex-wrap items-center justify-center lg:justify-start gap-1.5 sm:gap-2">
+                  {[
+                    { tier: 'UI', name: 'React 19 & Next.js', highlight: true },
+                    { tier: 'API', name: 'Python & Django REST', highlight: true },
+                    { tier: 'DB', name: 'MySQL Architecture', highlight: false },
+                    { tier: 'AI', name: 'Model Context Protocol (MCP)', highlight: true },
+                    { tier: 'CSS', name: 'Tailwind CSS & Motion', highlight: false },
+                  ].map((tech) => (
+                    <span
+                      key={tech.name}
+                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-xl border transition-all duration-300 hover:scale-105 cursor-default shadow-2xs ${
+                        tech.highlight
+                          ? 'border-[var(--color-accent)]/35 bg-[var(--color-accent)]/10 text-[var(--color-accent)] font-semibold'
+                          : 'border-[var(--color-border)] bg-[var(--color-bg-surface)]/90 text-[var(--color-text-muted)] hover:border-[var(--color-accent)]/40 hover:text-[var(--color-text-main)]'
+                      }`}
+                    >
+                      <span className="font-mono text-[10px] px-1 py-0.2 rounded bg-black/5 dark:bg-white/10 opacity-80">
+                        {tech.tier}
+                      </span>
+                      <span>{tech.name}</span>
+                    </span>
+                  ))}
+                </div>
+              </div>
             </motion.div>
 
-            {/* CTAs & Socials */}
+            {/* CTAs & Socials Deck */}
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.55 }}
-              className="flex flex-wrap items-center justify-center lg:justify-start gap-4 mb-8 w-full"
+              className="flex flex-wrap items-center justify-center lg:justify-start gap-3.5 mb-8 w-full"
             >
               <MagneticButton href="#projects" variant="primary">
-                View My Work
-                <motion.span animate={{ x: [0, 5, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
-                  <ArrowRight size={18} />
-                </motion.span>
+                Explore Projects
+                <ArrowUpRight size={18} />
               </MagneticButton>
               <MagneticButton
                 href="https://resilient-genie-df3d71.netlify.app/VishnuV%20-%20Python%20Developer.pdf"
@@ -1100,37 +1158,63 @@ function Hero() {
                 <Download size={17} />
               </MagneticButton>
 
-              <div className="flex items-center gap-2.5 sm:ml-2">
-                {HERO_SOCIALS.map((social) => (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    target={social.href.startsWith('http') ? '_blank' : undefined}
-                    rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                    aria-label={social.label}
-                    className="flex items-center justify-center w-11 h-11 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-surface)]/80 backdrop-blur-md text-[var(--color-text-muted)] hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/50 hover:bg-[var(--color-accent)]/10 hover:shadow-md transition-all duration-300 cursor-pointer"
-                  >
-                    <social.icon size={18} />
-                  </a>
-                ))}
+              {/* Connected Social Dock */}
+              <div className="flex items-center gap-1.5 p-1 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-surface)]/80 backdrop-blur-md shadow-xs sm:ml-2">
+                {HERO_SOCIALS.map((social) => {
+                  if (social.label === 'Email') {
+                    return (
+                      <button
+                        key={social.label}
+                        onClick={handleCopyEmail}
+                        title={emailCopied ? 'Email Copied!' : 'Copy Email (vishnuvsh44@gmail.com)'}
+                        aria-label="Copy Email Address"
+                        className="relative flex items-center justify-center w-10 h-10 rounded-full text-[var(--color-text-muted)] hover:text-[var(--color-accent)] hover:bg-[var(--color-accent)]/10 transition-all duration-200 cursor-pointer"
+                      >
+                        {emailCopied ? <Check size={17} className="text-emerald-500" /> : <social.icon size={17} />}
+                        {emailCopied && (
+                          <span className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded bg-emerald-600 text-white text-[10px] font-mono whitespace-nowrap shadow-md">
+                            COPIED!
+                          </span>
+                        )}
+                      </button>
+                    );
+                  }
+                  return (
+                    <a
+                      key={social.label}
+                      href={social.href}
+                      target={social.href.startsWith('http') ? '_blank' : undefined}
+                      rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                      aria-label={social.label}
+                      className="flex items-center justify-center w-10 h-10 rounded-full text-[var(--color-text-muted)] hover:text-[var(--color-accent)] hover:bg-[var(--color-accent)]/10 transition-all duration-200 cursor-pointer"
+                    >
+                      <social.icon size={17} />
+                    </a>
+                  );
+                })}
               </div>
             </motion.div>
 
-            {/* Impact Metrics Row */}
+            {/* 2026 Connected Bento HUD Impact Strip */}
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.65 }}
-              className="w-full max-w-lg grid grid-cols-3 gap-2 sm:gap-4 pt-4 sm:pt-6 border-t border-[var(--color-border)]/80"
+              className="w-full max-w-xl grid grid-cols-3 gap-2.5 sm:gap-3.5"
             >
               {[
-                { value: '3+', label: 'Years Experience' },
-                { value: '15+', label: 'Projects Built' },
-                { value: '100%', label: 'Client Satisfaction' },
+                { value: '3+', label: 'Years Experience', sub: 'Enterprise & Scale' },
+                { value: '15+', label: 'Production Apps', sub: 'Full-Cycle Delivery' },
+                { value: '100%', label: 'Quality & CSAT', sub: 'Zero-Debt Delivery' },
               ].map((stat, i) => (
-                <div key={i} className="text-center lg:text-left">
-                  <div className="text-xl sm:text-3xl font-extrabold text-gradient tracking-tight">{stat.value}</div>
-                  <div className="text-[11px] sm:text-xs text-[var(--color-text-muted)] font-medium mt-0.5">{stat.label}</div>
+                <div
+                  key={i}
+                  className="relative group rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-surface)]/70 backdrop-blur-md p-3 sm:p-4 text-center lg:text-left transition-all duration-300 hover:border-[var(--color-accent)]/40 hover:-translate-y-0.5 shadow-xs overflow-hidden"
+                >
+                  <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-[var(--color-accent)]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="text-xl sm:text-2xl md:text-3xl font-black text-gradient tracking-tight">{stat.value}</div>
+                  <div className="text-xs sm:text-sm font-bold text-[var(--color-text-main)] mt-0.5 leading-tight">{stat.label}</div>
+                  <div className="hidden sm:block text-[10px] font-mono text-[var(--color-text-muted)] mt-1">{stat.sub}</div>
                 </div>
               ))}
             </motion.div>
