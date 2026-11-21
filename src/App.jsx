@@ -545,7 +545,7 @@ function SectionDivider() {
 // =====================================================================
 // 4. MICRO-INTERACTION COMPONENTS
 // =====================================================================
-function RoleMorpher({ roles }) {
+function RoleMorpher({ roles, className = 'text-gradient' }) {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
@@ -564,7 +564,7 @@ function RoleMorpher({ roles }) {
           animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
           exit={{ y: -26, opacity: 0, filter: 'blur(4px)' }}
           transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-          className="text-gradient font-extrabold tracking-tight inline-block whitespace-nowrap"
+          className={`font-extrabold tracking-tight inline-block whitespace-nowrap ${className}`}
         >
           {roles[index]}
         </motion.span>
@@ -822,84 +822,10 @@ function Navbar({ theme, toggleTheme }) {
 // =====================================================================
 // 6. HERO SECTION WITH CENTRAL CUTOUT PORTRAIT & CHOREOGRAPHY
 // =====================================================================
-function CentralCutoutPortrait({ scrollYProgress }) {
-  const cardRef = useRef(null);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  const springProgress = useSpring(scrollYProgress, { stiffness: 85, damping: 24, restDelta: 0.001 });
-
-  const portraitY = useTransform(springProgress, [0, 1], [0, 80]);
-  const portraitScale = useTransform(springProgress, [0, 0.5, 1], [1, 1.03, 0.96]);
-  const scrollRotateX = useTransform(springProgress, [0, 1], [0, 6]);
-  const scrollRotateY = useTransform(springProgress, [0, 1], [0, -6]);
-
-  const mouseRotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [6, -6]), { stiffness: 180, damping: 25 });
-  const mouseRotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-6, 6]), { stiffness: 180, damping: 25 });
-
-  const finalRotateX = useTransform([scrollRotateX, mouseRotateX], ([s, m]) => s + m);
-  const finalRotateY = useTransform([scrollRotateY, mouseRotateY], ([s, m]) => s + m);
-
-  const handleMouseMove = (e) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
-    mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
-  };
-  const handleMouseLeave = () => { mouseX.set(0); mouseY.set(0); };
-
-  return (
-    <div
-      ref={cardRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      className="relative flex items-center justify-center my-4 lg:my-0 w-full max-w-[340px] sm:max-w-[380px] md:max-w-[420px] mx-auto select-none"
-      style={{ perspective: 1200 }}
-    >
-      {/* Subtle Warm Ambient Glow */}
-      <div
-        className="absolute w-[280px] sm:w-[380px] h-[280px] sm:h-[380px] rounded-full pointer-events-none opacity-40 dark:opacity-25"
-        style={{
-          background: 'radial-gradient(circle, rgba(244, 63, 94, 0.25) 0%, rgba(255, 107, 107, 0.12) 40%, transparent 70%)',
-          filter: 'blur(60px)',
-        }}
-      />
-
-      {/* Clean 3D Portrait Frame */}
-      <motion.div
-        style={{
-          y: portraitY,
-          scale: portraitScale,
-          rotateX: finalRotateX,
-          rotateY: finalRotateY,
-          transformStyle: 'preserve-3d',
-        }}
-        initial={{ opacity: 0, scale: 0.92, y: 30 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="relative z-10 w-[240px] h-[300px] sm:w-[300px] sm:h-[390px] md:w-[340px] md:h-[440px] lg:w-[360px] lg:h-[460px] rounded-[32px] sm:rounded-[40px] overflow-hidden border border-black/10 dark:border-white/15 shadow-2xl shadow-black/8 dark:shadow-black/50 backdrop-blur-md group"
-      >
-        <img
-          src="/profile.jpg"
-          alt="Vishnu V - Full-Stack Developer"
-          className="w-full h-full object-cover object-top filter contrast-[1.02] brightness-[1.01] transition-transform duration-700 group-hover:scale-105"
-          onError={(e) => {
-            e.target.style.display = 'none';
-            e.target.parentElement.style.background = 'linear-gradient(135deg, #f43f5e 0%, #ff6b6b 50%, #fb923c 100%)';
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-bg-base)]/40 via-transparent to-transparent pointer-events-none" />
-      </motion.div>
-    </div>
-  );
-}
-
 function Hero() {
   const heroRef = useRef(null);
   const lenis = useLenis();
   const [emailCopied, setEmailCopied] = useState(false);
-
-  const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
 
   const handleScrollTo = (target) => {
     if (lenis) {
@@ -923,73 +849,166 @@ function Hero() {
     <section
       id="hero"
       ref={heroRef}
-      className="relative min-h-[88vh] sm:min-h-[92vh] flex flex-col justify-between pt-24 sm:pt-32 pb-8 px-4 sm:px-6 lg:px-12 xl:px-16 overflow-hidden"
+      className="relative min-h-[90vh] flex flex-col justify-between pt-24 sm:pt-28 pb-8 px-4 sm:px-6 lg:px-12 overflow-hidden"
     >
       {/* Background Soft Mesh Glow */}
-      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[450px] bg-[var(--color-accent)]/6 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[var(--color-accent)]/6 rounded-full blur-[150px] pointer-events-none" />
 
-      <div className="container mx-auto max-w-6xl relative z-10 my-auto py-4">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
-          
-          {/* Left Column: Clean & Minimal Hero Content */}
-          <div className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left order-1">
-            
-            {/* Simple Status Badge */}
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-surface)]/80 backdrop-blur-md shadow-2xs mb-6"
-            >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-              </span>
-              <span className="text-xs font-semibold text-[var(--color-text-main)]">Available for opportunities</span>
-            </motion.div>
+      <div className="container mx-auto max-w-6xl relative z-10 my-auto py-2">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="rounded-3xl sm:rounded-[2.5rem] overflow-hidden flex flex-col lg:flex-row shadow-2xl border border-[var(--color-border)] bg-[var(--color-bg-surface)] relative"
+        >
+          {/* Left Panel: Vibrant Gradient (Exact style from Contact Card) */}
+          <div className="lg:w-1/2 p-6 sm:p-10 lg:p-12 bg-gradient-to-br from-[var(--color-accent)] via-[var(--color-accent-2)] to-[var(--color-accent)] text-white relative overflow-hidden flex flex-col justify-between">
+            <div className="relative z-10">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 backdrop-blur-md text-xs font-semibold text-white mb-6 border border-white/20 shadow-xs">
+                <span className="w-2 h-2 rounded-full bg-emerald-300 animate-ping" />
+                Available for Opportunities
+              </div>
 
-            {/* Headline */}
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.1 }}
-              className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08] text-[var(--color-text-main)] mb-3"
-            >
-              Hi, I'm <SparklesText text="Vishnu" />
-            </motion.h1>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-3 leading-tight tracking-tight text-white">
+                Hi, I'm <span className="underline decoration-white/40">Vishnu.</span>
+              </h1>
 
-            {/* Subtitle / Role */}
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-2xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[var(--color-text-main)] min-h-[1.4em] flex items-center justify-center lg:justify-start mb-5"
-            >
-              <RoleMorpher roles={ROLES} />
-            </motion.div>
+              <div className="text-xl sm:text-2xl md:text-3xl font-bold text-white/95 mb-5 min-h-[1.4em]">
+                <RoleMorpher roles={ROLES} className="text-white drop-shadow-sm font-extrabold" />
+              </div>
 
-            {/* Clean Description */}
-            <motion.p
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-base sm:text-lg text-[var(--color-text-muted)] max-w-xl leading-relaxed mb-8 font-normal"
-            >
-              Building scalable web applications, robust APIs, and modern user experiences with{' '}
-              <span className="text-[var(--color-text-main)] font-semibold">React 19</span>,{' '}
-              <span className="text-[var(--color-text-main)] font-semibold">Python/Django</span>, and clean architecture.
-            </motion.p>
+              <p className="text-white/85 text-sm sm:text-base mb-8 max-w-md font-light leading-relaxed">
+                Engineering scalable web architectures, resilient APIs, and modern user experiences with React 19, Python/Django, and clean architecture.
+              </p>
 
-            {/* Action Buttons & Socials */}
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="flex flex-wrap items-center justify-center lg:justify-start gap-3.5 w-full"
-            >
+              <div className="flex flex-col gap-4">
+                <div className="flex items-start gap-3.5">
+                  <div className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center border border-white/20 shadow-sm backdrop-blur-sm flex-shrink-0">
+                    <Code2 size={18} className="text-white" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-white/70 font-semibold tracking-wider uppercase mb-0.5">Experience</p>
+                    <p className="text-sm font-semibold text-white">3+ Years Building Production Systems</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3.5">
+                  <div className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center border border-white/20 shadow-sm backdrop-blur-sm flex-shrink-0">
+                    <MapPin size={18} className="text-white" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-white/70 font-semibold tracking-wider uppercase mb-0.5">Location &amp; Timezone</p>
+                    <p className="text-sm font-semibold text-white">Vadakara, Kerala, India</p>
+                    <p className="text-xs text-white/75 mt-0.5 flex items-center gap-1">
+                      <Clock size={11} /> UTC +5:30 (IST) • Rapid response
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Direct Profiles */}
+            <div className="relative z-10 mt-8 pt-6 border-t border-white/20 flex items-center justify-between">
+              <div>
+                <p className="text-[10px] text-white/75 font-semibold tracking-wider uppercase mb-2">Direct Profiles</p>
+                <div className="flex gap-2.5">
+                  <a
+                    href="https://github.com/Vishnuvsh"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center border border-white/20 hover:bg-white hover:text-[var(--color-accent)] transition-all cursor-pointer text-white"
+                    aria-label="GitHub Profile"
+                  >
+                    <GithubIcon size={18} />
+                  </a>
+                  <a
+                    href="http://www.linkedin.com/in/vishnu-v-b5256b341"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center border border-white/20 hover:bg-white hover:text-[var(--color-accent)] transition-all cursor-pointer text-white"
+                    aria-label="LinkedIn Profile"
+                  >
+                    <LinkedinIcon size={18} />
+                  </a>
+                  <button
+                    onClick={handleCopyEmail}
+                    className="relative w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center border border-white/20 hover:bg-white hover:text-[var(--color-accent)] transition-all cursor-pointer text-white"
+                    title={emailCopied ? 'Email Copied!' : 'Copy Email'}
+                    aria-label="Email Vishnu"
+                  >
+                    {emailCopied ? <Check size={16} className="text-emerald-300" /> : <Mail size={18} />}
+                    {emailCopied && (
+                      <span className="absolute -top-7 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded bg-emerald-600 text-white text-[10px] font-mono whitespace-nowrap shadow-md">
+                        COPIED!
+                      </span>
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              <div className="hidden sm:block text-right">
+                <p className="text-[10px] text-white/70 font-semibold tracking-wider uppercase mb-1">Direct Contact</p>
+                <a href="tel:+916282195381" className="text-xs font-semibold text-white hover:text-white/80 transition-colors">
+                  +91 6282195381
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Panel: Clean Surface with Portrait & Actions */}
+          <div className="lg:w-1/2 p-6 sm:p-10 lg:p-12 bg-[var(--color-bg-surface)] relative flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-accent)]/8 text-xs font-semibold text-[var(--color-accent)] border border-[var(--color-accent)]/20">
+                  <Sparkles size={12} />
+                  Full-Stack &amp; AI Architect
+                </div>
+                <span className="text-[11px] font-mono font-semibold text-emerald-600 dark:text-emerald-400">
+                  ● PROD-READY
+                </span>
+              </div>
+
+              {/* Framed Clean Portrait */}
+              <div className="relative w-full h-[260px] sm:h-[320px] md:h-[350px] rounded-2xl sm:rounded-3xl overflow-hidden border border-[var(--color-border)] shadow-md mb-6 group bg-zinc-100 dark:bg-zinc-800">
+                <img
+                  src="/profile.jpg"
+                  alt="Vishnu V - Full-Stack Developer"
+                  className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                    e.target.parentElement.style.background = 'linear-gradient(135deg, #f43f5e 0%, #ff6b6b 50%, #fb923c 100%)';
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
+                <div className="absolute bottom-3 inset-x-3 flex items-center justify-between text-white text-xs font-mono">
+                  <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/60 backdrop-blur-md">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                    VISHNU V
+                  </span>
+                  <span className="px-2.5 py-1 rounded-lg bg-black/60 backdrop-blur-md">
+                    REACT 19 • PYTHON • MCP
+                  </span>
+                </div>
+              </div>
+
+              {/* Core Stack Pills */}
+              <div className="flex flex-wrap gap-1.5 mb-6">
+                {['React 19', 'Python & Django', 'MySQL', 'Tailwind CSS', 'RESTful APIs', 'MCP 1.0'].map((tech) => (
+                  <span
+                    key={tech}
+                    className="px-3 py-1 text-xs font-medium rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-base)] text-[var(--color-text-muted)] hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/30 transition-colors"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="pt-4 border-t border-[var(--color-border)]/60 flex flex-wrap items-center gap-3 w-full">
               <MagneticButton href="#projects" variant="primary">
                 View My Work
-                <ArrowRight size={17} />
+                <ArrowRight size={16} />
               </MagneticButton>
               <MagneticButton
                 href="https://resilient-genie-df3d71.netlify.app/VishnuV%20-%20Python%20Developer.pdf"
@@ -1000,50 +1019,9 @@ function Hero() {
                 Download CV
                 <Download size={16} />
               </MagneticButton>
-
-              <div className="flex items-center gap-1.5 sm:ml-2">
-                {HERO_SOCIALS.map((social) => {
-                  if (social.label === 'Email') {
-                    return (
-                      <button
-                        key={social.label}
-                        onClick={handleCopyEmail}
-                        title={emailCopied ? 'Email Copied!' : 'Copy Email (vishnuvsh44@gmail.com)'}
-                        aria-label="Copy Email Address"
-                        className="relative flex items-center justify-center w-10 h-10 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-surface)]/80 text-[var(--color-text-muted)] hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/40 hover:bg-[var(--color-accent)]/10 transition-all duration-200 cursor-pointer shadow-2xs"
-                      >
-                        {emailCopied ? <Check size={16} className="text-emerald-500" /> : <social.icon size={16} />}
-                        {emailCopied && (
-                          <span className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded bg-emerald-600 text-white text-[10px] font-mono whitespace-nowrap shadow-md">
-                            COPIED!
-                          </span>
-                        )}
-                      </button>
-                    );
-                  }
-                  return (
-                    <a
-                      key={social.label}
-                      href={social.href}
-                      target={social.href.startsWith('http') ? '_blank' : undefined}
-                      rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                      aria-label={social.label}
-                      className="flex items-center justify-center w-10 h-10 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-surface)]/80 text-[var(--color-text-muted)] hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/40 hover:bg-[var(--color-accent)]/10 transition-all duration-200 cursor-pointer shadow-2xs"
-                    >
-                      <social.icon size={16} />
-                    </a>
-                  );
-                })}
-              </div>
-            </motion.div>
+            </div>
           </div>
-
-          {/* Right Column: Clean Portrait */}
-          <div className="lg:col-span-5 flex justify-center lg:justify-end order-2">
-            <CentralCutoutPortrait scrollYProgress={scrollYProgress} />
-          </div>
-
-        </div>
+        </motion.div>
       </div>
 
       {/* Scroll Cue */}
@@ -1060,9 +1038,9 @@ function Hero() {
           className="w-5 h-8 rounded-full border-2 border-[var(--color-border)] group-hover:border-[var(--color-accent)] flex items-start justify-center p-1 transition-colors"
         >
           <motion.div
-            animate={{ y: [0, 10, 0], opacity: [1, 0.2, 1] }}
+            animate={{ y: [0, 10, 0] }}
             transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
-            className="w-1 h-1.5 rounded-full bg-[var(--color-accent)]"
+            className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)]"
           />
         </motion.div>
       </div>
