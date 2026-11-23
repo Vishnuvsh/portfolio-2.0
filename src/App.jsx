@@ -822,10 +822,113 @@ function Navbar({ theme, toggleTheme }) {
 // =====================================================================
 // 6. HERO SECTION WITH CENTRAL CUTOUT PORTRAIT & CHOREOGRAPHY
 // =====================================================================
+function CentralCutoutPortrait({ scrollYProgress }) {
+  const cardRef = useRef(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const springProgress = useSpring(scrollYProgress, { stiffness: 85, damping: 24, restDelta: 0.001 });
+
+  const portraitY = useTransform(springProgress, [0, 1], [0, 90]);
+  const portraitScale = useTransform(springProgress, [0, 0.5, 1], [1, 1.04, 0.96]);
+  const scrollRotateX = useTransform(springProgress, [0, 1], [0, 8]);
+  const scrollRotateY = useTransform(springProgress, [0, 1], [0, -8]);
+
+  const mouseRotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [8, -8]), { stiffness: 180, damping: 25 });
+  const mouseRotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-8, 8]), { stiffness: 180, damping: 25 });
+
+  const finalRotateX = useTransform([scrollRotateX, mouseRotateX], ([s, m]) => s + m);
+  const finalRotateY = useTransform([scrollRotateY, mouseRotateY], ([s, m]) => s + m);
+
+  const badgeExpY = useTransform(springProgress, [0, 1], [0, 35]);
+  const badgeAvailY = useTransform(springProgress, [0, 1], [0, 50]);
+
+  const handleMouseMove = (e) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
+    mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
+  };
+  const handleMouseLeave = () => { mouseX.set(0); mouseY.set(0); };
+
+  return (
+    <div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="relative flex items-center justify-center my-6 lg:my-0 w-full max-w-[360px] sm:max-w-[400px] lg:max-w-none mx-auto select-none"
+      style={{ perspective: 1200 }}
+    >
+      {/* Volumetric Stage Glow Behind Portrait */}
+      <div
+        className="absolute w-[280px] sm:w-[400px] h-[280px] sm:h-[400px] rounded-full pointer-events-none opacity-40 dark:opacity-25"
+        style={{
+          background: 'radial-gradient(circle, rgba(244, 63, 94, 0.3) 0%, rgba(255, 107, 107, 0.15) 45%, transparent 70%)',
+          filter: 'blur(65px)',
+        }}
+      />
+
+      {/* 3D Cutout Portrait Card */}
+      <motion.div
+        style={{
+          y: portraitY,
+          scale: portraitScale,
+          rotateX: finalRotateX,
+          rotateY: finalRotateY,
+          transformStyle: 'preserve-3d',
+        }}
+        initial={{ opacity: 0, scale: 0.9, y: 35 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+        className="relative z-10 w-[260px] h-[340px] sm:w-[320px] sm:h-[420px] md:w-[350px] md:h-[460px] lg:w-[370px] lg:h-[490px] rounded-[32px] sm:rounded-[44px] overflow-hidden border-2 border-white/80 dark:border-white/15 shadow-[0_25px_60px_-15px_rgba(244,63,94,0.28)] backdrop-blur-md group"
+      >
+        <img
+          src="/profile.jpg"
+          alt="Vishnu V - Full-Stack Developer"
+          className="w-full h-full object-cover object-top filter contrast-[1.03] brightness-[1.01] transition-transform duration-700 group-hover:scale-105"
+          onError={(e) => {
+            e.target.style.display = 'none';
+            e.target.parentElement.style.background = 'linear-gradient(135deg, #f43f5e 0%, #ff6b6b 50%, #fb923c 100%)';
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-bg-base)]/70 via-transparent to-transparent pointer-events-none" />
+
+        {/* Floating Satellite Badges */}
+        <motion.div style={{ y: badgeExpY, z: 45 }} className="absolute -top-3 -left-2 sm:-top-4 sm:-left-4 z-30">
+          <div className="glass-premium rounded-2xl px-3 py-2 sm:px-4 sm:py-2.5 shadow-lg border border-white/80 dark:border-white/10 flex items-center gap-2.5 backdrop-blur-xl">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[var(--color-accent)] to-[var(--color-accent-2)] flex items-center justify-center text-white shadow-md shadow-[var(--color-accent)]/30 flex-shrink-0">
+              <Code2 size={16} />
+            </div>
+            <div>
+              <div className="text-xs sm:text-sm font-bold text-[var(--color-text-main)]">3+ Years Exp.</div>
+              <div className="text-[10px] text-[var(--color-text-muted)] font-medium">Full-Stack Dev</div>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div style={{ y: badgeAvailY, z: 40 }} className="absolute -bottom-3 -right-2 sm:-bottom-4 sm:-right-4 z-30">
+          <div className="glass-premium rounded-2xl px-3 py-2 sm:px-4 sm:py-2.5 shadow-lg border border-white/80 dark:border-white/10 flex items-center gap-2.5 backdrop-blur-xl">
+            <div className="relative flex h-2.5 w-2.5 flex-shrink-0">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
+            </div>
+            <div>
+              <div className="text-xs sm:text-sm font-bold text-[var(--color-text-main)]">Available for Hire</div>
+              <div className="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium">Full-time &amp; Remote</div>
+            </div>
+          </div>
+        </motion.div>
+      </motion.div>
+    </div>
+  );
+}
+
 function Hero() {
   const heroRef = useRef(null);
   const lenis = useLenis();
   const [emailCopied, setEmailCopied] = useState(false);
+
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
 
   const handleScrollTo = (target) => {
     if (lenis) {
@@ -849,166 +952,103 @@ function Hero() {
     <section
       id="hero"
       ref={heroRef}
-      className="relative min-h-[90vh] flex flex-col justify-between pt-24 sm:pt-28 pb-8 px-4 sm:px-6 lg:px-12 overflow-hidden"
+      className="relative min-h-[92vh] sm:min-h-[96vh] flex flex-col justify-between pt-24 sm:pt-32 pb-8 px-4 sm:px-6 lg:px-12 xl:px-16 overflow-hidden"
     >
-      {/* Background Soft Mesh Glow */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[var(--color-accent)]/6 rounded-full blur-[150px] pointer-events-none" />
+      {/* Background Volumetric Mesh Glows */}
+      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-[var(--color-accent)]/8 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-[var(--color-accent-2)]/10 rounded-full blur-[150px] pointer-events-none" />
 
-      <div className="container mx-auto max-w-6xl relative z-10 my-auto py-2">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="rounded-3xl sm:rounded-[2.5rem] overflow-hidden flex flex-col lg:flex-row shadow-2xl border border-[var(--color-border)] bg-[var(--color-bg-surface)] relative"
-        >
-          {/* Left Panel: Vibrant Gradient (Exact style from Contact Card) */}
-          <div className="lg:w-1/2 p-6 sm:p-10 lg:p-12 bg-gradient-to-br from-[var(--color-accent)] via-[var(--color-accent-2)] to-[var(--color-accent)] text-white relative overflow-hidden flex flex-col justify-between">
-            <div className="relative z-10">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 backdrop-blur-md text-xs font-semibold text-white mb-6 border border-white/20 shadow-xs">
-                <span className="w-2 h-2 rounded-full bg-emerald-300 animate-ping" />
-                Available for Opportunities
-              </div>
+      <div className="container mx-auto max-w-7xl relative z-10 my-auto py-4 lg:py-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 xl:gap-14 items-center">
+          
+          {/* Left Column: Headlines, Bio, Stack Pills, CTAs, Stats */}
+          <div className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left order-1">
+            
+            {/* Live Status Pill */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-surface)]/85 backdrop-blur-md shadow-xs mb-6"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+              </span>
+              <span className="text-xs font-semibold text-[var(--color-text-main)]">Available for opportunities</span>
+              <span className="text-[var(--color-border)]">•</span>
+              <span className="text-xs text-[var(--color-text-muted)] font-medium">Full-Stack &amp; AI</span>
+            </motion.div>
 
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-3 leading-tight tracking-tight text-white">
-                Hi, I'm <span className="underline decoration-white/40">Vishnu.</span>
-              </h1>
+            {/* Main Headline */}
+            <div className="mb-4 w-full">
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.1 }}
+                className="text-4xl sm:text-6xl md:text-7xl xl:text-8xl font-black tracking-tight leading-[1.06] text-[var(--color-text-main)] mb-3"
+              >
+                Hi, I'm <SparklesText text="Vishnu" />
+              </motion.h1>
 
-              <div className="text-xl sm:text-2xl md:text-3xl font-bold text-white/95 mb-5 min-h-[1.4em]">
-                <RoleMorpher roles={ROLES} className="text-white drop-shadow-sm font-extrabold" />
-              </div>
-
-              <p className="text-white/85 text-sm sm:text-base mb-8 max-w-md font-light leading-relaxed">
-                Engineering scalable web architectures, resilient APIs, and modern user experiences with React 19, Python/Django, and clean architecture.
-              </p>
-
-              <div className="flex flex-col gap-4">
-                <div className="flex items-start gap-3.5">
-                  <div className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center border border-white/20 shadow-sm backdrop-blur-sm flex-shrink-0">
-                    <Code2 size={18} className="text-white" />
-                  </div>
-                  <div>
-                    <p className="text-[10px] text-white/70 font-semibold tracking-wider uppercase mb-0.5">Experience</p>
-                    <p className="text-sm font-semibold text-white">3+ Years Building Production Systems</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3.5">
-                  <div className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center border border-white/20 shadow-sm backdrop-blur-sm flex-shrink-0">
-                    <MapPin size={18} className="text-white" />
-                  </div>
-                  <div>
-                    <p className="text-[10px] text-white/70 font-semibold tracking-wider uppercase mb-0.5">Location &amp; Timezone</p>
-                    <p className="text-sm font-semibold text-white">Vadakara, Kerala, India</p>
-                    <p className="text-xs text-white/75 mt-0.5 flex items-center gap-1">
-                      <Clock size={11} /> UTC +5:30 (IST) • Rapid response
-                    </p>
-                  </div>
-                </div>
-              </div>
+              {/* Dynamic Kinetic Role */}
+              <motion.div
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[var(--color-text-main)] min-h-[1.4em] flex items-center justify-center lg:justify-start"
+              >
+                <RoleMorpher roles={ROLES} />
+              </motion.div>
             </div>
 
-            {/* Direct Profiles */}
-            <div className="relative z-10 mt-8 pt-6 border-t border-white/20 flex items-center justify-between">
-              <div>
-                <p className="text-[10px] text-white/75 font-semibold tracking-wider uppercase mb-2">Direct Profiles</p>
-                <div className="flex gap-2.5">
-                  <a
-                    href="https://github.com/Vishnuvsh"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center border border-white/20 hover:bg-white hover:text-[var(--color-accent)] transition-all cursor-pointer text-white"
-                    aria-label="GitHub Profile"
-                  >
-                    <GithubIcon size={18} />
-                  </a>
-                  <a
-                    href="http://www.linkedin.com/in/vishnu-v-b5256b341"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center border border-white/20 hover:bg-white hover:text-[var(--color-accent)] transition-all cursor-pointer text-white"
-                    aria-label="LinkedIn Profile"
-                  >
-                    <LinkedinIcon size={18} />
-                  </a>
-                  <button
-                    onClick={handleCopyEmail}
-                    className="relative w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center border border-white/20 hover:bg-white hover:text-[var(--color-accent)] transition-all cursor-pointer text-white"
-                    title={emailCopied ? 'Email Copied!' : 'Copy Email'}
-                    aria-label="Email Vishnu"
-                  >
-                    {emailCopied ? <Check size={16} className="text-emerald-300" /> : <Mail size={18} />}
-                    {emailCopied && (
-                      <span className="absolute -top-7 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded bg-emerald-600 text-white text-[10px] font-mono whitespace-nowrap shadow-md">
-                        COPIED!
-                      </span>
-                    )}
-                  </button>
-                </div>
-              </div>
+            {/* Bio Description */}
+            <motion.p
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="text-base sm:text-lg text-[var(--color-text-muted)] max-w-xl leading-relaxed mb-6 font-normal"
+            >
+              Engineering scalable web architectures, resilient APIs, and modern user experiences with{' '}
+              <span className="text-[var(--color-text-main)] font-semibold">React 19</span>,{' '}
+              <span className="text-[var(--color-text-main)] font-semibold">Python/Django</span>, and{' '}
+              <span className="text-gradient-static font-semibold">clean architecture</span>.
+            </motion.p>
 
-              <div className="hidden sm:block text-right">
-                <p className="text-[10px] text-white/70 font-semibold tracking-wider uppercase mb-1">Direct Contact</p>
-                <a href="tel:+916282195381" className="text-xs font-semibold text-white hover:text-white/80 transition-colors">
-                  +91 6282195381
-                </a>
-              </div>
-            </div>
-          </div>
-
-          {/* Right Panel: Clean Surface with Portrait & Actions */}
-          <div className="lg:w-1/2 p-6 sm:p-10 lg:p-12 bg-[var(--color-bg-surface)] relative flex flex-col justify-between">
-            <div>
-              <div className="flex items-center justify-between mb-4">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-accent)]/8 text-xs font-semibold text-[var(--color-accent)] border border-[var(--color-accent)]/20">
-                  <Sparkles size={12} />
-                  Full-Stack &amp; AI Architect
-                </div>
-                <span className="text-[11px] font-mono font-semibold text-emerald-600 dark:text-emerald-400">
-                  ● PROD-READY
+            {/* Minimal & Airy Tech Stack Pills */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="flex flex-wrap items-center justify-center lg:justify-start gap-2 mb-8 max-w-xl"
+            >
+              {[
+                'React 19',
+                'Python & Django',
+                'MySQL',
+                'Tailwind CSS',
+                'RESTful APIs',
+                'MCP & AI Tools',
+              ].map((tech) => (
+                <span
+                  key={tech}
+                  className="px-3.5 py-1.5 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-surface)]/70 text-xs font-medium text-[var(--color-text-muted)] hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/40 hover:bg-[var(--color-accent)]/5 transition-all duration-300 cursor-default shadow-xs"
+                >
+                  {tech}
                 </span>
-              </div>
+              ))}
+            </motion.div>
 
-              {/* Framed Clean Portrait */}
-              <div className="relative w-full h-[260px] sm:h-[320px] md:h-[350px] rounded-2xl sm:rounded-3xl overflow-hidden border border-[var(--color-border)] shadow-md mb-6 group bg-zinc-100 dark:bg-zinc-800">
-                <img
-                  src="/profile.jpg"
-                  alt="Vishnu V - Full-Stack Developer"
-                  className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                  onError={(e) => {
-                    e.target.style.display = 'none';
-                    e.target.parentElement.style.background = 'linear-gradient(135deg, #f43f5e 0%, #ff6b6b 50%, #fb923c 100%)';
-                  }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
-                <div className="absolute bottom-3 inset-x-3 flex items-center justify-between text-white text-xs font-mono">
-                  <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/60 backdrop-blur-md">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                    VISHNU V
-                  </span>
-                  <span className="px-2.5 py-1 rounded-lg bg-black/60 backdrop-blur-md">
-                    REACT 19 • PYTHON • MCP
-                  </span>
-                </div>
-              </div>
-
-              {/* Core Stack Pills */}
-              <div className="flex flex-wrap gap-1.5 mb-6">
-                {['React 19', 'Python & Django', 'MySQL', 'Tailwind CSS', 'RESTful APIs', 'MCP 1.0'].map((tech) => (
-                  <span
-                    key={tech}
-                    className="px-3 py-1 text-xs font-medium rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-base)] text-[var(--color-text-muted)] hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/30 transition-colors"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="pt-4 border-t border-[var(--color-border)]/60 flex flex-wrap items-center gap-3 w-full">
+            {/* Action Buttons & Socials Deck */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="flex flex-wrap items-center justify-center lg:justify-start gap-3.5 mb-10 w-full"
+            >
               <MagneticButton href="#projects" variant="primary">
                 View My Work
-                <ArrowRight size={16} />
+                <ArrowRight size={17} />
               </MagneticButton>
               <MagneticButton
                 href="https://resilient-genie-df3d71.netlify.app/VishnuV%20-%20Python%20Developer.pdf"
@@ -1019,9 +1059,74 @@ function Hero() {
                 Download CV
                 <Download size={16} />
               </MagneticButton>
-            </div>
+
+              {/* Minimal Social Dock */}
+              <div className="flex items-center gap-1.5 sm:ml-2">
+                {HERO_SOCIALS.map((social) => {
+                  if (social.label === 'Email') {
+                    return (
+                      <button
+                        key={social.label}
+                        onClick={handleCopyEmail}
+                        title={emailCopied ? 'Email Copied!' : 'Copy Email (vishnuvsh44@gmail.com)'}
+                        aria-label="Copy Email Address"
+                        className="relative flex items-center justify-center w-10 h-10 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-surface)]/80 text-[var(--color-text-muted)] hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/40 hover:bg-[var(--color-accent)]/10 transition-all duration-200 cursor-pointer shadow-xs"
+                      >
+                        {emailCopied ? <Check size={16} className="text-emerald-500" /> : <social.icon size={16} />}
+                        {emailCopied && (
+                          <span className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded bg-emerald-600 text-white text-[10px] font-mono whitespace-nowrap shadow-md">
+                            COPIED!
+                          </span>
+                        )}
+                      </button>
+                    );
+                  }
+                  return (
+                    <a
+                      key={social.label}
+                      href={social.href}
+                      target={social.href.startsWith('http') ? '_blank' : undefined}
+                      rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                      aria-label={social.label}
+                      className="flex items-center justify-center w-10 h-10 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-surface)]/80 text-[var(--color-text-muted)] hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/40 hover:bg-[var(--color-accent)]/10 transition-all duration-200 cursor-pointer shadow-xs"
+                    >
+                      <social.icon size={16} />
+                    </a>
+                  );
+                })}
+              </div>
+            </motion.div>
+
+            {/* Impact Metric Strip */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              className="w-full max-w-xl flex items-center justify-between sm:justify-start sm:gap-12 pt-6 border-t border-[var(--color-border)]/70"
+            >
+              {[
+                { value: '3+', label: 'Years Experience' },
+                { value: '15+', label: 'Projects Built' },
+                { value: '100%', label: 'Client Satisfaction' },
+              ].map((stat, i) => (
+                <div key={i} className="text-center sm:text-left">
+                  <div className="text-2xl sm:text-3xl font-extrabold text-gradient tracking-tight">
+                    {stat.value}
+                  </div>
+                  <div className="text-xs sm:text-sm font-medium text-[var(--color-text-muted)] mt-0.5">
+                    {stat.label}
+                  </div>
+                </div>
+              ))}
+            </motion.div>
           </div>
-        </motion.div>
+
+          {/* Right Column: 3D Portrait Stage */}
+          <div className="lg:col-span-5 flex justify-center lg:justify-end order-2">
+            <CentralCutoutPortrait scrollYProgress={scrollYProgress} />
+          </div>
+
+        </div>
       </div>
 
       {/* Scroll Cue */}
