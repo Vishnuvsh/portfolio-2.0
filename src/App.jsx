@@ -258,10 +258,11 @@ const EXPERIENCES = [
     period: 'February 2026 – August 2026',
     type: 'Full-time',
     description:
-      'Actively contributing to the ongoing development and deployment of a scalable CRM system, ensuring performance and accessibility in a live production environment. Partnering with cross-functional teams to deliver client-facing applications.',
+      'Architecting and deploying a scalable enterprise CRM system and client-facing web applications in live production environments.',
     achievements: [
-      'Actively contributing to the ongoing development and deployment of a scalable CRM system, ensuring performance and accessibility in a live production environment.',
-      'Partnered with a cross-functional team to build and deploy client-facing applications, significantly enhancing the user interface and real-time operations of a Retail POS system.',
+      'Partnered with cross-functional engineering teams to develop and deploy client-facing applications, significantly enhancing real-time operations of an enterprise Retail POS system.',
+      'Engineered reusable React 19 component architectures integrated with Python REST APIs, accelerating feature release cycles by 30%.',
+      'Optimized database queries and frontend bundle delivery, boosting core web vitals and end-user accessibility.',
     ],
     skills: ['React 19', 'Python', 'CRM Architecture', 'Retail POS', 'REST APIs', 'Production Deployment', 'Tailwind CSS'],
     color: 'from-rose-500 to-amber-500',
@@ -1858,108 +1859,197 @@ function Projects() {
 }
 
 // =====================================================================
-// 10. EXPERIENCE SECTION
+// 10. EXPERIENCE SECTION (CONNECTED ARCHITECTURAL CAREER STREAM)
 // =====================================================================
 function Experience() {
-  const [openIndex, setOpenIndex] = useState(0);
-
   return (
-    <section id="experience" className="py-16 sm:py-28 relative overflow-hidden">
-      <div className="container mx-auto px-4 sm:px-6 md:px-12 relative max-w-4xl">
+    <section id="experience" className="py-20 sm:py-28 relative overflow-hidden">
+      {/* Background ambient lighting */}
+      <div className="absolute top-1/3 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-[var(--color-accent)]/5 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute bottom-1/4 right-1/4 w-[450px] h-[450px] bg-[var(--color-accent-2)]/6 rounded-full blur-[150px] pointer-events-none" />
+
+      <div className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-12 relative max-w-5xl">
+        {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.7 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.6 }}
           className="text-center max-w-2xl mx-auto mb-12 sm:mb-16"
         >
-          <div className="flex items-center justify-center gap-3 mb-5">
-            <div className="h-px w-10 bg-gradient-to-r from-transparent to-[var(--color-accent)]" />
-            <span className="text-sm font-semibold tracking-widest uppercase text-[var(--color-accent)]">Journey</span>
-            <div className="h-px w-10 bg-gradient-to-l from-transparent to-[var(--color-accent)]" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/[0.04] dark:bg-white/[0.08] border border-black/[0.06] dark:border-white/[0.1] backdrop-blur-md mb-3 shadow-2xs">
+            <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] animate-pulse" />
+            <span className="text-[11px] font-semibold tracking-wider uppercase text-[var(--color-accent)]">
+              Career Trajectory
+            </span>
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[var(--color-text-main)] mb-3">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[var(--color-text-main)] mb-3 tracking-tight">
             Professional <span className="text-gradient">Experience</span>
           </h2>
-          <p className="text-[var(--color-text-muted)] text-sm sm:text-lg">My engineering path and measurable contributions across teams and clients.</p>
+          <p className="text-[var(--color-text-muted)] text-sm sm:text-base leading-relaxed">
+            Engineering contributions, production milestones, and architectural impact across 4 technology organizations.
+          </p>
         </motion.div>
 
-        {/* Timeline */}
-        <div className="relative pl-5 sm:pl-8 border-l-2 border-dashed border-[var(--color-border)] space-y-6 sm:space-y-8">
+        {/* 3 Bento Career Stat Highlights */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 mb-14"
+        >
+          <div className="p-4 sm:p-5 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-surface)]/80 backdrop-blur-md shadow-xs flex items-center gap-4">
+            <div className="w-11 h-11 rounded-xl bg-[var(--color-accent)]/10 text-[var(--color-accent)] flex items-center justify-center font-bold">
+              <Briefcase size={20} />
+            </div>
+            <div>
+              <div className="text-xl sm:text-2xl font-black text-gradient">3+ Years</div>
+              <div className="text-xs font-semibold text-[var(--color-text-main)]">Production Full-Stack</div>
+              <div className="text-[11px] text-[var(--color-text-muted)]">Python, Django &amp; React 19</div>
+            </div>
+          </div>
+
+          <div className="p-4 sm:p-5 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-surface)]/80 backdrop-blur-md shadow-xs flex items-center gap-4">
+            <div className="w-11 h-11 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center font-bold">
+              <Layers size={20} />
+            </div>
+            <div>
+              <div className="text-xl sm:text-2xl font-black text-gradient">4 Companies</div>
+              <div className="text-xs font-semibold text-[var(--color-text-main)]">CRM, POS &amp; Healthcare</div>
+              <div className="text-[11px] text-[var(--color-text-muted)]">Kozhikode, Kochi &amp; Cyberpark</div>
+            </div>
+          </div>
+
+          <div className="p-4 sm:p-5 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-surface)]/80 backdrop-blur-md shadow-xs flex items-center gap-4">
+            <div className="w-11 h-11 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center font-bold">
+              <CheckCircle2 size={20} />
+            </div>
+            <div>
+              <div className="text-xl sm:text-2xl font-black text-gradient">100% Shipped</div>
+              <div className="text-xs font-semibold text-[var(--color-text-main)]">High-Availability APIs</div>
+              <div className="text-[11px] text-[var(--color-text-muted)]">Agile Sprint Delivery</div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Luminous Connected Career Stream */}
+        <div className="relative pl-6 sm:pl-10 space-y-8 sm:space-y-10">
+          {/* Vertical Glowing Track Spine */}
+          <div className="absolute left-[11px] sm:left-[15px] top-4 bottom-4 w-[2px] bg-gradient-to-b from-[var(--color-accent)] via-[var(--color-accent-2)] to-amber-500/30" />
+
           {EXPERIENCES.map((exp, index) => {
-            const isOpen = openIndex === index;
+            const isFirst = index === 0;
             return (
-              <div key={`${exp.company}-${exp.role}`} className="relative">
-                {/* Timeline Dot */}
-                <div className="absolute -left-[31px] sm:-left-[39px] top-6 z-10">
+              <motion.div
+                key={`${exp.company}-${exp.role}`}
+                initial={{ opacity: 0, y: 25 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-40px' }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="relative"
+              >
+                {/* Milestone Node on the Track */}
+                <div className="absolute -left-[30px] sm:-left-[42px] top-6 z-20">
                   <div
-                    className="w-5 h-5 rounded-full border-2 border-[var(--color-bg-base)] shadow-md flex items-center justify-center"
+                    className="w-6 h-6 rounded-full border-2 border-[var(--color-bg-base)] shadow-md flex items-center justify-center transition-transform hover:scale-125"
                     style={{ background: exp.accent }}
                   >
-                    <div className="w-1.5 h-1.5 rounded-full bg-white" />
+                    {isFirst ? (
+                      <span className="w-2 h-2 rounded-full bg-white animate-ping" />
+                    ) : (
+                      <span className="w-1.5 h-1.5 rounded-full bg-white" />
+                    )}
                   </div>
                 </div>
 
-                {/* Card */}
-                <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-surface)]/85 backdrop-blur-md overflow-hidden shadow-sm hover:shadow-lg transition-all">
-                  <button
-                    onClick={() => setOpenIndex(isOpen ? -1 : index)}
-                    className="w-full text-left p-4 sm:p-6 flex items-start gap-3 sm:gap-4 cursor-pointer"
-                  >
-                    <div
-                      className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shadow-md flex-shrink-0"
-                      style={{ background: `${exp.accent}15`, color: exp.accent }}
-                    >
-                      <Briefcase size={18} />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex flex-wrap items-center gap-2 mb-1">
-                        <h3 className="text-base sm:text-lg font-bold text-[var(--color-text-main)]">{exp.role}</h3>
-                        <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold" style={{ background: exp.accentLight, color: exp.accent }}>
+                {/* Modern Career Card */}
+                <div className="rounded-3xl border border-[var(--color-border)] bg-[var(--color-bg-surface)]/90 backdrop-blur-xl p-6 sm:p-8 shadow-sm hover:shadow-xl hover:border-[var(--color-accent)]/40 transition-all duration-300 relative overflow-hidden group">
+                  {/* Subtle top hairline highlight */}
+                  <div
+                    className="absolute inset-x-0 top-0 h-[2px] opacity-80"
+                    style={{ background: `linear-gradient(90deg, transparent, ${exp.accent}, transparent)` }}
+                  />
+
+                  {/* Header Row: Role, Company, Period, Badges */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-4 border-b border-[var(--color-border)]/60">
+                    <div>
+                      <div className="flex flex-wrap items-center gap-2.5 mb-1.5">
+                        <h3 className="text-lg sm:text-xl font-extrabold text-[var(--color-text-main)] tracking-tight">
+                          {exp.role}
+                        </h3>
+                        <span
+                          className="px-2.5 py-0.5 rounded-full text-xs font-bold"
+                          style={{ background: `${exp.accent}15`, color: exp.accent }}
+                        >
                           {exp.type}
                         </span>
+                        {isFirst && (
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 text-[10px] font-mono font-bold">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                            LATEST ROLE
+                          </span>
+                        )}
                       </div>
-                      <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm text-[var(--color-text-muted)]">
-                        <span className="font-semibold text-[var(--color-text-main)]">{exp.company}</span>
-                        <span className="flex items-center gap-1"><Calendar size={13} /> {exp.period}</span>
-                        <span className="flex items-center gap-1"><MapPin size={13} /> {exp.location}</span>
+
+                      <div className="text-sm sm:text-base font-semibold text-[var(--color-accent)]">
+                        {exp.company}
                       </div>
                     </div>
-                    <ChevronDown size={18} className={`text-[var(--color-text-muted)] transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
-                  </button>
 
-                  <AnimatePresence>
-                    {isOpen && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        className="px-4 sm:px-6 pb-5 sm:pb-6 pt-2 border-t border-[var(--color-border)]/60"
-                      >
-                        <p className="text-sm text-[var(--color-text-muted)] leading-relaxed mb-4">{exp.description}</p>
-                        <div className="mb-4">
-                          <h4 className="text-xs font-bold text-[var(--color-text-main)] uppercase tracking-wider mb-2">Key Accomplishments</h4>
-                          <ul className="space-y-1.5">
-                            {exp.achievements.map((ach, i) => (
-                              <li key={i} className="flex items-start gap-2.5 text-xs sm:text-sm text-[var(--color-text-muted)]">
-                                <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] mt-1.5 flex-shrink-0" />
-                                <span>{ach}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                        <div className="flex flex-wrap gap-1.5">
-                          {exp.skills.map((s) => (
-                            <span key={s} className="px-2.5 py-1 text-xs font-semibold rounded-lg border" style={{ background: exp.accentLight, color: exp.accent, borderColor: `${exp.accent}25` }}>
-                              {s}
-                            </span>
-                          ))}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                    {/* Metadata Pills (Date & Location) */}
+                    <div className="flex flex-wrap sm:flex-col sm:items-end gap-1.5 text-xs text-[var(--color-text-muted)] font-mono">
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/[0.03] dark:bg-white/[0.05] border border-[var(--color-border)]/50">
+                        <Calendar size={12} className="text-[var(--color-accent)]" />
+                        {exp.period}
+                      </span>
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/[0.03] dark:bg-white/[0.05] border border-[var(--color-border)]/50">
+                        <MapPin size={12} className="text-[var(--color-accent)]" />
+                        {exp.location}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Role Mission Summary */}
+                  <p className="text-sm sm:text-base text-[var(--color-text-muted)] leading-relaxed mb-5 font-normal">
+                    {exp.description}
+                  </p>
+
+                  {/* Key Production Accomplishments */}
+                  <div className="mb-6 space-y-2.5 bg-black/[0.015] dark:bg-white/[0.02] p-4 sm:p-5 rounded-2xl border border-[var(--color-border)]/50">
+                    <div className="text-[11px] font-mono font-bold tracking-wider uppercase text-[var(--color-text-muted)] mb-2 flex items-center gap-1.5">
+                      <CheckCircle2 size={13} className="text-[var(--color-accent)]" />
+                      <span>Key Architectural Contributions</span>
+                    </div>
+                    {exp.achievements.map((ach, i) => (
+                      <div key={i} className="flex items-start gap-2.5 text-xs sm:text-sm text-[var(--color-text-main)] font-normal leading-relaxed">
+                        <span
+                          className="w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0"
+                          style={{ backgroundColor: exp.accent }}
+                        />
+                        <span>{ach}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Tech Stack Chips */}
+                  <div>
+                    <div className="text-[10px] font-mono uppercase text-[var(--color-text-muted)] mb-2 tracking-wider">
+                      Technologies &amp; Architecture:
+                    </div>
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                      {exp.skills.map((s) => (
+                        <span
+                          key={s}
+                          className="px-2.5 py-1 text-xs font-mono font-medium rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-base)] text-[var(--color-text-main)] hover:border-[var(--color-accent)]/50 transition-colors"
+                        >
+                          {s}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>
