@@ -6,7 +6,6 @@ import {
   useSpring,
   useTransform,
   useMotionValue,
-  useInView,
   useMotionValueEvent,
 } from 'framer-motion';
 import { ReactLenis, useLenis } from 'lenis/react';
@@ -116,79 +115,75 @@ const PILLARS = [
 const SKILL_CATEGORIES = [
   {
     name: 'Programming',
+    subtitle: 'Core Languages',
+    icon: Code2,
+    span: 'lg:col-span-4',
     color: 'from-rose-500 via-rose-400 to-amber-500',
     glow: 'rgba(244, 63, 94, 0.35)',
-    ringColor: '#f43f5e',
-    skills: [
-      { name: 'Python', level: 90 },
-      { name: 'SQL', level: 85 },
-    ],
+    accent: '#f43f5e',
+    skills: ['Python', 'SQL'],
   },
   {
     name: 'Web Development',
+    subtitle: 'Frontend & Styling',
+    icon: Layers,
+    span: 'lg:col-span-4',
     color: 'from-rose-500 via-pink-500 to-orange-400',
     glow: 'rgba(244, 63, 94, 0.35)',
-    ringColor: '#f43f5e',
-    skills: [
-      { name: 'HTML5', level: 92 },
-      { name: 'CSS3', level: 90 },
-      { name: 'Bootstrap', level: 84 },
-      { name: 'Tailwind CSS', level: 90 },
-      { name: 'JavaScript', level: 86 },
-      { name: 'React', level: 86 },
-    ],
+    accent: '#f43f5e',
+    skills: ['HTML5', 'CSS3', 'Bootstrap', 'Tailwind CSS', 'JavaScript', 'React'],
   },
   {
     name: 'Backend',
+    subtitle: 'Frameworks & APIs',
+    icon: Server,
+    span: 'lg:col-span-4',
     color: 'from-rose-600 via-orange-500 to-amber-500',
     glow: 'rgba(255, 107, 107, 0.35)',
-    ringColor: '#ff6b6b',
-    skills: [
-      { name: 'Django', level: 88 },
-      { name: 'Django REST Framework (DRF)', level: 86 },
-      { name: 'FastAPI', level: 80 },
-      { name: 'Frappe Framework (Basics)', level: 68 },
-    ],
+    accent: '#ff6b6b',
+    skills: ['Django', 'Django REST Framework (DRF)', 'FastAPI', 'Frappe Framework (Basics)'],
   },
   {
     name: 'Databases',
+    subtitle: 'Relational Storage',
+    icon: Database,
+    span: 'lg:col-span-3',
     color: 'from-emerald-500 to-teal-400',
     glow: 'rgba(16, 185, 129, 0.35)',
-    ringColor: '#10b981',
-    skills: [
-      { name: 'MySQL', level: 86 },
-      { name: 'PostgreSQL', level: 82 },
-    ],
+    accent: '#10b981',
+    skills: ['MySQL', 'PostgreSQL'],
   },
   {
     name: 'Tools & Platforms',
+    subtitle: 'DevOps, CI/CD & Hosting',
+    icon: Terminal,
+    span: 'lg:col-span-6',
     color: 'from-amber-500 to-orange-400',
     glow: 'rgba(245, 158, 11, 0.35)',
-    ringColor: '#f59e0b',
+    accent: '#f59e0b',
     skills: [
-      { name: 'Git', level: 88 },
-      { name: 'GitHub', level: 88 },
-      { name: 'GitHub Actions', level: 80 },
-      { name: 'CI/CD', level: 78 },
-      { name: 'Netlify', level: 82 },
-      { name: 'Postman', level: 86 },
-      { name: 'Docker', level: 78 },
-      { name: 'pythonanywhere', level: 80 },
-      { name: 'Render', level: 80 },
-      { name: 'Vercel', level: 84 },
-      { name: 'n8n', level: 78 },
+      'Git',
+      'GitHub',
+      'GitHub Actions',
+      'CI/CD',
+      'Netlify',
+      'Postman',
+      'Docker',
+      'pythonanywhere',
+      'Render',
+      'Vercel',
+      'n8n',
     ],
   },
   {
     name: 'AI & Libraries',
+    subtitle: 'Models, Vision & Data',
+    icon: Cpu,
+    span: 'lg:col-span-3',
     color: 'from-violet-500 to-fuchsia-500',
     glow: 'rgba(139, 92, 246, 0.35)',
-    ringColor: '#8b5cf6',
-    skills: [
-      { name: 'Ollama', level: 82 },
-      { name: 'OpenCV', level: 80 },
-      { name: 'Pandas', level: 78 },
-    ],
+    accent: '#8b5cf6',
+    skills: ['Ollama', 'OpenCV', 'Pandas'],
   },
 ];
 
@@ -1533,127 +1528,171 @@ Status: Open for Full-Stack Developer Opportunities`;
 }
 
 // =====================================================================
-// 8. SKILLS SECTION
+// 8. SKILLS SECTION (CLEAN CATEGORIZED BENTO MATRIX)
 // =====================================================================
-function CircularProgressRing({ level, color, size = 80, strokeWidth = 5, delay = 0 }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-50px' });
-  const radius = (size - strokeWidth) / 2;
-  const circumference = 2 * Math.PI * radius;
-  const strokeDashoffset = circumference - (level / 100) * circumference;
-
-  return (
-    <div ref={ref} className="relative" style={{ width: size, height: size }}>
-      <svg width={size} height={size} className="transform -rotate-90">
-        <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="var(--color-border)" strokeWidth={strokeWidth} opacity={0.5} />
-        <motion.circle
-          cx={size / 2}
-          cy={size / 2}
-          r={radius}
-          fill="none"
-          stroke={color}
-          strokeWidth={strokeWidth}
-          strokeLinecap="round"
-          strokeDasharray={circumference}
-          initial={{ strokeDashoffset: circumference }}
-          animate={isInView ? { strokeDashoffset } : { strokeDashoffset: circumference }}
-          transition={{ duration: 1.5, delay, ease: [0.16, 1, 0.3, 1] }}
-          style={{ filter: `drop-shadow(0 0 6px ${color}40)` }}
-        />
-      </svg>
-      <div className="absolute inset-0 flex items-center justify-center">
-        <span className="text-sm font-bold text-[var(--color-text-main)]">{level}%</span>
-      </div>
-    </div>
-  );
-}
-
 function Skills() {
-  const [activeCategory, setActiveCategory] = useState(SKILL_CATEGORIES[0].name);
-  const activeCat = SKILL_CATEGORIES.find((c) => c.name === activeCategory);
+  const [activeCategory, setActiveCategory] = useState('All');
+  const visibleCategories =
+    activeCategory === 'All'
+      ? SKILL_CATEGORIES
+      : SKILL_CATEGORIES.filter((c) => c.name === activeCategory);
+
+  const allSkills = SKILL_CATEGORIES.flatMap((c) => c.skills);
 
   return (
     <section id="skills" className="py-16 sm:py-28 relative overflow-hidden">
-      <div className="container mx-auto px-6 md:px-12 relative max-w-6xl">
+      {/* Subtle ambient glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[560px] h-[560px] bg-[var(--color-accent)]/5 rounded-full blur-[150px] pointer-events-none" />
+
+      <div className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-12 relative max-w-6xl">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.7 }}
-          className="text-center max-w-2xl mx-auto mb-14"
+          className="text-center max-w-2xl mx-auto mb-12 sm:mb-14"
         >
-          <div className="flex items-center justify-center gap-3 mb-5">
-            <div className="h-px w-10 bg-gradient-to-r from-transparent to-[var(--color-accent)]" />
-            <span className="text-sm font-semibold tracking-widest uppercase text-[var(--color-accent)]">Tech Stack</span>
-            <div className="h-px w-10 bg-gradient-to-l from-transparent to-[var(--color-accent)]" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/[0.04] dark:bg-white/[0.08] border border-black/[0.06] dark:border-white/[0.1] backdrop-blur-md mb-3 shadow-2xs">
+            <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] animate-pulse" />
+            <span className="text-[11px] font-semibold tracking-wider uppercase text-[var(--color-accent)]">
+              Tech Stack
+            </span>
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[var(--color-text-main)] mb-4">
-            My <span className="text-gradient">Skills</span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[var(--color-text-main)] mb-3 tracking-tight">
+            Technical <span className="text-gradient">Skills</span>
           </h2>
-          <p className="text-[var(--color-text-muted)] text-lg">Technologies and tools I wield to bring ideas to life.</p>
+          <p className="text-[var(--color-text-muted)] text-sm sm:text-base leading-relaxed">
+            Core languages, frameworks, databases, and deployment tools I use in production.
+          </p>
         </motion.div>
 
-        {/* Tabs */}
-        <div className="flex flex-wrap justify-center gap-2.5 sm:gap-3 mb-12 sm:mb-14">
-          {SKILL_CATEGORIES.map((cat) => (
-            <button
-              key={cat.name}
-              onClick={() => setActiveCategory(cat.name)}
-              className={`relative px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl text-xs sm:text-sm font-semibold transition-all duration-300 overflow-hidden cursor-pointer ${
-                activeCategory === cat.name
-                  ? 'text-white shadow-lg'
-                  : 'text-[var(--color-text-muted)] border border-[var(--color-border)] bg-[var(--color-bg-surface)] hover:text-[var(--color-text-main)]'
-              }`}
-            >
-              {activeCategory === cat.name && (
-                <motion.div
-                  layoutId="active-cat-bg"
-                  className={`absolute inset-0 bg-gradient-to-r ${cat.color} rounded-xl sm:rounded-2xl`}
-                  style={{ boxShadow: `0 4px 20px ${cat.glow}` }}
-                />
-              )}
-              <span className="relative z-10">{cat.name}</span>
-            </button>
-          ))}
+        {/* Category Filter Tabs */}
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-2.5 mb-10 sm:mb-12">
+          {['All', ...SKILL_CATEGORIES.map((c) => c.name)].map((tabName) => {
+            const isActive = activeCategory === tabName;
+            const matchedCat = SKILL_CATEGORIES.find((c) => c.name === tabName);
+            const activeGradient = matchedCat?.color || 'from-[var(--color-accent)] to-[var(--color-accent-2)]';
+            const activeGlow = matchedCat?.glow || 'rgba(244, 63, 94, 0.35)';
+
+            return (
+              <button
+                key={tabName}
+                onClick={() => setActiveCategory(tabName)}
+                className={`relative px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 overflow-hidden cursor-pointer ${
+                  isActive
+                    ? 'text-white shadow-md'
+                    : 'text-[var(--color-text-muted)] border border-[var(--color-border)] bg-[var(--color-bg-surface)]/85 hover:text-[var(--color-text-main)] hover:border-[var(--color-accent)]/35'
+                }`}
+              >
+                {isActive && (
+                  <motion.div
+                    layoutId="active-cat-bg"
+                    className={`absolute inset-0 bg-gradient-to-r ${activeGradient} rounded-xl`}
+                    style={{ boxShadow: `0 4px 18px ${activeGlow}` }}
+                  />
+                )}
+                <span className="relative z-10">{tabName}</span>
+              </button>
+            );
+          })}
         </div>
 
-        {/* Grid */}
+        {/* Categorized Bento Skills Grid */}
         <AnimatePresence mode="wait">
           <motion.div
             key={activeCategory}
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.4 }}
-            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-5 py-4 max-w-4xl mx-auto"
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.3 }}
+            className={
+              activeCategory === 'All'
+                ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 sm:gap-5'
+                : 'max-w-3xl mx-auto'
+            }
           >
-            {activeCat?.skills.map((skill, i) => (
-              <motion.div
-                key={skill.name}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: i * 0.06 }}
-                whileHover={{ y: -5, scale: 1.03 }}
-                className="flex flex-col items-center gap-3 p-4 sm:p-5 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-surface)]/80 backdrop-blur-sm shadow-sm hover:shadow-lg transition-all duration-300"
-              >
-                <CircularProgressRing level={skill.level} color={activeCat.ringColor} delay={i * 0.05} />
-                <span className="text-xs sm:text-sm font-semibold text-[var(--color-text-main)] text-center leading-snug">
-                  {skill.name}
-                </span>
-              </motion.div>
-            ))}
+            {visibleCategories.map((cat, idx) => {
+              const Icon = cat.icon;
+              return (
+                <motion.div
+                  key={cat.name}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: idx * 0.05 }}
+                  className={`${
+                    activeCategory === 'All' ? cat.span : 'w-full'
+                  } rounded-3xl border border-[var(--color-border)] bg-[var(--color-bg-surface)]/90 backdrop-blur-xl p-5 sm:p-6 shadow-sm hover:shadow-xl hover:border-[var(--color-accent)]/35 transition-all duration-300 relative overflow-hidden flex flex-col justify-between group`}
+                >
+                  {/* Top hairline glow */}
+                  <div
+                    className="absolute inset-x-0 top-0 h-[2px] opacity-80"
+                    style={{ background: `linear-gradient(90deg, transparent, ${cat.accent}, transparent)` }}
+                  />
+
+                  <div>
+                    {/* Category Header */}
+                    <div className="flex items-center justify-between gap-3 mb-5 pb-3.5 border-b border-[var(--color-border)]/60">
+                      <div className="flex items-center gap-3">
+                        <div
+                          className="w-10 h-10 rounded-xl flex items-center justify-center shadow-2xs flex-shrink-0"
+                          style={{ background: `${cat.accent}15`, color: cat.accent }}
+                        >
+                          <Icon size={18} />
+                        </div>
+                        <div>
+                          <h3 className="text-base sm:text-lg font-extrabold text-[var(--color-text-main)] tracking-tight leading-tight">
+                            {cat.name}
+                          </h3>
+                          <p className="text-[11px] font-medium text-[var(--color-text-muted)]">
+                            {cat.subtitle}
+                          </p>
+                        </div>
+                      </div>
+
+                      <span
+                        className="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold border"
+                        style={{
+                          backgroundColor: `${cat.accent}10`,
+                          color: cat.accent,
+                          borderColor: `${cat.accent}25`,
+                        }}
+                      >
+                        {String(cat.skills.length).padStart(2, '0')}
+                      </span>
+                    </div>
+
+                    {/* Clean Skill Pills */}
+                    <div className="flex flex-wrap gap-2">
+                      {cat.skills.map((skillName) => (
+                        <motion.span
+                          key={skillName}
+                          whileHover={{ y: -2 }}
+                          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-base)]/75 text-xs sm:text-sm font-semibold text-[var(--color-text-main)] hover:border-[var(--color-accent)]/50 hover:bg-[var(--color-bg-surface)] transition-all duration-200 shadow-2xs cursor-default"
+                        >
+                          <span
+                            className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                            style={{ backgroundColor: cat.accent }}
+                          />
+                          <span>{skillName}</span>
+                        </motion.span>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
           </motion.div>
         </AnimatePresence>
 
         {/* Marquee Ticker */}
-        <div className="mt-12 sm:mt-20 relative overflow-hidden">
+        <div className="mt-12 sm:mt-16 relative overflow-hidden">
           <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[var(--color-bg-base)] to-transparent z-10 pointer-events-none" />
           <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-[var(--color-bg-base)] to-transparent z-10 pointer-events-none" />
-          <div className="flex gap-4 animate-marquee whitespace-nowrap">
-            {[...SKILL_CATEGORIES.flatMap((c) => c.skills.map((s) => s.name)), ...SKILL_CATEGORIES.flatMap((c) => c.skills.map((s) => s.name))].map((name, idx) => (
+          <div className="flex gap-3 sm:gap-4 animate-marquee whitespace-nowrap">
+            {[...allSkills, ...allSkills].map((name, idx) => (
               <span
                 key={idx}
-                className="inline-flex items-center px-4 py-2 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-surface)]/70 backdrop-blur-sm text-sm text-[var(--color-text-muted)] font-medium flex-shrink-0 hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/50 transition-colors"
+                className="inline-flex items-center px-4 py-2 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-surface)]/70 backdrop-blur-sm text-xs sm:text-sm text-[var(--color-text-muted)] font-medium flex-shrink-0 hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/50 transition-colors"
               >
                 {name}
               </span>

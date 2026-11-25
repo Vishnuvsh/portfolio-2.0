@@ -99,46 +99,24 @@ const portfolioData = {
     },
   ],
   skills: {
-    Programming: [
-      { name: 'Python', level: 90 },
-      { name: 'SQL', level: 85 },
-    ],
-    'Web Development': [
-      { name: 'HTML5', level: 92 },
-      { name: 'CSS3', level: 90 },
-      { name: 'Bootstrap', level: 84 },
-      { name: 'Tailwind CSS', level: 90 },
-      { name: 'JavaScript', level: 86 },
-      { name: 'React', level: 86 },
-    ],
-    Backend: [
-      { name: 'Django', level: 88 },
-      { name: 'Django REST Framework (DRF)', level: 86 },
-      { name: 'FastAPI', level: 80 },
-      { name: 'Frappe Framework (Basics)', level: 68 },
-    ],
-    Databases: [
-      { name: 'MySQL', level: 86 },
-      { name: 'PostgreSQL', level: 82 },
-    ],
+    Programming: ['Python', 'SQL'],
+    'Web Development': ['HTML5', 'CSS3', 'Bootstrap', 'Tailwind CSS', 'JavaScript', 'React'],
+    Backend: ['Django', 'Django REST Framework (DRF)', 'FastAPI', 'Frappe Framework (Basics)'],
+    Databases: ['MySQL', 'PostgreSQL'],
     'Tools & Platforms': [
-      { name: 'Git', level: 88 },
-      { name: 'GitHub', level: 88 },
-      { name: 'GitHub Actions', level: 80 },
-      { name: 'CI/CD', level: 78 },
-      { name: 'Netlify', level: 82 },
-      { name: 'Postman', level: 86 },
-      { name: 'Docker', level: 78 },
-      { name: 'pythonanywhere', level: 80 },
-      { name: 'Render', level: 80 },
-      { name: 'Vercel', level: 84 },
-      { name: 'n8n', level: 78 },
+      'Git',
+      'GitHub',
+      'GitHub Actions',
+      'CI/CD',
+      'Netlify',
+      'Postman',
+      'Docker',
+      'pythonanywhere',
+      'Render',
+      'Vercel',
+      'n8n',
     ],
-    'AI & Libraries': [
-      { name: 'Ollama', level: 82 },
-      { name: 'OpenCV', level: 80 },
-      { name: 'Pandas', level: 78 },
-    ],
+    'AI & Libraries': ['Ollama', 'OpenCV', 'Pandas'],
   },
   projects: [
     {
@@ -427,7 +405,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       {
         name: 'get_skills',
         description:
-          'Get Vishnu V\'s technical skills categorized into Programming, Web Development, Backend, Databases, Tools & Platforms, and AI & Libraries, along with proficiency levels.',
+          'Get Vishnu V\'s technical skills categorized into Programming, Web Development, Backend, Databases, Tools & Platforms, and AI & Libraries.',
         inputSchema: {
           type: 'object',
           properties: {
@@ -459,18 +437,6 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
     ],
   };
 });
-
-// Visual formatting helpers for Claude chatbot responses
-function createProgressBar(level) {
-  const totalBlocks = 10;
-  const filledBlocks = Math.round((level / 100) * totalBlocks);
-  const emptyBlocks = totalBlocks - filledBlocks;
-  const bar = '█'.repeat(filledBlocks) + '░'.repeat(emptyBlocks);
-  let badge = 'Proficient';
-  if (level >= 90) badge = 'Expert';
-  else if (level >= 80) badge = 'Advanced';
-  return `\`[${bar}]\` **${level}%** (*${badge}*)`;
-}
 
 // Handle tool execution
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
@@ -561,14 +527,14 @@ ${projectCards}
 
         const icon = categoryIcons[catKey] || '⚡';
         const skillList = portfolioData.skills[catKey]
-          .map((s) => `- **${s.name.padEnd(14, ' ')}**: ${createProgressBar(s.level)}`)
+          .map((s) => `- \`${s}\``)
           .join('\n');
 
         return {
           content: [
             {
               type: 'text',
-              text: `## ${icon} ${catKey} Skills (${portfolioData.skills[catKey].length} Skills)\n\n${skillList}`,
+              text: `## ${icon} ${catKey} (${portfolioData.skills[catKey].length})\n\n${skillList}`,
             },
           ],
         };
@@ -578,9 +544,7 @@ ${projectCards}
       const allCategories = Object.entries(portfolioData.skills)
         .map(([category, items]) => {
           const icon = categoryIcons[category] || '⚡';
-          const itemsList = items
-            .map((s) => `  - **${s.name}**: ${createProgressBar(s.level)}`)
-            .join('\n');
+          const itemsList = items.map((s) => `\`${s}\``).join('  ');
           return `### ${icon} ${category}\n${itemsList}`;
         })
         .join('\n\n');
@@ -651,7 +615,7 @@ ${experienceList}
 
 ## 🛠️ Skills Snapshot
 ${Object.entries(skills)
-  .map(([cat, items]) => `- **${cat}:** ${items.map((s) => `\`${s.name}\``).join(' ')}`)
+  .map(([cat, items]) => `- **${cat}:** ${items.map((s) => `\`${s}\``).join(' ')}`)
   .join('\n')}
 `;
 
