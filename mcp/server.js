@@ -55,7 +55,7 @@ const portfolioData = {
         'Partnered with cross-functional team to enhance UI and real-time operations of a Retail POS system',
         'Ensured high accessibility and responsiveness across all client devices',
       ],
-      skills: ['React 19', 'Python', 'CRM Architecture', 'Retail POS', 'REST APIs', 'Production Deployment'],
+      skills: ['React', 'Python', 'Tailwind CSS', 'Django REST Framework (DRF)', 'MySQL', 'Git', 'GitHub'],
     },
     {
       role: 'Python Full Stack Developer',
@@ -69,7 +69,7 @@ const portfolioData = {
         'Executed requirement analysis, API testing, debugging, and bug fixing to ensure smooth backend operations',
         'Operated within an Agile development environment following iterative feedback loops',
       ],
-      skills: ['Python', 'Django REST', 'JWT Auth', 'API Testing', 'MySQL / PostgreSQL', 'Agile / Scrum'],
+      skills: ['Python', 'Django', 'Django REST Framework (DRF)', 'Postman', 'MySQL', 'PostgreSQL', 'Git'],
     },
     {
       role: 'Junior Python Developer',
@@ -82,7 +82,7 @@ const portfolioData = {
         'Developed backend APIs and handled frontend integration for Clinical Management System',
         'Collaborated with cross-functional team members using Git and GitHub for production healthcare solutions',
       ],
-      skills: ['Python', 'Django', 'RESTful APIs', 'Frontend Integration', 'Healthcare Tech', 'Git & GitHub'],
+      skills: ['Python', 'Django', 'Django REST Framework (DRF)', 'SQL', 'MySQL', 'Git', 'GitHub'],
     },
     {
       role: 'Python Developer Intern',
@@ -95,37 +95,49 @@ const portfolioData = {
         'Supported frontend tasks with HTML, CSS, and Bootstrap for client web projects',
         'Collaborated using Git and GitHub for version control and sprint coordination',
       ],
-      skills: ['Python', 'HTML5', 'CSS3', 'Bootstrap', 'Git & GitHub', 'UI Integration'],
+      skills: ['Python', 'HTML5', 'CSS3', 'Bootstrap', 'JavaScript', 'Git', 'GitHub'],
     },
   ],
   skills: {
-    Frontend: [
-      { name: 'React', level: 90 },
-      { name: 'Next.js', level: 75 },
-      { name: 'JavaScript', level: 88 },
-      { name: 'HTML', level: 95 },
-      { name: 'CSS', level: 92 },
+    Programming: [
+      { name: 'Python', level: 90 },
+      { name: 'SQL', level: 85 },
+    ],
+    'Web Development': [
+      { name: 'HTML5', level: 92 },
+      { name: 'CSS3', level: 90 },
+      { name: 'Bootstrap', level: 84 },
       { name: 'Tailwind CSS', level: 90 },
-      { name: 'Bootstrap', level: 82 },
+      { name: 'JavaScript', level: 86 },
+      { name: 'React', level: 86 },
     ],
     Backend: [
-      { name: 'Python', level: 92 },
-      { name: 'Django', level: 85 },
-      { name: 'Node.js', level: 70 },
-      { name: 'Express', level: 68 },
-      { name: 'REST APIs', level: 88 },
+      { name: 'Django', level: 88 },
+      { name: 'Django REST Framework (DRF)', level: 86 },
+      { name: 'FastAPI', level: 80 },
+      { name: 'Frappe Framework (Basics)', level: 68 },
     ],
-    'Database & Tools': [
-      { name: 'MySQL', level: 85 },
+    Databases: [
+      { name: 'MySQL', level: 86 },
+      { name: 'PostgreSQL', level: 82 },
+    ],
+    'Tools & Platforms': [
       { name: 'Git', level: 88 },
-      { name: 'Figma', level: 72 },
-      { name: 'Web Design', level: 80 },
+      { name: 'GitHub', level: 88 },
+      { name: 'GitHub Actions', level: 80 },
+      { name: 'CI/CD', level: 78 },
+      { name: 'Netlify', level: 82 },
+      { name: 'Postman', level: 86 },
+      { name: 'Docker', level: 78 },
+      { name: 'pythonanywhere', level: 80 },
+      { name: 'Render', level: 80 },
+      { name: 'Vercel', level: 84 },
+      { name: 'n8n', level: 78 },
     ],
-    'Soft Skills': [
-      { name: 'Problem Solving', level: 95 },
-      { name: 'Innovation', level: 90 },
-      { name: 'Full-Stack Solutions', level: 88 },
-      { name: 'Team Work', level: 92 },
+    'AI & Libraries': [
+      { name: 'Ollama', level: 82 },
+      { name: 'OpenCV', level: 80 },
+      { name: 'Pandas', level: 78 },
     ],
   },
   projects: [
@@ -415,13 +427,13 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       {
         name: 'get_skills',
         description:
-          'Get Vishnu V\'s technical skills and soft skills categorized into Frontend, Backend, Database & Tools, and Soft Skills, along with proficiency levels.',
+          'Get Vishnu V\'s technical skills categorized into Programming, Web Development, Backend, Databases, Tools & Platforms, and AI & Libraries, along with proficiency levels.',
         inputSchema: {
           type: 'object',
           properties: {
             category: {
               type: 'string',
-              description: 'Optional category filter: "Frontend", "Backend", "Database & Tools", or "Soft Skills"',
+              description: 'Optional category filter: "Programming", "Web Development", "Backend", "Databases", "Tools & Platforms", or "AI & Libraries"',
             },
           },
         },
@@ -522,10 +534,12 @@ ${projectCards}
 
     case 'get_skills': {
       const categoryIcons = {
-        Frontend: '🎨',
+        Programming: '💻',
+        'Web Development': '🎨',
         Backend: '⚙️',
-        'Database & Tools': '🗄️',
-        'Soft Skills': '🤝',
+        Databases: '🗄️',
+        'Tools & Platforms': '🛠️',
+        'AI & Libraries': '🤖',
       };
 
       if (args.category) {
@@ -571,12 +585,12 @@ ${projectCards}
         })
         .join('\n\n');
 
-      const output = `# ⚡ Vishnu V — Technical & Professional Skills
+      const output = `# ⚡ Vishnu V — Technical Skills
 
 ${allCategories}
 
 ---
-🌟 *High Proficiency Highlights:* React, Python, HTML/CSS, Problem Solving, Team Collaboration.`;
+🌟 *Core Highlights:* Python, SQL, React, Tailwind CSS, Django, DRF, FastAPI, MySQL, PostgreSQL, Docker, Ollama, OpenCV, Pandas, n8n.`;
 
       return {
         content: [
@@ -636,9 +650,9 @@ ${experienceList}
 ---
 
 ## 🛠️ Skills Snapshot
-- 🎨 **Frontend:** ${skills.Frontend.map((s) => `\`${s.name} (${s.level}%)\``).join(' ')}
-- ⚙️ **Backend:** ${skills.Backend.map((s) => `\`${s.name} (${s.level}%)\``).join(' ')}
-- 🗄️ **Database & Tools:** ${skills['Database & Tools'].map((s) => `\`${s.name}\``).join(' ')}
+${Object.entries(skills)
+  .map(([cat, items]) => `- **${cat}:** ${items.map((s) => `\`${s.name}\``).join(' ')}`)
+  .join('\n')}
 `;
 
       return {

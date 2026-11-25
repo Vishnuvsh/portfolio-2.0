@@ -86,47 +86,56 @@ const PILLARS = [
   {
     icon: Code2,
     title: 'Clean Architecture',
-    desc: 'Modular, maintainable codebases with predictable state management and scalable component hierarchies.',
+    desc: 'Modular, maintainable Python, SQL, and JavaScript codebases built for clarity, reliability, and scale.',
     color: '#f43f5e',
-    badge: 'Code Quality',
+    badge: 'Programming',
   },
   {
     icon: Layers,
-    title: 'Full-Stack Mastery',
-    desc: 'End-to-end fluency spanning normalized MySQL databases, Django REST APIs, and modern React 19 UIs.',
+    title: 'Full-Stack Web Systems',
+    desc: 'End-to-end development spanning MySQL & PostgreSQL databases, Django, DRF, FastAPI backends, and React UIs.',
     color: '#ff6b6b',
     badge: 'End-to-End',
   },
   {
     icon: Sparkles,
-    title: 'Human-Centric UX',
-    desc: 'Crafting responsive, tactile micro-interactions with Lenis smooth scrolling and Framer Motion choreography.',
+    title: 'Responsive Web Design',
+    desc: 'Crafting clean, mobile-first interfaces using HTML5, CSS3, Bootstrap, Tailwind CSS, JavaScript, and React.',
     color: '#fb923c',
-    badge: 'Design First',
+    badge: 'Web UI',
   },
   {
     icon: Zap,
-    title: 'AI & MCP Integrated',
-    desc: 'Building modern agentic systems, Model Context Protocol tools, and high-velocity automated workflows.',
+    title: 'AI, Data & Automation',
+    desc: 'Developing practical AI, computer vision, data, and workflow pipelines with Ollama, OpenCV, Pandas, and n8n.',
     color: '#f59e0b',
-    badge: 'Future Ready',
+    badge: 'AI & Automation',
   },
 ];
 
 const SKILL_CATEGORIES = [
   {
-    name: 'Frontend',
+    name: 'Programming',
     color: 'from-rose-500 via-rose-400 to-amber-500',
     glow: 'rgba(244, 63, 94, 0.35)',
     ringColor: '#f43f5e',
     skills: [
-      { name: 'React 19', level: 92 },
-      { name: 'Next.js', level: 80 },
-      { name: 'JavaScript (ES6+)', level: 90 },
-      { name: 'Tailwind CSS', level: 94 },
-      { name: 'Framer Motion', level: 88 },
-      { name: 'HTML5 & CSS3', level: 95 },
-      { name: 'Responsive UI', level: 92 },
+      { name: 'Python', level: 90 },
+      { name: 'SQL', level: 85 },
+    ],
+  },
+  {
+    name: 'Web Development',
+    color: 'from-rose-500 via-pink-500 to-orange-400',
+    glow: 'rgba(244, 63, 94, 0.35)',
+    ringColor: '#f43f5e',
+    skills: [
+      { name: 'HTML5', level: 92 },
+      { name: 'CSS3', level: 90 },
+      { name: 'Bootstrap', level: 84 },
+      { name: 'Tailwind CSS', level: 90 },
+      { name: 'JavaScript', level: 86 },
+      { name: 'React', level: 86 },
     ],
   },
   {
@@ -135,36 +144,50 @@ const SKILL_CATEGORIES = [
     glow: 'rgba(255, 107, 107, 0.35)',
     ringColor: '#ff6b6b',
     skills: [
-      { name: 'Python', level: 92 },
-      { name: 'Django & DRF', level: 88 },
-      { name: 'RESTful APIs', level: 90 },
-      { name: 'Authentication / JWT', level: 85 },
-      { name: 'Node.js Basics', level: 72 },
+      { name: 'Django', level: 88 },
+      { name: 'Django REST Framework (DRF)', level: 86 },
+      { name: 'FastAPI', level: 80 },
+      { name: 'Frappe Framework (Basics)', level: 68 },
     ],
   },
   {
-    name: 'Database & Tools',
+    name: 'Databases',
     color: 'from-emerald-500 to-teal-400',
     glow: 'rgba(16, 185, 129, 0.35)',
     ringColor: '#10b981',
     skills: [
-      { name: 'MySQL', level: 88 },
-      { name: 'Git & GitHub', level: 90 },
-      { name: 'Vite / Tooling', level: 86 },
-      { name: 'Figma UI Design', level: 78 },
-      { name: 'Postman', level: 88 },
+      { name: 'MySQL', level: 86 },
+      { name: 'PostgreSQL', level: 82 },
     ],
   },
   {
-    name: 'AI & Architecture',
+    name: 'Tools & Platforms',
     color: 'from-amber-500 to-orange-400',
     glow: 'rgba(245, 158, 11, 0.35)',
     ringColor: '#f59e0b',
     skills: [
-      { name: 'MCP Integration', level: 90 },
-      { name: 'System Design', level: 86 },
-      { name: 'Problem Solving', level: 95 },
-      { name: 'Web Performance', level: 88 },
+      { name: 'Git', level: 88 },
+      { name: 'GitHub', level: 88 },
+      { name: 'GitHub Actions', level: 80 },
+      { name: 'CI/CD', level: 78 },
+      { name: 'Netlify', level: 82 },
+      { name: 'Postman', level: 86 },
+      { name: 'Docker', level: 78 },
+      { name: 'pythonanywhere', level: 80 },
+      { name: 'Render', level: 80 },
+      { name: 'Vercel', level: 84 },
+      { name: 'n8n', level: 78 },
+    ],
+  },
+  {
+    name: 'AI & Libraries',
+    color: 'from-violet-500 to-fuchsia-500',
+    glow: 'rgba(139, 92, 246, 0.35)',
+    ringColor: '#8b5cf6',
+    skills: [
+      { name: 'Ollama', level: 82 },
+      { name: 'OpenCV', level: 80 },
+      { name: 'Pandas', level: 78 },
     ],
   },
 ];
@@ -261,10 +284,10 @@ const EXPERIENCES = [
       'Architecting and deploying a scalable enterprise CRM system and client-facing web applications in live production environments.',
     achievements: [
       'Partnered with cross-functional engineering teams to develop and deploy client-facing applications, significantly enhancing real-time operations of an enterprise Retail POS system.',
-      'Engineered reusable React 19 component architectures integrated with Python REST APIs, accelerating feature release cycles by 30%.',
+      'Engineered reusable React component architectures integrated with Python REST APIs, accelerating feature release cycles by 30%.',
       'Optimized database queries and frontend bundle delivery, boosting core web vitals and end-user accessibility.',
     ],
-    skills: ['React 19', 'Python', 'CRM Architecture', 'Retail POS', 'REST APIs', 'Production Deployment', 'Tailwind CSS'],
+    skills: ['React', 'Python', 'Tailwind CSS', 'Django REST Framework (DRF)', 'MySQL', 'Git', 'GitHub'],
     color: 'from-rose-500 to-amber-500',
     accent: '#f43f5e',
     accentLight: 'rgba(244, 63, 94, 0.12)',
@@ -282,7 +305,7 @@ const EXPERIENCES = [
       'Executed requirement analysis, API testing, debugging, and bug fixing to ensure smooth backend operations.',
       'Operated within an Agile development environment, following iterative development and incorporating continuous feedback.',
     ],
-    skills: ['Python', 'Django REST', 'JWT Auth', 'API Testing', 'MySQL / PostgreSQL', 'Agile / Scrum', 'Debugging'],
+    skills: ['Python', 'Django', 'Django REST Framework (DRF)', 'Postman', 'MySQL', 'PostgreSQL', 'Git'],
     color: 'from-amber-500 to-rose-500',
     accent: '#ff6b6b',
     accentLight: 'rgba(255, 107, 107, 0.12)',
@@ -299,7 +322,7 @@ const EXPERIENCES = [
       'Developed backend APIs and handled frontend integration for a Clinical Management System.',
       'Collaborated with cross-functional team members using Git and GitHub to deliver a production-ready healthcare solution.',
     ],
-    skills: ['Python', 'Django', 'RESTful APIs', 'Frontend Integration', 'Healthcare Tech', 'Git & GitHub'],
+    skills: ['Python', 'Django', 'Django REST Framework (DRF)', 'SQL', 'MySQL', 'Git', 'GitHub'],
     color: 'from-emerald-500 to-teal-500',
     accent: '#10b981',
     accentLight: 'rgba(16, 185, 129, 0.12)',
@@ -316,7 +339,7 @@ const EXPERIENCES = [
       'Supported frontend tasks with HTML, CSS, and Bootstrap for client web projects.',
       'Collaborated using Git and GitHub for version control and sprint coordination.',
     ],
-    skills: ['Python', 'HTML5', 'CSS3', 'Bootstrap', 'Git & GitHub', 'UI Integration'],
+    skills: ['Python', 'HTML5', 'CSS3', 'Bootstrap', 'JavaScript', 'Git', 'GitHub'],
     color: 'from-orange-500 to-amber-500',
     accent: '#fb923c',
     accentLight: 'rgba(251, 146, 60, 0.12)',
@@ -326,83 +349,83 @@ const EXPERIENCES = [
 const ARCHITECTURE_TIERS = [
   {
     id: 'frontend',
-    tier: '01 / CLIENT TIER',
-    name: 'Frontend',
-    title: 'Modern UI & Tactile UX',
+    tier: '01 / WEB DEVELOPMENT',
+    name: 'Web UI',
+    title: 'Modern Responsive Interfaces',
     icon: Code2,
     accent: '#f43f5e',
-    summary: 'Fluid, 60fps responsive interfaces engineered with React 19, Tailwind CSS v4, and kinetic Framer Motion micro-interactions.',
+    summary: 'Clean, responsive interfaces built with HTML5, CSS3, Bootstrap, Tailwind CSS, JavaScript, and React.',
     metrics: [
-      { label: 'Core UI', value: 'React 19' },
-      { label: 'Styling', value: 'Tailwind v4' },
-      { label: 'Animation', value: 'Framer Motion + Lenis' },
+      { label: 'Core UI', value: 'React • JavaScript' },
+      { label: 'Styling', value: 'Tailwind • Bootstrap' },
+      { label: 'Markup', value: 'HTML5 • CSS3' },
     ],
     features: [
-      'Declarative component hierarchies with modular state management',
-      'Hardware-accelerated kinetic smooth scrolling with zero jank',
-      'Mobile-first responsive layouts with sub-100ms interaction latency',
+      'Modular React components with clean JavaScript state flow',
+      'Mobile-first layouts crafted with Tailwind CSS and Bootstrap',
+      'Semantic HTML5 structure and modern CSS3 styling',
     ],
-    chips: ['React 19', 'Tailwind CSS', 'Framer Motion', 'Lenis', 'Vite', 'a11y'],
+    chips: ['HTML5', 'CSS3', 'Bootstrap', 'Tailwind CSS', 'JavaScript', 'React'],
   },
   {
     id: 'backend',
-    tier: '02 / SERVICE LAYER',
+    tier: '02 / BACKEND LAYER',
     name: 'Backend',
     title: 'API & Business Logic',
     icon: Server,
     accent: '#ff6b6b',
-    summary: 'Modular, secure RESTful API architectures built with Python and Django REST Framework, with JWT auth and rigorous testing.',
+    summary: 'Scalable RESTful APIs and backend services built with Python, Django, Django REST Framework (DRF), FastAPI, and Frappe Framework.',
     metrics: [
-      { label: 'Runtime', value: 'Python 3.12+' },
-      { label: 'Framework', value: 'Django REST (DRF)' },
-      { label: 'Security', value: 'JWT & RBAC' },
+      { label: 'Language', value: 'Python • SQL' },
+      { label: 'Frameworks', value: 'Django • DRF • FastAPI' },
+      { label: 'ERP / Basics', value: 'Frappe Framework' },
     ],
     features: [
-      'JWT token authentication with granular role-based permissions',
-      'Normalized REST endpoints with robust data validation serializers',
-      'Iterative Agile delivery with systematic debugging and test suites',
+      'RESTful API development with Django REST Framework (DRF) and FastAPI',
+      'Endpoint testing and debugging workflows via Postman',
+      'Foundational custom module work with Frappe Framework (Basics)',
     ],
-    chips: ['Python', 'Django REST', 'JWT Security', 'RESTful APIs', 'Postman', 'Agile'],
+    chips: ['Python', 'Django', 'Django REST Framework (DRF)', 'FastAPI', 'Frappe Framework (Basics)', 'Postman'],
   },
   {
     id: 'database',
-    tier: '03 / DATA LAYER',
-    name: 'Database',
-    title: 'Relational Schemas & Storage',
+    tier: '03 / DATA & DEVOPS',
+    name: 'Data & CI/CD',
+    title: 'Databases & Deployment',
     icon: Database,
     accent: '#fb923c',
-    summary: 'Structured relational database design with schema normalization, query indexing, ACID transactions, and data integrity.',
+    summary: 'Structured SQL data modeling in MySQL & PostgreSQL backed by Docker containers, GitHub Actions, and automated CI/CD.',
     metrics: [
-      { label: 'Engines', value: 'MySQL • PostgreSQL' },
-      { label: 'Transactions', value: 'ACID Compliant' },
-      { label: 'Optimization', value: 'Query Indexing' },
+      { label: 'Databases', value: 'MySQL • PostgreSQL' },
+      { label: 'Containers', value: 'Docker • SQL' },
+      { label: 'Automation', value: 'GitHub Actions • CI/CD' },
     ],
     features: [
-      'Normalized entity-relationship schemas ensuring zero data redundancy',
-      'Query indexing reducing latency in production CRM/POS environments',
-      'Safe schema migration pipelines and automated relational integrity',
+      'Relational SQL database design and queries in MySQL & PostgreSQL',
+      'Version control and automated pipelines using Git, GitHub, and GitHub Actions',
+      'Containerized environments with Docker and continuous CI/CD delivery',
     ],
-    chips: ['MySQL', 'PostgreSQL', 'Schema Design', 'Indexing', 'ORM', 'Transactions'],
+    chips: ['SQL', 'MySQL', 'PostgreSQL', 'Docker', 'Git', 'GitHub', 'GitHub Actions', 'CI/CD'],
   },
   {
-    id: 'ai-mcp',
-    tier: '04 / PROTOCOL LAYER',
-    name: 'AI & MCP',
-    title: 'AI & Model Context Protocol',
+    id: 'ai-platforms',
+    tier: '04 / AI & PLATFORMS',
+    name: 'AI & Cloud',
+    title: 'AI Libraries & Hosting',
     icon: Zap,
     accent: '#10b981',
-    summary: 'Next-generation agentic workflows, LLM tool integration, and custom Model Context Protocol (MCP) servers.',
+    summary: 'Applied AI, computer vision, data processing, workflow automation, and multi-platform cloud deployments.',
     metrics: [
-      { label: 'Protocol', value: 'MCP 1.0 Spec' },
-      { label: 'Intelligence', value: 'AI APIs & LLMs' },
-      { label: 'Computer Vision', value: 'OpenCV • MediaPipe' },
+      { label: 'AI & Vision', value: 'Ollama • OpenCV' },
+      { label: 'Data & Flow', value: 'Pandas • n8n' },
+      { label: 'Platforms', value: 'Vercel • Render • Netlify' },
     ],
     features: [
-      'Custom standalone MCP servers allowing AI agents to interface with apps',
-      'Computer vision software controlling desktops via real-time hand gestures',
-      'Neural audio dubbing and autonomous startup evaluation workflows',
+      'Local LLM workflows with Ollama, vision tasks with OpenCV, and data analysis with Pandas',
+      'Automated workflow integrations orchestrated with n8n',
+      'Production hosting on Vercel, Render, Netlify, and pythonanywhere',
     ],
-    chips: ['MCP Server', 'OpenCV', 'MediaPipe', 'AI APIs', 'Autonomous Agents'],
+    chips: ['Ollama', 'OpenCV', 'Pandas', 'n8n', 'Vercel', 'Render', 'Netlify', 'pythonanywhere'],
   },
 ];
 
@@ -1010,10 +1033,10 @@ function Hero() {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="text-base sm:text-lg text-[var(--color-text-muted)] max-w-xl leading-relaxed mb-6 font-normal"
             >
-              Engineering scalable web architectures, resilient APIs, and modern user experiences with{' '}
-              <span className="text-[var(--color-text-main)] font-semibold">React 19</span>,{' '}
-              <span className="text-[var(--color-text-main)] font-semibold">Python/Django</span>, and{' '}
-              <span className="text-gradient-static font-semibold">clean architecture</span>.
+              Engineering scalable web applications, resilient APIs, and modern user interfaces with{' '}
+              <span className="text-[var(--color-text-main)] font-semibold">Python</span>,{' '}
+              <span className="text-[var(--color-text-main)] font-semibold">Django &amp; FastAPI</span>, and{' '}
+              <span className="text-gradient-static font-semibold">React</span>.
             </motion.p>
 
             {/* Minimal & Airy Tech Stack Pills */}
@@ -1024,12 +1047,12 @@ function Hero() {
               className="flex flex-wrap items-center justify-center lg:justify-start gap-2 mb-8 max-w-xl"
             >
               {[
-                'React 19',
-                'Python & Django',
-                'MySQL',
-                'Tailwind CSS',
-                'RESTful APIs',
-                'MCP & AI Tools',
+                'Python & SQL',
+                'Django & DRF',
+                'FastAPI',
+                'React & Tailwind CSS',
+                'MySQL & PostgreSQL',
+                'Docker & CI/CD',
               ].map((tech) => (
                 <span
                   key={tech}
@@ -1163,11 +1186,13 @@ function About() {
   const activeTier = ARCHITECTURE_TIERS[activeTierIdx];
 
   const handleCopyStack = () => {
-    const stackSummary = `Vishnu V - Full-Stack Architecture Stack:
-• Frontend: React 19, Tailwind CSS v4, Framer Motion, Lenis
-• Backend: Python, Django REST Framework, JWT Security
-• Database: MySQL, PostgreSQL, Relational Schema Design
-• Protocols: Model Context Protocol (MCP 1.0), AI APIs, OpenCV
+    const stackSummary = `Vishnu V - Technical Skills Stack:
+• Programming: Python, SQL
+• Web Development: HTML5, CSS3, Bootstrap, Tailwind CSS, JavaScript, React
+• Backend: Django, Django REST Framework (DRF), FastAPI, Frappe Framework (Basics)
+• Databases: MySQL, PostgreSQL
+• Tools & Platforms: Git, GitHub, GitHub Actions, CI/CD, Netlify, Postman, Docker, pythonanywhere, Render, Vercel, n8n
+• AI & Libraries: Ollama, OpenCV, Pandas
 Status: Open for Full-Stack Developer Opportunities`;
     navigator.clipboard.writeText(stackSummary);
     setCopied(true);
@@ -1387,7 +1412,7 @@ Status: Open for Full-Stack Developer Opportunities`;
                 <span className="text-[11px] font-medium">All 4 Tiers Fully Integrated</span>
               </span>
               <span className="font-mono text-[11px] hidden sm:inline text-[var(--color-text-muted)]">
-                React 19 • Python 3 • MySQL • MCP 1.0
+                Python • Django • FastAPI • React • PostgreSQL
               </span>
             </div>
           </motion.div>
@@ -1423,8 +1448,8 @@ Status: Open for Full-Stack Developer Opportunities`;
                 {[
                   { title: '~1 Year', label: 'Production Software', color: '#f43f5e' },
                   { title: '15+ Shipped', label: 'Full-Stack Apps', color: '#ff6b6b' },
-                  { title: 'Django REST', label: 'Secure Backend APIs', color: '#fb923c' },
-                  { title: 'React 19 & MCP', label: 'Tactile & AI-Driven', color: '#10b981' },
+                  { title: 'Django & FastAPI', label: 'DRF & Frappe APIs', color: '#fb923c' },
+                  { title: 'React & AI', label: 'Ollama, OpenCV & n8n', color: '#10b981' },
                 ].map((item, idx) => (
                   <div
                     key={idx}
@@ -1544,7 +1569,7 @@ function CircularProgressRing({ level, color, size = 80, strokeWidth = 5, delay 
 }
 
 function Skills() {
-  const [activeCategory, setActiveCategory] = useState('Frontend');
+  const [activeCategory, setActiveCategory] = useState(SKILL_CATEGORIES[0].name);
   const activeCat = SKILL_CATEGORIES.find((c) => c.name === activeCategory);
 
   return (
@@ -1612,7 +1637,7 @@ function Skills() {
                 className="flex flex-col items-center gap-3 p-4 sm:p-5 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-surface)]/80 backdrop-blur-sm shadow-sm hover:shadow-lg transition-all duration-300"
               >
                 <CircularProgressRing level={skill.level} color={activeCat.ringColor} delay={i * 0.05} />
-                <span className="text-sm font-semibold text-[var(--color-text-main)] text-center leading-tight">
+                <span className="text-xs sm:text-sm font-semibold text-[var(--color-text-main)] text-center leading-snug">
                   {skill.name}
                 </span>
               </motion.div>
@@ -1906,7 +1931,7 @@ function Experience() {
             <div>
               <div className="text-xl sm:text-2xl font-black text-gradient">~1 Year</div>
               <div className="text-xs font-semibold text-[var(--color-text-main)]">Production Full-Stack</div>
-              <div className="text-[11px] text-[var(--color-text-muted)]">Python, Django &amp; React 19</div>
+              <div className="text-[11px] text-[var(--color-text-muted)]">Python, Django &amp; React</div>
             </div>
           </div>
 
@@ -2266,7 +2291,7 @@ function Footer() {
               Vishnu<span className="text-[var(--color-accent-2)]">.</span>
             </span>
             <p className="text-xs sm:text-sm text-[var(--color-text-muted)]">
-              Crafting digital experiences that matter with React 19 &amp; Python.
+              Crafting digital experiences that matter with Python, Django &amp; React.
             </p>
           </div>
 
@@ -2284,7 +2309,7 @@ function Footer() {
         </div>
 
         <div className="text-center text-[11px] text-[var(--color-text-muted)] mt-8 pt-6 border-t border-[var(--color-border)]/50">
-          © {new Date().getFullYear()} Vishnu V. All rights reserved. Built with React 19, Tailwind CSS &amp; Framer Motion.
+          © {new Date().getFullYear()} Vishnu V. All rights reserved. Built with React &amp; Tailwind CSS.
         </div>
       </div>
     </footer>
