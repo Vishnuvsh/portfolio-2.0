@@ -25,7 +25,7 @@ Portfolio 2.0 is an award-winning executive developer portfolio built to showcas
 
 - **Interactive Spotlight Showcase**: A full-width editorial project preview featuring smooth scale choreography, dynamic category pills, live URL links, and an interactive horizontal thumbnail dock.
 - **Kinetic Role Morpher**: Silk-smooth vertical spring transitions with subtle motion blur, highlighting expertise across Full-Stack, React 19, Python & Django, and AI systems.
-- **3D Central Cutout Stage**: Responsive perspective portrait stage with dual volumetric mesh halos and orbiting satellite HUD badges (`3+ Years Exp`, `Available for Hire`, `15+ Apps Built`).
+- **3D Central Cutout Stage**: Responsive perspective portrait stage with dual volumetric mesh halos and orbiting satellite HUD badges (`~1 Year Exp.`, `Available for Hire`, `15+ Apps Built`).
 - **Developer Bento IDE Grid**: Interactive code console snippet with syntax highlighting and instant clipboard integration.
 - **Audited Professional Experience Timeline**: Accordion-style timeline detailing verified production engineering roles across Kyle Solutions, Knovista Technologies, Doctosmart Edutech, and Zion IT.
 - **Lenis Kinetic Smooth Scroll**: Hardware-accelerated smooth scrolling integrated with Framer Motion spring scroll triggers.

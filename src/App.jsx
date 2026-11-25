@@ -901,7 +901,7 @@ function CentralCutoutPortrait({ scrollYProgress }) {
               <Code2 size={16} />
             </div>
             <div>
-              <div className="text-xs sm:text-sm font-bold text-[var(--color-text-main)]">3+ Years Exp.</div>
+              <div className="text-xs sm:text-sm font-bold text-[var(--color-text-main)]">~1 Year Exp.</div>
               <div className="text-[10px] text-[var(--color-text-muted)] font-medium">Full-Stack Dev</div>
             </div>
           </div>
@@ -1106,7 +1106,7 @@ function Hero() {
               className="w-full max-w-xl flex items-center justify-between sm:justify-start sm:gap-12 pt-6 border-t border-[var(--color-border)]/70"
             >
               {[
-                { value: '3+', label: 'Years Experience' },
+                { value: '~1', label: 'Year Experience' },
                 { value: '15+', label: 'Projects Built' },
                 { value: '100%', label: 'Client Satisfaction' },
               ].map((stat, i) => (
@@ -1168,7 +1168,7 @@ function About() {
 • Backend: Python, Django REST Framework, JWT Security
 • Database: MySQL, PostgreSQL, Relational Schema Design
 • Protocols: Model Context Protocol (MCP 1.0), AI APIs, OpenCV
-Status: Open for Senior & Full-Stack Opportunities`;
+Status: Open for Full-Stack Developer Opportunities`;
     navigator.clipboard.writeText(stackSummary);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -1421,7 +1421,7 @@ Status: Open for Senior & Full-Stack Opportunities`;
               {/* 4 Connected HUD Metric Tiles */}
               <div className="grid grid-cols-2 gap-3 mb-6">
                 {[
-                  { title: '3+ Years', label: 'Production Software', color: '#f43f5e' },
+                  { title: '~1 Year', label: 'Production Software', color: '#f43f5e' },
                   { title: '15+ Shipped', label: 'Full-Stack Apps', color: '#ff6b6b' },
                   { title: 'Django REST', label: 'Secure Backend APIs', color: '#fb923c' },
                   { title: 'React 19 & MCP', label: 'Tactile & AI-Driven', color: '#10b981' },
@@ -1904,7 +1904,7 @@ function Experience() {
               <Briefcase size={20} />
             </div>
             <div>
-              <div className="text-xl sm:text-2xl font-black text-gradient">3+ Years</div>
+              <div className="text-xl sm:text-2xl font-black text-gradient">~1 Year</div>
               <div className="text-xs font-semibold text-[var(--color-text-main)]">Production Full-Stack</div>
               <div className="text-[11px] text-[var(--color-text-muted)]">Python, Django &amp; React 19</div>
             </div>

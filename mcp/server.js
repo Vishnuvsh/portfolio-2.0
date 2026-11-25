@@ -12,6 +12,7 @@ const portfolioData = {
   profile: {
     name: 'Vishnu V',
     role: 'Full-Stack Developer',
+    experience: '~1 Year',
     tagline: 'Crafting digital experiences that matter',
     bio: 'Passionate Full-Stack Developer dedicated to crafting exceptional digital experiences. Combines technical expertise with creative problem-solving to build applications that are both powerful and intuitive.',
     location: 'Vadakara, Kerala, India',
@@ -613,7 +614,7 @@ ${achievements}
       const resumeMarkdown = `# 📄 Vishnu V — Full-Stack Developer Profile
 > ${profile.tagline}
 
-📍 **Location:** ${profile.location}  
+📍 **Location:** ${profile.location} • ⏱️ **Experience:** ${profile.experience}  
 📧 **Email:** [${profile.contact.email}](mailto:${profile.contact.email}) • 📱 **Phone:** [${profile.contact.phone}](tel:${profile.contact.phone.replace(/[^0-9+]/g, '')})  
 🌐 **Portfolio:** [resilient-genie-df3d71.netlify.app](${profile.contact.portfolio}) • 🐙 **GitHub:** [Vishnuvsh](${profile.contact.github}) • 💼 **LinkedIn:** [Vishnu V](${profile.contact.linkedin})
 
