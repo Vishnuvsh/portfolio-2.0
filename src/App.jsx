@@ -884,7 +884,7 @@ function CentralCutoutPortrait({ scrollYProgress }) {
         className="relative z-10 w-[260px] h-[340px] sm:w-[320px] sm:h-[420px] md:w-[350px] md:h-[460px] lg:w-[370px] lg:h-[490px] rounded-[32px] sm:rounded-[44px] overflow-hidden border-2 border-white/80 dark:border-white/15 shadow-[0_25px_60px_-15px_rgba(244,63,94,0.28)] backdrop-blur-md group"
       >
         <img
-          src="/profile.jpg"
+          src={`${import.meta.env.BASE_URL}profile.jpg`}
           alt="Vishnu V - Full-Stack Developer"
           className="w-full h-full object-cover object-top filter contrast-[1.03] brightness-[1.01] transition-transform duration-700 group-hover:scale-105"
           onError={(e) => {
