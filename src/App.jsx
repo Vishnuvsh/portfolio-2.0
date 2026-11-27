@@ -1926,6 +1926,8 @@ function Projects() {
 // 10. EXPERIENCE SECTION (CONNECTED ARCHITECTURAL CAREER STREAM)
 // =====================================================================
 function Experience() {
+  const [openIndex, setOpenIndex] = useState(0);
+
   return (
     <section id="experience" className="py-20 sm:py-28 relative overflow-hidden">
       {/* Background ambient lighting */}
@@ -1997,26 +1999,29 @@ function Experience() {
           </div>
         </motion.div>
 
-        {/* Luminous Connected Career Stream */}
-        <div className="relative pl-6 sm:pl-10 space-y-8 sm:space-y-10">
+        {/* Luminous Connected Career Stream (Dropdown Accordion) */}
+        <div className="relative pl-6 sm:pl-10 space-y-5 sm:space-y-6">
           {/* Vertical Glowing Track Spine */}
           <div className="absolute left-[11px] sm:left-[15px] top-4 bottom-4 w-[2px] bg-gradient-to-b from-[var(--color-accent)] via-[var(--color-accent-2)] to-amber-500/30" />
 
           {EXPERIENCES.map((exp, index) => {
             const isFirst = index === 0;
+            const isOpen = openIndex === index;
             return (
               <motion.div
                 key={`${exp.company}-${exp.role}`}
                 initial={{ opacity: 0, y: 25 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-40px' }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                transition={{ duration: 0.5, delay: index * 0.08 }}
                 className="relative"
               >
                 {/* Milestone Node on the Track */}
                 <div className="absolute -left-[30px] sm:-left-[42px] top-6 z-20">
                   <div
-                    className="w-6 h-6 rounded-full border-2 border-[var(--color-bg-base)] shadow-md flex items-center justify-center transition-transform hover:scale-125"
+                    className={`w-6 h-6 rounded-full border-2 border-[var(--color-bg-base)] shadow-md flex items-center justify-center transition-transform duration-300 ${
+                      isOpen ? 'scale-110' : 'hover:scale-125'
+                    }`}
                     style={{ background: exp.accent }}
                   >
                     {isFirst ? (
@@ -2027,17 +2032,30 @@ function Experience() {
                   </div>
                 </div>
 
-                {/* Modern Career Card */}
-                <div className="rounded-3xl border border-[var(--color-border)] bg-[var(--color-bg-surface)]/90 backdrop-blur-xl p-6 sm:p-8 shadow-sm hover:shadow-xl hover:border-[var(--color-accent)]/40 transition-all duration-300 relative overflow-hidden group">
+                {/* Modern Collapsible Career Card */}
+                <div
+                  className={`rounded-3xl border bg-[var(--color-bg-surface)]/90 backdrop-blur-xl shadow-sm transition-all duration-300 relative overflow-hidden group ${
+                    isOpen
+                      ? 'border-[var(--color-accent)]/40 shadow-xl'
+                      : 'border-[var(--color-border)] hover:border-[var(--color-accent)]/35 hover:shadow-md'
+                  }`}
+                >
                   {/* Subtle top hairline highlight */}
                   <div
-                    className="absolute inset-x-0 top-0 h-[2px] opacity-80"
+                    className={`absolute inset-x-0 top-0 h-[2px] transition-opacity duration-300 ${
+                      isOpen ? 'opacity-90' : 'opacity-40 group-hover:opacity-75'
+                    }`}
                     style={{ background: `linear-gradient(90deg, transparent, ${exp.accent}, transparent)` }}
                   />
 
-                  {/* Header Row: Role, Company, Period, Badges */}
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-4 border-b border-[var(--color-border)]/60">
-                    <div>
+                  {/* Clickable Dropdown Header */}
+                  <button
+                    type="button"
+                    onClick={() => setOpenIndex(isOpen ? null : index)}
+                    aria-expanded={isOpen}
+                    className="w-full text-left p-5 sm:p-7 flex flex-col sm:flex-row sm:items-center justify-between gap-4 cursor-pointer focus:outline-none"
+                  >
+                    <div className="flex-1 min-w-0">
                       <div className="flex flex-wrap items-center gap-2.5 mb-1.5">
                         <h3 className="text-lg sm:text-xl font-extrabold text-[var(--color-text-main)] tracking-tight">
                           {exp.role}
@@ -2061,57 +2079,85 @@ function Experience() {
                       </div>
                     </div>
 
-                    {/* Metadata Pills (Date & Location) */}
-                    <div className="flex flex-wrap sm:flex-col sm:items-end gap-1.5 text-xs text-[var(--color-text-muted)] font-mono">
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/[0.03] dark:bg-white/[0.05] border border-[var(--color-border)]/50">
-                        <Calendar size={12} className="text-[var(--color-accent)]" />
-                        {exp.period}
-                      </span>
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/[0.03] dark:bg-white/[0.05] border border-[var(--color-border)]/50">
-                        <MapPin size={12} className="text-[var(--color-accent)]" />
-                        {exp.location}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Role Mission Summary */}
-                  <p className="text-sm sm:text-base text-[var(--color-text-muted)] leading-relaxed mb-5 font-normal">
-                    {exp.description}
-                  </p>
-
-                  {/* Key Production Accomplishments */}
-                  <div className="mb-6 space-y-2.5 bg-black/[0.015] dark:bg-white/[0.02] p-4 sm:p-5 rounded-2xl border border-[var(--color-border)]/50">
-                    <div className="text-[11px] font-mono font-bold tracking-wider uppercase text-[var(--color-text-muted)] mb-2 flex items-center gap-1.5">
-                      <CheckCircle2 size={13} className="text-[var(--color-accent)]" />
-                      <span>Key Architectural Contributions</span>
-                    </div>
-                    {exp.achievements.map((ach, i) => (
-                      <div key={i} className="flex items-start gap-2.5 text-xs sm:text-sm text-[var(--color-text-main)] font-normal leading-relaxed">
-                        <span
-                          className="w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0"
-                          style={{ backgroundColor: exp.accent }}
-                        />
-                        <span>{ach}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Tech Stack Chips */}
-                  <div>
-                    <div className="text-[10px] font-mono uppercase text-[var(--color-text-muted)] mb-2 tracking-wider">
-                      Technologies &amp; Architecture:
-                    </div>
-                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                      {exp.skills.map((s) => (
-                        <span
-                          key={s}
-                          className="px-2.5 py-1 text-xs font-mono font-medium rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-base)] text-[var(--color-text-main)] hover:border-[var(--color-accent)]/50 transition-colors"
-                        >
-                          {s}
+                    {/* Right Side: Metadata Pills + Dropdown Chevron */}
+                    <div className="flex items-center justify-between sm:justify-end gap-3 sm:gap-4">
+                      <div className="flex flex-wrap sm:flex-col sm:items-end gap-1.5 text-xs text-[var(--color-text-muted)] font-mono">
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/[0.03] dark:bg-white/[0.05] border border-[var(--color-border)]/50">
+                          <Calendar size={12} className="text-[var(--color-accent)]" />
+                          {exp.period}
                         </span>
-                      ))}
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/[0.03] dark:bg-white/[0.05] border border-[var(--color-border)]/50">
+                          <MapPin size={12} className="text-[var(--color-accent)]" />
+                          {exp.location}
+                        </span>
+                      </div>
+
+                      <span
+                        className={`w-9 h-9 rounded-xl border flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
+                          isOpen
+                            ? 'bg-[var(--color-accent)]/12 border-[var(--color-accent)]/35 text-[var(--color-accent)] rotate-180'
+                            : 'bg-black/[0.03] dark:bg-white/[0.05] border-[var(--color-border)] text-[var(--color-text-muted)] group-hover:text-[var(--color-accent)] group-hover:border-[var(--color-accent)]/35'
+                        }`}
+                      >
+                        <ChevronDown size={18} />
+                      </span>
                     </div>
-                  </div>
+                  </button>
+
+                  {/* Smooth Expandable Dropdown Body */}
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        key="content"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
+                        className="overflow-hidden"
+                      >
+                        <div className="px-5 sm:px-7 pb-6 sm:pb-7 pt-4 border-t border-[var(--color-border)]/60">
+                          {/* Role Mission Summary */}
+                          <p className="text-sm sm:text-base text-[var(--color-text-muted)] leading-relaxed mb-5 font-normal">
+                            {exp.description}
+                          </p>
+
+                          {/* Key Production Accomplishments */}
+                          <div className="mb-6 space-y-2.5 bg-black/[0.015] dark:bg-white/[0.02] p-4 sm:p-5 rounded-2xl border border-[var(--color-border)]/50">
+                            <div className="text-[11px] font-mono font-bold tracking-wider uppercase text-[var(--color-text-muted)] mb-2 flex items-center gap-1.5">
+                              <CheckCircle2 size={13} className="text-[var(--color-accent)]" />
+                              <span>Key Architectural Contributions</span>
+                            </div>
+                            {exp.achievements.map((ach, i) => (
+                              <div key={i} className="flex items-start gap-2.5 text-xs sm:text-sm text-[var(--color-text-main)] font-normal leading-relaxed">
+                                <span
+                                  className="w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0"
+                                  style={{ backgroundColor: exp.accent }}
+                                />
+                                <span>{ach}</span>
+                              </div>
+                            ))}
+                          </div>
+
+                          {/* Tech Stack Chips */}
+                          <div>
+                            <div className="text-[10px] font-mono uppercase text-[var(--color-text-muted)] mb-2 tracking-wider">
+                              Technologies &amp; Architecture:
+                            </div>
+                            <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                              {exp.skills.map((s) => (
+                                <span
+                                  key={s}
+                                  className="px-2.5 py-1 text-xs font-mono font-medium rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-base)] text-[var(--color-text-main)] hover:border-[var(--color-accent)]/50 transition-colors"
+                                >
+                                  {s}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               </motion.div>
             );
