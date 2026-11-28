@@ -6,6 +6,7 @@ import {
   useSpring,
   useTransform,
   useMotionValue,
+  useMotionTemplate,
   useMotionValueEvent,
 } from 'framer-motion';
 import { ReactLenis, useLenis } from 'lenis/react';
@@ -45,8 +46,9 @@ import {
 } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 // =====================================================================
 // 1. BRAND ICONS (INLINE SVGs)
@@ -822,119 +824,340 @@ function Navbar({ theme, toggleTheme }) {
 }
 
 // =====================================================================
-// 6. HERO SECTION (MODERN EDITORIAL BENTO STAGE)
+// 6. HERO SECTION (MODERN EDITORIAL BENTO + GSAP & FRAMER MOTION 3D)
 // =====================================================================
+const HERO_FOCUS_STACKS = [
+  'Python • Django • React',
+  'FastAPI • DRF • SQL',
+  'MySQL • PostgreSQL',
+  'Docker • CI/CD • n8n',
+  'Ollama • OpenCV • Pandas',
+];
+
+function HeroStatCard({ stat }) {
+  const mouseX = useMotionValue(-100);
+  const mouseY = useMotionValue(-100);
+  const spotlight = useMotionTemplate`radial-gradient(160px circle at ${mouseX}px ${mouseY}px, rgba(244, 63, 94, 0.16), transparent 75%)`;
+
+  const handleMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    mouseX.set(e.clientX - rect.left);
+    mouseY.set(e.clientY - rect.top);
+  };
+
+  return (
+    <motion.div
+      onMouseMove={handleMove}
+      onMouseLeave={() => { mouseX.set(-100); mouseY.set(-100); }}
+      whileHover={{ y: -4, scale: 1.02 }}
+      transition={{ type: 'spring', stiffness: 320, damping: 24 }}
+      className="hero-stat-card relative p-3 sm:p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-surface)]/85 backdrop-blur-md text-left hover:border-[var(--color-accent)]/40 transition-colors shadow-2xs overflow-hidden group"
+    >
+      <motion.div
+        className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        style={{ background: spotlight }}
+      />
+      <div className="relative z-10">
+        <div className="text-lg sm:text-2xl font-black text-gradient tracking-tight">
+          {stat.value}
+        </div>
+        <div className="text-[11px] sm:text-xs font-bold text-[var(--color-text-main)] mt-0.5">
+          {stat.label}
+        </div>
+        <div className="text-[10px] text-[var(--color-text-muted)] truncate hidden sm:block mt-0.5">
+          {stat.sub}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 function HeroPortraitCard({ scrollYProgress, onContactClick }) {
+  const scopeRef = useRef(null);
   const cardRef = useRef(null);
+  const [focusIdx, setFocusIdx] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
+  const glareX = useMotionValue(50);
+  const glareY = useMotionValue(50);
 
   const springProgress = useSpring(scrollYProgress, { stiffness: 85, damping: 24, restDelta: 0.001 });
-  const portraitY = useTransform(springProgress, [0, 1], [0, 50]);
+  const portraitY = useTransform(springProgress, [0, 1], [0, 48]);
 
-  const mouseRotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [5, -5]), { stiffness: 180, damping: 25 });
-  const mouseRotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-5, 5]), { stiffness: 180, damping: 25 });
+  const mouseRotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [9, -9]), { stiffness: 200, damping: 24 });
+  const mouseRotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-9, 9]), { stiffness: 200, damping: 24 });
+
+  const imgShiftX = useSpring(useTransform(mouseX, [-0.5, 0.5], [10, -10]), { stiffness: 180, damping: 25 });
+  const imgShiftY = useSpring(useTransform(mouseY, [-0.5, 0.5], [10, -10]), { stiffness: 180, damping: 25 });
+
+  const smoothGlareX = useSpring(glareX, { stiffness: 220, damping: 28 });
+  const smoothGlareY = useSpring(glareY, { stiffness: 220, damping: 28 });
+
+  const specularGlare = useMotionTemplate`radial-gradient(240px circle at ${smoothGlareX}% ${smoothGlareY}%, rgba(255, 255, 255, 0.30), rgba(255, 255, 255, 0.06) 45%, transparent 72%)`;
+  const auraGlow = useMotionTemplate`radial-gradient(300px circle at ${smoothGlareX}% ${smoothGlareY}%, rgba(244, 63, 94, 0.22), rgba(255, 107, 107, 0.08) 50%, transparent 75%)`;
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setFocusIdx((prev) => (prev + 1) % HERO_FOCUS_STACKS.length);
+    }, 2800);
+    return () => clearInterval(timer);
+  }, []);
+
+  useGSAP(() => {
+    // Staggered card entrance choreography
+    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+    tl.from('.hero-card-reveal', {
+      y: 26,
+      opacity: 0,
+      scale: 0.94,
+      duration: 0.85,
+    })
+      .from(
+        '.hero-card-img',
+        {
+          scale: 1.12,
+          duration: 1.1,
+          ease: 'power2.out',
+        },
+        '-=0.65'
+      )
+      .from(
+        '.hero-card-chrome, .hero-card-overlay, .hero-card-footer',
+        {
+          y: 12,
+          opacity: 0,
+          duration: 0.55,
+          stagger: 0.08,
+        },
+        '-=0.7'
+      );
+
+    // Organic GSAP idle float (separate wrapper from Framer Motion 3D tilt)
+    gsap.to('.gsap-float-stage', {
+      y: -9,
+      duration: 3.2,
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut',
+    });
+
+    // Dual ambient mesh orb motion
+    gsap.to('.aura-orb-1', {
+      x: 24,
+      y: -18,
+      scale: 1.08,
+      duration: 5.5,
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut',
+    });
+    gsap.to('.aura-orb-2', {
+      x: -22,
+      y: 20,
+      scale: 0.94,
+      duration: 6.5,
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut',
+    });
+
+    // Periodic diagonal glass sheen sweep
+    gsap.fromTo(
+      '.portrait-sheen',
+      { xPercent: -140, opacity: 0 },
+      {
+        xPercent: 240,
+        opacity: 0.45,
+        duration: 1.4,
+        ease: 'power2.inOut',
+        repeat: -1,
+        repeatDelay: 4.5,
+      }
+    );
+  }, { scope: scopeRef });
 
   const handleMouseMove = (e) => {
     if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
-    mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
-    mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
+    const px = (e.clientX - rect.left) / rect.width;
+    const py = (e.clientY - rect.top) / rect.height;
+    mouseX.set(px - 0.5);
+    mouseY.set(py - 0.5);
+    glareX.set(px * 100);
+    glareY.set(py * 100);
   };
-  const handleMouseLeave = () => { mouseX.set(0); mouseY.set(0); };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    mouseX.set(0);
+    mouseY.set(0);
+    glareX.set(50);
+    glareY.set(50);
+  };
 
   return (
     <div
-      ref={cardRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
+      ref={scopeRef}
       className="relative w-full max-w-[380px] lg:max-w-[420px] mx-auto select-none"
       style={{ perspective: 1200 }}
     >
-      {/* Subtle Ambient Aura */}
+      {/* Dual GSAP Animated Ambient Mesh Orbs */}
       <div
-        className="absolute -inset-6 rounded-[40px] pointer-events-none opacity-35 dark:opacity-25 blur-3xl"
-        style={{
-          background: 'radial-gradient(circle at 50% 45%, rgba(244, 63, 94, 0.28), rgba(255, 107, 107, 0.12) 55%, transparent 75%)',
-        }}
+        className="aura-orb-1 absolute -top-8 -left-8 w-56 h-56 rounded-full pointer-events-none opacity-40 dark:opacity-30 blur-3xl"
+        style={{ background: 'radial-gradient(circle, rgba(244, 63, 94, 0.35), transparent 70%)' }}
+      />
+      <div
+        className="aura-orb-2 absolute -bottom-8 -right-8 w-56 h-56 rounded-full pointer-events-none opacity-35 dark:opacity-25 blur-3xl"
+        style={{ background: 'radial-gradient(circle, rgba(251, 146, 60, 0.30), transparent 70%)' }}
       />
 
-      <motion.div
-        style={{
-          y: portraitY,
-          rotateX: mouseRotateX,
-          rotateY: mouseRotateY,
-          transformStyle: 'preserve-3d',
-        }}
-        initial={{ opacity: 0, scale: 0.94, y: 24 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="relative z-10 rounded-[28px] border border-[var(--color-border)] bg-[var(--color-bg-surface)]/92 backdrop-blur-xl p-3 sm:p-3.5 shadow-[0_24px_60px_-18px_rgba(15,23,42,0.14)] dark:shadow-[0_24px_60px_-18px_rgba(0,0,0,0.65)] group"
-      >
-        {/* Top Chrome Strip */}
-        <div className="flex items-center justify-between px-2.5 pb-2.5 mb-2.5 border-b border-[var(--color-border)]/60">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[var(--color-accent)]" />
-            <span className="text-[11px] font-mono font-semibold text-[var(--color-text-muted)] tracking-wide">
-              vishnu_v.dev
-            </span>
-          </div>
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-mono font-bold text-emerald-600 dark:text-emerald-400">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            AVAILABLE
-          </span>
-        </div>
-
-        {/* Portrait Viewport */}
-        <div className="relative h-[300px] sm:h-[360px] lg:h-[390px] rounded-2xl overflow-hidden border border-[var(--color-border)]/60">
-          <img
-            src={`${import.meta.env.BASE_URL}profile.jpg`}
-            alt="Vishnu V - Full-Stack Developer"
-            className="w-full h-full object-cover object-top filter contrast-[1.03] brightness-[1.01] transition-transform duration-700 group-hover:scale-105"
-            onError={(e) => {
-              e.target.style.display = 'none';
-              e.target.parentElement.style.background = 'linear-gradient(135deg, #f43f5e 0%, #ff6b6b 50%, #fb923c 100%)';
-            }}
+      {/* GSAP Float Layer */}
+      <div className="gsap-float-stage">
+        {/* Framer Motion 3D Interactive Tilt Layer */}
+        <motion.div
+          ref={cardRef}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          style={{
+            y: portraitY,
+            rotateX: mouseRotateX,
+            rotateY: mouseRotateY,
+            transformStyle: 'preserve-3d',
+          }}
+          className="hero-card-reveal relative z-10 rounded-[30px] p-[1.5px] shadow-[0_28px_70px_-18px_rgba(244,63,94,0.22)] dark:shadow-[0_28px_70px_-18px_rgba(0,0,0,0.75)] group"
+        >
+          {/* Animated Conic Light Beam Ring Border */}
+          <div
+            className={`absolute inset-0 rounded-[30px] conic-beam-border transition-opacity duration-500 pointer-events-none ${
+              isHovered ? 'opacity-100' : 'opacity-55'
+            }`}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent pointer-events-none" />
+          <div className="absolute inset-0 rounded-[30px] border border-[var(--color-border)]/80 pointer-events-none" />
 
-          {/* Clean Overlaid Identity Footer */}
-          <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between gap-2">
-            <div>
-              <div className="text-sm sm:text-base font-bold text-white leading-tight">
-                Vishnu V
-              </div>
-              <div className="flex items-center gap-1 text-[11px] text-white/80 font-medium mt-0.5">
-                <MapPin size={11} className="text-[var(--color-accent-2)]" />
-                <span>Kerala, India • IST</span>
-              </div>
-            </div>
-            <span className="px-2.5 py-1 rounded-lg bg-white/15 backdrop-blur-md border border-white/20 text-[10px] font-mono font-semibold text-white">
-              Full-Stack
-            </span>
-          </div>
-        </div>
+          {/* Main Card Surface */}
+          <div className="relative rounded-[28.5px] bg-[var(--color-bg-surface)]/95 backdrop-blur-xl p-3 sm:p-3.5 overflow-hidden">
+            {/* Cursor Interactive Glow */}
+            <motion.div
+              className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              style={{ background: auraGlow }}
+            />
 
-        {/* Bottom Interactive Card Footer */}
-        <div className="flex items-center justify-between px-2 pt-3 pb-0.5">
-          <div>
-            <div className="text-[11px] font-mono uppercase tracking-wider text-[var(--color-text-muted)]">
-              Focus
+            {/* Top Chrome Strip */}
+            <div
+              className="hero-card-chrome relative z-10 flex items-center justify-between px-2.5 pb-2.5 mb-2.5 border-b border-[var(--color-border)]/60"
+              style={{ transform: 'translateZ(16px)' }}
+            >
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-[var(--color-accent)] shadow-[0_0_8px_var(--color-accent)]" />
+                <span className="text-[11px] font-mono font-semibold text-[var(--color-text-muted)] tracking-wide">
+                  vishnu_v.dev
+                </span>
+              </div>
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-mono font-bold text-emerald-600 dark:text-emerald-400">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                AVAILABLE
+              </span>
             </div>
-            <div className="text-xs sm:text-sm font-bold text-[var(--color-text-main)]">
-              Python • Django • React
+
+            {/* Portrait Viewport with 3D Depth & Specular Glare */}
+            <div className="relative h-[300px] sm:h-[360px] lg:h-[390px] rounded-2xl overflow-hidden border border-[var(--color-border)]/60">
+              <motion.img
+                src={`${import.meta.env.BASE_URL}profile.jpg`}
+                alt="Vishnu V - Full-Stack Developer"
+                style={{ x: imgShiftX, y: imgShiftY, scale: 1.06 }}
+                className="hero-card-img w-full h-full object-cover object-top filter contrast-[1.03] brightness-[1.01]"
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  e.target.parentElement.style.background = 'linear-gradient(135deg, #f43f5e 0%, #ff6b6b 50%, #fb923c 100%)';
+                }}
+              />
+
+              {/* Diagonal Glass Sweep (GSAP) */}
+              <div
+                className="portrait-sheen pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12"
+                style={{
+                  background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.32), transparent)',
+                }}
+              />
+
+              {/* Cursor Specular Glare (Framer Motion) */}
+              <motion.div
+                className={`pointer-events-none absolute inset-0 transition-opacity duration-300 ${
+                  isHovered ? 'opacity-100' : 'opacity-0'
+                }`}
+                style={{ background: specularGlare }}
+              />
+
+              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent pointer-events-none" />
+
+              {/* Overlaid Identity Footer Floating in Z-Space */}
+              <div
+                className="hero-card-overlay absolute bottom-3 left-3 right-3 flex items-end justify-between gap-2"
+                style={{ transform: 'translateZ(26px)' }}
+              >
+                <div>
+                  <div className="text-sm sm:text-base font-bold text-white leading-tight drop-shadow-xs">
+                    Vishnu V
+                  </div>
+                  <div className="flex items-center gap-1 text-[11px] text-white/85 font-medium mt-0.5">
+                    <MapPin size={11} className="text-[var(--color-accent-2)]" />
+                    <span>Kerala, India • IST</span>
+                  </div>
+                </div>
+                <span className="px-2.5 py-1 rounded-lg bg-white/15 backdrop-blur-md border border-white/25 text-[10px] font-mono font-semibold text-white shadow-sm">
+                  Full-Stack
+                </span>
+              </div>
+            </div>
+
+            {/* Bottom Interactive Card Footer with Kinetic Focus Rotator */}
+            <div
+              className="hero-card-footer relative z-10 flex items-center justify-between gap-2 px-2 pt-3 pb-0.5"
+              style={{ transform: 'translateZ(18px)' }}
+            >
+              <button
+                type="button"
+                onClick={() => setFocusIdx((prev) => (prev + 1) % HERO_FOCUS_STACKS.length)}
+                className="text-left min-w-0 flex-1 cursor-pointer group/focus"
+                title="Click to cycle stack focus"
+              >
+                <div className="text-[10px] font-mono uppercase tracking-wider text-[var(--color-text-muted)] flex items-center gap-1.5">
+                  <span className="w-1 h-1 rounded-full bg-[var(--color-accent)]" />
+                  <span>Focus</span>
+                </div>
+                <div className="relative h-5 overflow-hidden mt-0.5">
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={HERO_FOCUS_STACKS[focusIdx]}
+                      initial={{ y: 12, opacity: 0, filter: 'blur(3px)' }}
+                      animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
+                      exit={{ y: -12, opacity: 0, filter: 'blur(3px)' }}
+                      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                      className="text-xs sm:text-sm font-bold text-[var(--color-text-main)] group-hover/focus:text-[var(--color-accent)] transition-colors truncate"
+                    >
+                      {HERO_FOCUS_STACKS[focusIdx]}
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+              </button>
+
+              <motion.button
+                type="button"
+                onClick={onContactClick}
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.96 }}
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-black/[0.04] dark:bg-white/[0.07] hover:bg-gradient-to-r hover:from-[var(--color-accent)] hover:to-[var(--color-accent-2)] hover:text-white border border-[var(--color-border)] hover:border-transparent text-xs font-semibold text-[var(--color-text-main)] transition-all duration-200 cursor-pointer flex-shrink-0 shadow-2xs group/hire"
+              >
+                <span>Hire Me</span>
+                <ArrowRight size={13} className="transition-transform duration-200 group-hover/hire:translate-x-0.5" />
+              </motion.button>
             </div>
           </div>
-          <button
-            type="button"
-            onClick={onContactClick}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-black/[0.04] dark:bg-white/[0.07] hover:bg-[var(--color-accent)] hover:text-white border border-[var(--color-border)] hover:border-transparent text-xs font-semibold text-[var(--color-text-main)] transition-all duration-200 cursor-pointer"
-          >
-            <span>Hire Me</span>
-            <ArrowRight size={13} />
-          </button>
-        </div>
-      </motion.div>
+        </motion.div>
+      </div>
     </div>
   );
 }
@@ -1093,20 +1316,7 @@ function Hero() {
                 { value: '15+', label: 'Projects Built', sub: 'Production Apps' },
                 { value: '100%', label: 'Delivery', sub: 'Clean Architecture' },
               ].map((stat, i) => (
-                <div
-                  key={i}
-                  className="p-3 sm:p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-surface)]/80 backdrop-blur-md text-left hover:border-[var(--color-accent)]/35 transition-colors shadow-2xs"
-                >
-                  <div className="text-lg sm:text-2xl font-black text-gradient tracking-tight">
-                    {stat.value}
-                  </div>
-                  <div className="text-[11px] sm:text-xs font-bold text-[var(--color-text-main)] mt-0.5">
-                    {stat.label}
-                  </div>
-                  <div className="text-[10px] text-[var(--color-text-muted)] truncate hidden sm:block mt-0.5">
-                    {stat.sub}
-                  </div>
-                </div>
+                <HeroStatCard key={i} stat={stat} />
               ))}
             </motion.div>
           </div>
