@@ -575,36 +575,19 @@ function RoleMorpher({ roles, className = 'text-gradient' }) {
   }, [roles.length]);
 
   return (
-    <span className="relative inline-flex items-center overflow-hidden h-[1.35em] align-middle">
+    <span className="relative inline-flex items-center overflow-hidden h-[1.4em] align-middle">
       <AnimatePresence mode="wait">
         <motion.span
           key={roles[index]}
-          initial={{ y: 26, opacity: 0, filter: 'blur(4px)' }}
+          initial={{ y: 20, opacity: 0, filter: 'blur(4px)' }}
           animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
-          exit={{ y: -26, opacity: 0, filter: 'blur(4px)' }}
-          transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-          className={`font-extrabold tracking-tight inline-block whitespace-nowrap ${className}`}
+          exit={{ y: -20, opacity: 0, filter: 'blur(4px)' }}
+          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          className={`font-bold tracking-tight inline-block whitespace-nowrap ${className}`}
         >
           {roles[index]}
         </motion.span>
       </AnimatePresence>
-    </span>
-  );
-}
-
-function SparklesText({ text }) {
-  return (
-    <span className="relative inline-block px-1.5 font-extrabold">
-      <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-accent)] via-[var(--color-accent-2)] to-[var(--color-accent)] drop-shadow-sm">
-        {text}
-      </span>
-      <motion.span
-        className="absolute -bottom-1.5 left-0 right-0 h-[3px] rounded-full bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-2)]"
-        initial={{ scaleX: 0 }}
-        animate={{ scaleX: 1 }}
-        transition={{ delay: 0.9, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        style={{ transformOrigin: 'left' }}
-      />
     </span>
   );
 }
@@ -839,28 +822,18 @@ function Navbar({ theme, toggleTheme }) {
 }
 
 // =====================================================================
-// 6. HERO SECTION WITH CENTRAL CUTOUT PORTRAIT & CHOREOGRAPHY
+// 6. HERO SECTION (MODERN EDITORIAL BENTO STAGE)
 // =====================================================================
-function CentralCutoutPortrait({ scrollYProgress }) {
+function HeroPortraitCard({ scrollYProgress, onContactClick }) {
   const cardRef = useRef(null);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
   const springProgress = useSpring(scrollYProgress, { stiffness: 85, damping: 24, restDelta: 0.001 });
+  const portraitY = useTransform(springProgress, [0, 1], [0, 50]);
 
-  const portraitY = useTransform(springProgress, [0, 1], [0, 90]);
-  const portraitScale = useTransform(springProgress, [0, 0.5, 1], [1, 1.04, 0.96]);
-  const scrollRotateX = useTransform(springProgress, [0, 1], [0, 8]);
-  const scrollRotateY = useTransform(springProgress, [0, 1], [0, -8]);
-
-  const mouseRotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [8, -8]), { stiffness: 180, damping: 25 });
-  const mouseRotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-8, 8]), { stiffness: 180, damping: 25 });
-
-  const finalRotateX = useTransform([scrollRotateX, mouseRotateX], ([s, m]) => s + m);
-  const finalRotateY = useTransform([scrollRotateY, mouseRotateY], ([s, m]) => s + m);
-
-  const badgeExpY = useTransform(springProgress, [0, 1], [0, 35]);
-  const badgeAvailY = useTransform(springProgress, [0, 1], [0, 50]);
+  const mouseRotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [5, -5]), { stiffness: 180, damping: 25 });
+  const mouseRotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-5, 5]), { stiffness: 180, damping: 25 });
 
   const handleMouseMove = (e) => {
     if (!cardRef.current) return;
@@ -875,68 +848,92 @@ function CentralCutoutPortrait({ scrollYProgress }) {
       ref={cardRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative flex items-center justify-center my-6 lg:my-0 w-full max-w-[360px] sm:max-w-[400px] lg:max-w-none mx-auto select-none"
+      className="relative w-full max-w-[380px] lg:max-w-[420px] mx-auto select-none"
       style={{ perspective: 1200 }}
     >
-      {/* Volumetric Stage Glow Behind Portrait */}
+      {/* Subtle Ambient Aura */}
       <div
-        className="absolute w-[280px] sm:w-[400px] h-[280px] sm:h-[400px] rounded-full pointer-events-none opacity-40 dark:opacity-25"
+        className="absolute -inset-6 rounded-[40px] pointer-events-none opacity-35 dark:opacity-25 blur-3xl"
         style={{
-          background: 'radial-gradient(circle, rgba(244, 63, 94, 0.3) 0%, rgba(255, 107, 107, 0.15) 45%, transparent 70%)',
-          filter: 'blur(65px)',
+          background: 'radial-gradient(circle at 50% 45%, rgba(244, 63, 94, 0.28), rgba(255, 107, 107, 0.12) 55%, transparent 75%)',
         }}
       />
 
-      {/* 3D Cutout Portrait Card */}
       <motion.div
         style={{
           y: portraitY,
-          scale: portraitScale,
-          rotateX: finalRotateX,
-          rotateY: finalRotateY,
+          rotateX: mouseRotateX,
+          rotateY: mouseRotateY,
           transformStyle: 'preserve-3d',
         }}
-        initial={{ opacity: 0, scale: 0.9, y: 35 }}
+        initial={{ opacity: 0, scale: 0.94, y: 24 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-        className="relative z-10 w-[260px] h-[340px] sm:w-[320px] sm:h-[420px] md:w-[350px] md:h-[460px] lg:w-[370px] lg:h-[490px] rounded-[32px] sm:rounded-[44px] overflow-hidden border-2 border-white/80 dark:border-white/15 shadow-[0_25px_60px_-15px_rgba(244,63,94,0.28)] backdrop-blur-md group"
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className="relative z-10 rounded-[28px] border border-[var(--color-border)] bg-[var(--color-bg-surface)]/92 backdrop-blur-xl p-3 sm:p-3.5 shadow-[0_24px_60px_-18px_rgba(15,23,42,0.14)] dark:shadow-[0_24px_60px_-18px_rgba(0,0,0,0.65)] group"
       >
-        <img
-          src={`${import.meta.env.BASE_URL}profile.jpg`}
-          alt="Vishnu V - Full-Stack Developer"
-          className="w-full h-full object-cover object-top filter contrast-[1.03] brightness-[1.01] transition-transform duration-700 group-hover:scale-105"
-          onError={(e) => {
-            e.target.style.display = 'none';
-            e.target.parentElement.style.background = 'linear-gradient(135deg, #f43f5e 0%, #ff6b6b 50%, #fb923c 100%)';
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-bg-base)]/70 via-transparent to-transparent pointer-events-none" />
+        {/* Top Chrome Strip */}
+        <div className="flex items-center justify-between px-2.5 pb-2.5 mb-2.5 border-b border-[var(--color-border)]/60">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[var(--color-accent)]" />
+            <span className="text-[11px] font-mono font-semibold text-[var(--color-text-muted)] tracking-wide">
+              vishnu_v.dev
+            </span>
+          </div>
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-mono font-bold text-emerald-600 dark:text-emerald-400">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            AVAILABLE
+          </span>
+        </div>
 
-        {/* Floating Satellite Badges */}
-        <motion.div style={{ y: badgeExpY, z: 45 }} className="absolute -top-3 -left-2 sm:-top-4 sm:-left-4 z-30">
-          <div className="glass-premium rounded-2xl px-3 py-2 sm:px-4 sm:py-2.5 shadow-lg border border-white/80 dark:border-white/10 flex items-center gap-2.5 backdrop-blur-xl">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[var(--color-accent)] to-[var(--color-accent-2)] flex items-center justify-center text-white shadow-md shadow-[var(--color-accent)]/30 flex-shrink-0">
-              <Code2 size={16} />
-            </div>
+        {/* Portrait Viewport */}
+        <div className="relative h-[300px] sm:h-[360px] lg:h-[390px] rounded-2xl overflow-hidden border border-[var(--color-border)]/60">
+          <img
+            src={`${import.meta.env.BASE_URL}profile.jpg`}
+            alt="Vishnu V - Full-Stack Developer"
+            className="w-full h-full object-cover object-top filter contrast-[1.03] brightness-[1.01] transition-transform duration-700 group-hover:scale-105"
+            onError={(e) => {
+              e.target.style.display = 'none';
+              e.target.parentElement.style.background = 'linear-gradient(135deg, #f43f5e 0%, #ff6b6b 50%, #fb923c 100%)';
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent pointer-events-none" />
+
+          {/* Clean Overlaid Identity Footer */}
+          <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between gap-2">
             <div>
-              <div className="text-xs sm:text-sm font-bold text-[var(--color-text-main)]">~1 Year Exp.</div>
-              <div className="text-[10px] text-[var(--color-text-muted)] font-medium">Full-Stack Dev</div>
+              <div className="text-sm sm:text-base font-bold text-white leading-tight">
+                Vishnu V
+              </div>
+              <div className="flex items-center gap-1 text-[11px] text-white/80 font-medium mt-0.5">
+                <MapPin size={11} className="text-[var(--color-accent-2)]" />
+                <span>Kerala, India • IST</span>
+              </div>
+            </div>
+            <span className="px-2.5 py-1 rounded-lg bg-white/15 backdrop-blur-md border border-white/20 text-[10px] font-mono font-semibold text-white">
+              Full-Stack
+            </span>
+          </div>
+        </div>
+
+        {/* Bottom Interactive Card Footer */}
+        <div className="flex items-center justify-between px-2 pt-3 pb-0.5">
+          <div>
+            <div className="text-[11px] font-mono uppercase tracking-wider text-[var(--color-text-muted)]">
+              Focus
+            </div>
+            <div className="text-xs sm:text-sm font-bold text-[var(--color-text-main)]">
+              Python • Django • React
             </div>
           </div>
-        </motion.div>
-
-        <motion.div style={{ y: badgeAvailY, z: 40 }} className="absolute -bottom-3 -right-2 sm:-bottom-4 sm:-right-4 z-30">
-          <div className="glass-premium rounded-2xl px-3 py-2 sm:px-4 sm:py-2.5 shadow-lg border border-white/80 dark:border-white/10 flex items-center gap-2.5 backdrop-blur-xl">
-            <div className="relative flex h-2.5 w-2.5 flex-shrink-0">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
-            </div>
-            <div>
-              <div className="text-xs sm:text-sm font-bold text-[var(--color-text-main)]">Available for Hire</div>
-              <div className="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium">Full-time &amp; Remote</div>
-            </div>
-          </div>
-        </motion.div>
+          <button
+            type="button"
+            onClick={onContactClick}
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-black/[0.04] dark:bg-white/[0.07] hover:bg-[var(--color-accent)] hover:text-white border border-[var(--color-border)] hover:border-transparent text-xs font-semibold text-[var(--color-text-main)] transition-all duration-200 cursor-pointer"
+          >
+            <span>Hire Me</span>
+            <ArrowRight size={13} />
+          </button>
+        </div>
       </motion.div>
     </div>
   );
@@ -971,102 +968,70 @@ function Hero() {
     <section
       id="hero"
       ref={heroRef}
-      className="relative min-h-[92vh] sm:min-h-[96vh] flex flex-col justify-between pt-24 sm:pt-32 pb-8 px-4 sm:px-6 lg:px-12 xl:px-16 overflow-hidden"
+      className="relative min-h-[92vh] flex flex-col justify-between pt-24 sm:pt-28 pb-8 px-4 sm:px-6 lg:px-12 xl:px-16 overflow-hidden"
     >
-      {/* Background Volumetric Mesh Glows */}
-      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-[var(--color-accent)]/8 rounded-full blur-[140px] pointer-events-none" />
-      <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-[var(--color-accent-2)]/10 rounded-full blur-[150px] pointer-events-none" />
+      {/* Subtle Ambient Background Glows */}
+      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[520px] h-[520px] bg-[var(--color-accent)]/7 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute bottom-1/4 right-1/4 w-[460px] h-[460px] bg-[var(--color-accent-2)]/8 rounded-full blur-[150px] pointer-events-none" />
 
-      <div className="container mx-auto max-w-7xl relative z-10 my-auto py-4 lg:py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 xl:gap-14 items-center">
-          
-          {/* Left Column: Headlines, Bio, Stack Pills, CTAs, Stats */}
-          <div className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left order-1">
-            
-            {/* Live Status Pill */}
+      <div className="container mx-auto max-w-6xl relative z-10 my-auto py-4">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-10 items-center">
+
+          {/* Left Column: Clean Editorial Identity + Bento Highlights */}
+          <div className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left">
+
+            {/* Compact Role Eyebrow Bar */}
             <motion.div
-              initial={{ opacity: 0, y: 15 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-surface)]/85 backdrop-blur-md shadow-xs mb-6"
+              transition={{ duration: 0.45 }}
+              className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-surface)]/85 backdrop-blur-md shadow-2xs mb-6"
             >
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
               </span>
-              <span className="text-xs font-semibold text-[var(--color-text-main)]">Available for opportunities</span>
-              <span className="text-[var(--color-border)]">•</span>
-              <span className="text-xs text-[var(--color-text-muted)] font-medium">Full-Stack &amp; AI</span>
+              <span className="text-xs font-mono font-semibold text-[var(--color-text-muted)]">
+                <RoleMorpher roles={ROLES} className="text-[var(--color-accent)]" />
+              </span>
             </motion.div>
 
-            {/* Main Headline */}
-            <div className="mb-4 w-full">
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.1 }}
-                className="text-4xl sm:text-6xl md:text-7xl xl:text-8xl font-black tracking-tight leading-[1.06] text-[var(--color-text-main)] mb-3"
-              >
-                Hi, I'm <SparklesText text="Vishnu" />
-              </motion.h1>
-
-              {/* Dynamic Kinetic Role */}
-              <motion.div
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[var(--color-text-main)] min-h-[1.4em] flex items-center justify-center lg:justify-start"
-              >
-                <RoleMorpher roles={ROLES} />
-              </motion.div>
-            </div>
-
-            {/* Bio Description */}
-            <motion.p
-              initial={{ opacity: 0, y: 15 }}
+            {/* Editorial Display Headline */}
+            <motion.h1
+              initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-base sm:text-lg text-[var(--color-text-muted)] max-w-xl leading-relaxed mb-6 font-normal"
+              transition={{ duration: 0.65, delay: 0.08 }}
+              className="text-4xl sm:text-5xl md:text-6xl xl:text-[4.25rem] font-black tracking-tight leading-[1.06] text-[var(--color-text-main)] mb-5"
             >
-              Engineering scalable web applications, resilient APIs, and modern user interfaces with{' '}
+              Building reliable web products with{' '}
+              <span className="text-gradient">Vishnu V</span>
+              <span className="text-[var(--color-accent)]">.</span>
+            </motion.h1>
+
+            {/* Focused Summary */}
+            <motion.p
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55, delay: 0.16 }}
+              className="text-base sm:text-lg text-[var(--color-text-muted)] max-w-xl leading-relaxed mb-8 font-normal"
+            >
+              Full-Stack Developer crafting resilient{' '}
               <span className="text-[var(--color-text-main)] font-semibold">Python</span>,{' '}
-              <span className="text-[var(--color-text-main)] font-semibold">Django &amp; FastAPI</span>, and{' '}
-              <span className="text-gradient-static font-semibold">React</span>.
+              <span className="text-[var(--color-text-main)] font-semibold">Django</span> &amp;{' '}
+              <span className="text-[var(--color-text-main)] font-semibold">FastAPI</span> backends
+              paired with modern{' '}
+              <span className="text-[var(--color-text-main)] font-semibold">React</span> interfaces.
             </motion.p>
 
-            {/* Minimal & Airy Tech Stack Pills */}
+            {/* Primary CTAs & Social Row */}
             <motion.div
-              initial={{ opacity: 0, y: 15 }}
+              initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="flex flex-wrap items-center justify-center lg:justify-start gap-2 mb-8 max-w-xl"
-            >
-              {[
-                'Python & SQL',
-                'Django & DRF',
-                'FastAPI',
-                'React & Tailwind CSS',
-                'MySQL & PostgreSQL',
-                'Docker & CI/CD',
-              ].map((tech) => (
-                <span
-                  key={tech}
-                  className="px-3.5 py-1.5 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-surface)]/70 text-xs font-medium text-[var(--color-text-muted)] hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/40 hover:bg-[var(--color-accent)]/5 transition-all duration-300 cursor-default shadow-xs"
-                >
-                  {tech}
-                </span>
-              ))}
-            </motion.div>
-
-            {/* Action Buttons & Socials Deck */}
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              className="flex flex-wrap items-center justify-center lg:justify-start gap-3.5 mb-10 w-full"
+              transition={{ duration: 0.55, delay: 0.24 }}
+              className="flex flex-wrap items-center justify-center lg:justify-start gap-3 mb-9 w-full"
             >
               <MagneticButton href="#projects" variant="primary">
-                View My Work
+                Explore Work
                 <ArrowRight size={17} />
               </MagneticButton>
               <MagneticButton
@@ -1079,8 +1044,8 @@ function Hero() {
                 <Download size={16} />
               </MagneticButton>
 
-              {/* Minimal Social Dock */}
-              <div className="flex items-center gap-1.5 sm:ml-2">
+              {/* Social Dock */}
+              <div className="flex items-center gap-2 sm:ml-1">
                 {HERO_SOCIALS.map((social) => {
                   if (social.label === 'Email') {
                     return (
@@ -1089,7 +1054,7 @@ function Hero() {
                         onClick={handleCopyEmail}
                         title={emailCopied ? 'Email Copied!' : 'Copy Email (vishnuvsh44@gmail.com)'}
                         aria-label="Copy Email Address"
-                        className="relative flex items-center justify-center w-10 h-10 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-surface)]/80 text-[var(--color-text-muted)] hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/40 hover:bg-[var(--color-accent)]/10 transition-all duration-200 cursor-pointer shadow-xs"
+                        className="relative flex items-center justify-center w-11 h-11 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-surface)]/85 text-[var(--color-text-muted)] hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/40 hover:bg-[var(--color-accent)]/10 transition-all duration-200 cursor-pointer shadow-2xs"
                       >
                         {emailCopied ? <Check size={16} className="text-emerald-500" /> : <social.icon size={16} />}
                         {emailCopied && (
@@ -1107,7 +1072,7 @@ function Hero() {
                       target={social.href.startsWith('http') ? '_blank' : undefined}
                       rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                       aria-label={social.label}
-                      className="flex items-center justify-center w-10 h-10 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-surface)]/80 text-[var(--color-text-muted)] hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/40 hover:bg-[var(--color-accent)]/10 transition-all duration-200 cursor-pointer shadow-xs"
+                      className="flex items-center justify-center w-11 h-11 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-surface)]/85 text-[var(--color-text-muted)] hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/40 hover:bg-[var(--color-accent)]/10 transition-all duration-200 cursor-pointer shadow-2xs"
                     >
                       <social.icon size={16} />
                     </a>
@@ -1116,57 +1081,57 @@ function Hero() {
               </div>
             </motion.div>
 
-            {/* Impact Metric Strip */}
+            {/* 3-Card Bento Metric Strip */}
             <motion.div
-              initial={{ opacity: 0, y: 15 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              className="w-full max-w-xl flex items-center justify-between sm:justify-start sm:gap-12 pt-6 border-t border-[var(--color-border)]/70"
+              transition={{ duration: 0.6, delay: 0.32 }}
+              className="w-full max-w-xl grid grid-cols-3 gap-2.5 sm:gap-3.5"
             >
               {[
-                { value: '~1', label: 'Year Experience' },
-                { value: '15+', label: 'Projects Built' },
-                { value: '100%', label: 'Client Satisfaction' },
+                { value: '~1 Year', label: 'Experience', sub: 'CRM, POS & Healthcare' },
+                { value: '15+', label: 'Projects Built', sub: 'Production Apps' },
+                { value: '100%', label: 'Delivery', sub: 'Clean Architecture' },
               ].map((stat, i) => (
-                <div key={i} className="text-center sm:text-left">
-                  <div className="text-2xl sm:text-3xl font-extrabold text-gradient tracking-tight">
+                <div
+                  key={i}
+                  className="p-3 sm:p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-surface)]/80 backdrop-blur-md text-left hover:border-[var(--color-accent)]/35 transition-colors shadow-2xs"
+                >
+                  <div className="text-lg sm:text-2xl font-black text-gradient tracking-tight">
                     {stat.value}
                   </div>
-                  <div className="text-xs sm:text-sm font-medium text-[var(--color-text-muted)] mt-0.5">
+                  <div className="text-[11px] sm:text-xs font-bold text-[var(--color-text-main)] mt-0.5">
                     {stat.label}
+                  </div>
+                  <div className="text-[10px] text-[var(--color-text-muted)] truncate hidden sm:block mt-0.5">
+                    {stat.sub}
                   </div>
                 </div>
               ))}
             </motion.div>
           </div>
 
-          {/* Right Column: 3D Portrait Stage */}
-          <div className="lg:col-span-5 flex justify-center lg:justify-end order-2">
-            <CentralCutoutPortrait scrollYProgress={scrollYProgress} />
+          {/* Right Column: Bento Profile Card */}
+          <div className="lg:col-span-5">
+            <HeroPortraitCard
+              scrollYProgress={scrollYProgress}
+              onContactClick={() => handleScrollTo('#contact')}
+            />
           </div>
 
         </div>
       </div>
 
-      {/* Scroll Cue */}
-      <div
-        onClick={() => handleScrollTo('#about')}
-        className="relative z-10 flex flex-col items-center gap-2 text-[var(--color-text-muted)] cursor-pointer hover:text-[var(--color-accent)] transition-colors group pt-3 pb-1"
-      >
-        <span className="text-[11px] font-semibold tracking-[0.22em] uppercase text-[var(--color-text-muted)] group-hover:text-[var(--color-accent)] transition-colors">
-          Scroll to Explore
-        </span>
-        <motion.div
-          animate={{ y: [0, 6, 0] }}
-          transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
-          className="w-5 h-8 rounded-full border-2 border-[var(--color-border)] group-hover:border-[var(--color-accent)] flex items-start justify-center p-1 transition-colors"
+      {/* Minimal Scroll Cue */}
+      <div className="relative z-10 flex justify-center pt-4">
+        <button
+          type="button"
+          onClick={() => handleScrollTo('#about')}
+          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[11px] font-mono font-semibold tracking-wider uppercase text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors cursor-pointer"
         >
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
-            className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)]"
-          />
-        </motion.div>
+          <span>Scroll to explore</span>
+          <ChevronDown size={14} className="animate-bounce" />
+        </button>
       </div>
     </section>
   );
